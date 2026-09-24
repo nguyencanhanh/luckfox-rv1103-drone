@@ -7,13 +7,13 @@
 | Stock SDK build | **PASS** | `logs/sdk_build.log`; ảnh trong `images/` (build 2026-09-23) |
 | Linux boot | **PASS** (firmware stock) | TEST 2026-09-23: SSH, `/proc/cpuinfo`, `clk_summary` |
 | RT-Thread firmware build | **PASS** | `tools/build_mcu.sh luckfox_mini-M1-NONE` → 22 072 B, entry 0x1800200 |
-| Linux M1 (DTS có reserved-memory) build | **một phần**: DTB build được qua kbuild; `boot.img` M1 chưa build | `objs_kernel/.../rv1103g-luckfox-pico-mini-m1.dtb` 72 712 B |
-| MCU firmware boot | **CHƯA THỬ**: board chưa cắm | |
-| UART debug | **Linux: có (UART2). MCU: KHÔNG CÓ** trong SDK cho RV1106, thay bằng log trong RAM | [PERIPHERALS.md](PERIPHERALS.md) |
-| Vòng lặp 1 kHz chạy | **CHƯA THỬ** | |
-| Đo jitter | **CHƯA CÓ SỐ LIỆU** | |
+| Linux M1 (DTS có reserved-memory) build + flash | **PASS** | `images/boot.img` có `mcu@1800000`; `/proc/iomem` loại vùng MCU |
+| MCU firmware boot | **PASS** (nạp từ Linux bằng `mcu-tool`) | `logs/m1_load.txt`, `logs/m1_first_log.txt` |
+| UART debug | **Linux: PASS** (UART2 qua J-Link VCOM, 115200). **MCU: không có UART** trong SDK cho RV1106, dùng log trong RAM (`mcu-tool log`) | `logs/m1_uart_boot1.txt` |
+| Vòng lặp 1 kHz chạy | **PASS**: 1 000 000 vòng, 0 missed, 0 overrun | `logs/m1_run1_rkipc.txt` |
+| Đo jitter | **PASS** (dưới tải `rkipc`): jitter max 116,7 µs, P99.99 1099,75 µs | [REALTIME.md](REALTIME.md) |
 
-Milestone 1: **NOT YET DEMONSTRATED**.
+Milestone 1: **PASS, có một điểm lệch**: debug MCU qua log trong RAM thay vì UART (SDK không hỗ trợ UART cho MCU RV1106). Chưa có mốc Linux idle để so sánh.
 
 ## Cần có
 

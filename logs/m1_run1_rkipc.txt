@@ -1,0 +1,64 @@
+clock           mcycle, 297000000 Hz danh nghia
+target period   1000000 ns, 1000000 vong moi lan chay
+heartbeat       1002
+runs done       1
+live (lan chay hien tai):
+  iterations      2002
+  missed          0   (chu ky > 1.5 x target)
+  overruns        0   (lo tick)
+  period ns       min 945387  avg 1001001  max 1070104
+  jitter max ns   70104
+  latency ns      min 5097  avg 8933  max 42026
+last (lan chay hoan tat gan nhat):
+  iterations      1000000
+  missed          0   (chu ky > 1.5 x target)
+  overruns        0   (lo tick)
+  period ns       min 894666  avg 1000999  max 1116733
+  jitter max ns   116733
+  period pct ns   P50 1001250  P95 1010000  P99 1021250  P99.9 1053000  P99.99 1099750
+  latency ns      min 4750  avg 9117  max 107111  P99 21600  P99.99 63700
+  hist overflow   9
+====
+bench: live n=639999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=649999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=659999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=669999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=679999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=689999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=699999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=709999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=719999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=729999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=739999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=749999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=759999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=769999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=779999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=789999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=799999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=809999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=819999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=829999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=839999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=849999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=859999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=869999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=879999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=889999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=899999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=909999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=919999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=929999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=939999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=949999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=959999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=969999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=979999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=989999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: live n=999999 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: run 1 done
+bench: final n=1000000 missed=0 overrun=0 period ns min=894666 avg=1000999 max=1116733 jitter=116733
+bench: final period ns p50=1001250 p95=1010000 p99=1021250 p99.9=1053000 p99.99=1099750
+bench: final latency ns min=4750 avg=9117 max=107111 p99=21600 p99.99=63700 overflow=9
+1386.51 1116.70
+11.30 11.26 8.80 1/104 2186

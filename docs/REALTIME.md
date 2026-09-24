@@ -1,7 +1,16 @@
 # Benchmark vòng lặp 1 kHz trên MCU
 
-Code: `mcu/bsp/luckfox_mini-M1-NONE/rt_bench.c`. **Chưa chạy trên board, chưa có số liệu.**
-Chưa được gọi hệ thống là hard-real-time.
+Code: `mcu/bsp/luckfox_mini-M1-NONE/rt_bench.c`. Chưa được gọi hệ thống là hard-real-time.
+
+## Kết quả
+
+| Kịch bản | Log | n | missed | overrun | period min / avg / max (µs) | jitter max | P50 / P95 / P99 / P99.9 / P99.99 (µs) | latency avg / P99 / P99.99 / max (µs) |
+|---|---|---|---|---|---|---|---|---|
+| Firmware mặc định: `rkipc` chạy (camera + ISP + encoder), load 11,3 | `logs/m1_run1_rkipc.txt` | 1 000 000 | 0 | 0 | 894,7 / 1000,999 / 1116,7 | 116,7 µs | 1001,25 / 1010,0 / 1021,25 / 1053,0 / 1099,75 | 9,1 / 21,6 / 63,7 / 107,1 |
+
+- Chu kỳ trung bình 1,000999 ms thay vì 1 ms: tick RT-Thread của SDK chậm 0,1% (xem [RV1103_MCU.md §4](RV1103_MCU.md)).
+- Percentile là cận trên của ô histogram (250 ns cho period, 100 ns cho latency).
+- 9 mẫu latency vượt 100 µs (`hist overflow`).
 
 ## Cách đo
 
