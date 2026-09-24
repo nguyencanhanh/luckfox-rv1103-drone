@@ -26,9 +26,29 @@ Viết tắt như [RV1103_MCU.md](RV1103_MCU.md). "Linux bật" = `status = "oka
 | PWM1_M0 | 0xFF350010 | GPIO0_A4 | `mini.dts:87-91`; `rv1106-pinctrl.dtsi:454-457`; `rv1106.dtsi:580` |
 | I2C3_M1 | 0xFF460000 | | `mini.dts:69-74`; `rv1106.dtsi:879` |
 
-Chân GPIO nào ra header nào trên board: **UNKNOWN — NEED VERIFICATION** với sơ đồ chân Luckfox Pico Mini (Luckfox Wiki).
-Mới có **một** kênh PWM được khai báo trên Mini; ESC x4 cần 4 kênh. Còn phải xem thêm các kênh PWM0–11 (`rv1106.dtsi:568-956`)
-ở chân nào: UNKNOWN, để Milestone 4.
+## Chân trên header của Luckfox Pico Mini
+
+Nguồn: ảnh sơ đồ chân của Luckfox (`Luckfox-Pico-Mini-details-inter.jpg`, người dùng cung cấp 2026-09-24),
+đối chiếu với `rv1106-pinctrl.dtsi`. "Khớp" = ảnh và DTS cùng nói một chức năng cho chân đó.
+
+| Chân | GPIO | Chức năng dùng tới | Đối chiếu DTS |
+|---|---|---|---|
+| 2, 21 | GND | | |
+| 3 | 3V3 (ra) | | |
+| 4 | GPIO1_B2 | **UART2_TX_M1: console Linux** | khớp: `rv1106-pinctrl.dtsi:998-999`, UART2 dùng M1 `rv1106.dtsi:1010` |
+| 5 | GPIO1_B3 | **UART2_RX_M1: console Linux** | khớp: `rv1106-pinctrl.dtsi:996-997` |
+| 6–9 | GPIO1_C0–C3 | SPI0_M0 CS0/CLK/MOSI/MISO; hoặc PWM2/4/5/6_M2 | SPI khớp `:834-848`; PWM mux 3 `:494,540,563,586` |
+| 10 | GPIO1_C4 | UART4 (M1); hoặc PWM8_M1 | PWM `:625`; **hướng UART lệch**: ảnh ghi TX, DTS ghi `uart4_rx_m1` (`:1036-1037`) |
+| 11 | GPIO1_C5 | UART4 (M1); hoặc PWM9_M1 | PWM `:641`; ảnh ghi RX, DTS ghi `uart4_tx_m1` (`:1038-1039`) |
+| 12 | GPIO1_D0 | UART3_TX_M1 | khớp `:1018-1019` |
+| 13 | GPIO1_D1 | UART3_RX_M1 | khớp `:1016-1017` |
+| 14, 15 | GPIO1_D2, D3 | I2C3_M1 SDA/SCL | |
+| 18 | GPIO0_A4 | PWM1_M0 (ảnh không ghi) | `:454-457` |
+
+Hướng TX/RX của UART4_M1: **UNKNOWN — NEED VERIFICATION** (ảnh và DTS nói ngược nhau). Đo bằng máy hiện sóng trước khi dùng.
+
+**PWM cho ESC x4:** header có 6 kênh PWM trên chân 6–11, nhưng chân 6–9 trùng với SPI0 (dự kiến cho IMU).
+Nếu IMU dùng SPI0 thì chỉ còn PWM8_M1, PWM9_M1 (chân 10, 11) và PWM1_M0 (chân 18) = 3 kênh, **thiếu 1 kênh**. Cần xem lại ở Milestone 4.
 
 ## Điều kiện để MCU dùng một khối
 

@@ -18,9 +18,16 @@ Milestone 1: **NOT YET DEMONSTRATED**.
 ## Cần có
 
 - Board Luckfox Pico Mini B, cáp USB-C truyền dữ liệu.
-- (Nên có) USB-UART 3,3 V để xem console Linux trên UART2, **115200 8N1** (`rv1106.dtsi:227,230`).
-  Chân UART2 trên header: **UNKNOWN — NEED VERIFICATION**, xem sơ đồ chân Luckfox Pico Mini trên Luckfox Wiki.
-  Trên Mac: `screen /dev/cu.usbserial-* 115200`.
+- (Nên có) USB-UART **3,3 V** để xem console U-Boot và Linux trên UART2, **115200 8N1** (`rv1106.dtsi:227,230`):
+
+  | USB-UART | Chân board |
+  |---|---|
+  | RX | 4 (GPIO1_B2, UART2_TX_M1) |
+  | TX | 5 (GPIO1_B3, UART2_RX_M1) |
+  | GND | 2 hoặc 21 |
+  | VCC | **không nối**, board cấp nguồn qua USB-C |
+
+  Trên Mac: `screen /dev/cu.usbserial-* 115200` (thoát: Ctrl-A rồi K). Nguồn chân: [PERIPHERALS.md](PERIPHERALS.md).
 
 ## 1. Build (trên Mac)
 

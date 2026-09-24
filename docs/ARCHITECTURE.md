@@ -54,7 +54,7 @@ Những điểm đã thấy có thể buộc phải dùng MCU điều khiển ba
 |---|---|---|
 | MCU không có UART trong HAL RV1106 | [PERIPHERALS.md](PERIPHERALS.md) | debug, GPS/ESC telemetry trên MCU phải tự viết driver |
 | Không thấy ngắt DMA trong bảng ngắt của MCU | `soc.h:53-94` | DShot bằng Timer+DMA có thể không làm được từ MCU |
-| Mới 1 kênh PWM được khai báo trên Mini | `rv1103g-luckfox-pico-mini.dts:87-91` | ESC x4 cần 4 kênh |
+| PWM trên header trùng chân SPI0: dùng SPI0 cho IMU thì còn 3 kênh | [PERIPHERALS.md](PERIPHERALS.md) | ESC x4 cần 4 kênh |
 | Không có RPMsg cho RV1106 | [IPC.md](IPC.md) | IPC phải tự làm |
 | Lỗi tràn timer trong SDK | `timer.c:128` | phải sửa trước khi chạy dài |
 
