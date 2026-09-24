@@ -24,7 +24,7 @@ Kernel chiếm 0x8000–0x78C364, **chứa trọn vùng này**. Nếu MCU chạy
 Chính `DTS/rv1106-thunder-boot.dtsi:22-24` của Rockchip cũng khai báo `rtos@40000`. Mình chưa giải thích được thiết kế TB
 sống chung với kernel ở 0x8000 thế nào: **UNKNOWN — NEED VERIFICATION**. Kết luận cho repo: **không dùng 0x40000**.
 
-## Vùng MCU của repo (ĐỀ XUẤT, chưa kiểm chứng trên board)
+## Vùng MCU của repo (đã kiểm chứng trên board 2026-09-24)
 
 Nguồn duy nhất: `shared/ipc/mcu_layout.h`. Các chỗ phải khớp được `tools/build_mcu.sh` kiểm tra khi build.
 
@@ -37,11 +37,16 @@ Nguồn duy nhất: `shared/ipc/mcu_layout.h`. Các chỗ phải khớp được
 Lý do chọn 0x01800000: nằm ngoài mọi vùng đã liệt kê ở bảng trên (trên boot.img ≤ 0x1200800, dưới vùng U-Boot relocate).
 Được Linux chừa ra bằng `reserved-memory … no-map` trong `linux/dts/rv1103g-luckfox-pico-mini-m1.dts`.
 
-Kiểm chứng trên board (bắt buộc trước khi tin): xem [MILESTONE1.md](MILESTONE1.md) mục kiểm tra.
-1. `/proc/device-tree/reserved-memory/mcu@1800000/reg` = `01800000 00040000`.
-2. `/proc/iomem`: không có "System RAM" phủ 0x01800000–0x0183FFFF.
-3. U-Boot `bdinfo`: `relocaddr` và vùng malloc nằm trên 0x01840000.
-4. `mcu-tool load` đọc lại khớp từng byte.
+| Kiểm tra | Kết quả trên board (firmware M1) |
+|---|---|
+| `/proc/device-tree/reserved-memory/mcu@1800000/reg` | `01 80 00 00 00 04 00 00` ✓ |
+| `/proc/iomem` | System RAM `00000000-017fffff` và `01840000-03ffffff`: vùng MCU bị loại ✓ |
+| Kernel thật sự nằm ở đâu | `Kernel code 00008000-006befff`, `Kernel data 006f6000-0078c363` (xác nhận vùng 0x40000 của SDK nằm trong kernel) |
+| MemTotal | 32 596 → 32 336 kB (giảm 256 KB) ✓ |
+| U-Boot (UART) | `Relocation Offset: 03d80000` → U-Boot ở 0x03F80000; `Relocation fdt: 02df9f58 - 02dfede8` ✓ (trên 0x01840000). Chưa chạy được `bdinfo` để thấy đầu vùng malloc |
+| `mcu-tool load` | đọc lại firmware khớp từng byte ✓ |
+
+Log: `logs/m1_uart_boot1.txt`.
 
 ## SRAM và thanh ghi
 

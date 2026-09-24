@@ -1,0 +1,2 @@
+da nap 22072 byte vao 0x01800000, boot addr 0x01800000, da nha reset
+rc=0

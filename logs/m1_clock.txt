@@ -1,0 +1,12 @@
+bo dem MCU      297000180 Hz do duoc trong 29.0 s (danh nghia 297000000, lech +0.000%)
+sai so do       ~0.2 ms / 29.0 s do buoc thuc day 200 us
+---
+[  326.834542] rkvenc_540c: st_wdg      -   0x00000000
+[  326.834558] rkvenc_540c: st_ppl      -   0x00000000
+[  326.834575] rkvenc_540c: st_vsp0     -   0x0022001a
+[  326.834591] rkvenc_540c: st_vsp1     -   0x0022001a
+[  326.834607] rkvenc_540c: vepu_cycle  -   0x00000000
+ 00:05:26 up 5 min,  load average: 11.07, 7.33, 3.25
+              total        used        free      shared  buff/cache   available
+Mem:          32336       23956        1460         684        6920        4828
+Swap:             0           0           0

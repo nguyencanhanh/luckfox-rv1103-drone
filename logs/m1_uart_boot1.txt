@@ -1,0 +1,1526 @@
+luckfox login: 
+Login timed out after 60 seconds
+
+Welcome to luckfox pico
+luckfox login: [video.c][rkipc_ivs_get_results]:MD: md_area is 184320, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results[video.c][rkipc_ivs_get_results]:OD flag:1
+Stopping python: killall: python: no process killed
+OK
+Can't find /mnt/cfg/fdt_overlay dir!
+FATAL ERROR: Couldn't open "/mnt/cfg/fdt_overlay/*.dts": No such file or directory
+*.dts to dtbo error!
+stop auto-reboot finished
+[ 2233.018222] dwc3 ffb00000.usb: request 53f88534 was not queued to ep0out
+[network.c][rk_network_get_cable_state]:read Cable state
+[ 2233.018616] android_work: sent uevent USB_STATE=DISCONNECTED
+sh: 2531: unknown operand
+Stopping telnetd: OK
+Stopping sshd: OK
+Stopping ntpd: OK
+Stopping dhcpcd...
+stopped /sbin/dhcpcd (pid 199)
+Stopping network: [network.c][rk_network_get_cable_state]:read Cable state
+[network.c][rk_network_get_cable_state]:
+[lo] link down
+OK
+Stopping iptables: [network.c][rk_network_get_cable_state]:read Cable state
+[network.c][rk_network_get_cable_state]:
+[lo] link up
+killall: udhcpc: no process killed
+route: SIOCDELRT: No such process
+OK
+Stop Application ...
+udhcpc: started, v1.36.1
+[rkipc.c][sig_proc]:received signo 15 
+udhcpc: broadcasting discover
+udhcpc: received SIGTERM
+udhcpc: SIOCGIFINDEX: No such device
+[ntp.c][rkipc_ntp_update]:connect error
+  334 root     rkipc -a /oem/usr/share/iqfiles
+rkipc active
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[server.c][rkipc_server_deinit]:rkipc_server_deinit failed
+  334 root     rkipc -a /oem/usr/share/iqfiles
+rkipc active
+RKMpiIvsChannel  00:37:16-808 {getResults        :718} [31m[1mget result timeout
+[0m
+[video.c][rkipc_ivs_get_results]:get chn 0 fail -1609269234
+[ 2236.865767] vepu_pp_destroy_chn 0
+RTDeviceV4L2     00:37:16-867 {ispStreamOff      :521} [32m[1mdo ispStreamOff start[0m
+RTDeviceV4L2     00:37:16-881 {ispStreamOff      :532} [32m[1mdo ispStreamOff done[0m
+RTDeviceV4L2     00:37:16-882 {close             :374} [32m[1mdo RTDeviceV4L2 close[0m
+[osd.c][osd_time_server]:exit
+[ 2236.869664] rockit isp stream off
+[ 2236.915720] mpp_vcodec: 162: destroy chan 0 hnd 9dea473a online 1 combo -1 mst -1
+[ 2236.925136] mpp_vcodec: 188: destroy chan 0 done
+MpiAdapterEncode 00:37:16-925 {ma_encode_destroy :2347} [32m[1munmap ptr: 0xa3be6000[0m
+RTDeviceV4L2     00:37:16-950 {ispStreamOff      :521} [32m[1mdo ispStreamOff start[0m
+RTDeviceV4L2     00:37:16-961 {ispStreamOff      :532} [32m[1mdo ispStreamOff done[0m
+[ 2236.930943] rockit isp stream off
+RTDeviceV4L2     00:37:16-961 {close             :374} [32m[1mdo RTDeviceV4L2 close[0m
+[ 2236.966964] mpp_vcodec: 162: destroy chan 1 hnd 028bcae3 online 0 combo -1 mst -1
+MpiAdapterEncode 00:37:16-963 {ma_encode_destroy :2347} [32m[1munmap ptr: 0xa3b82000[0m
+[ 2236.967561] mpp_vcodec: 188: destroy chan 1 done
+RTDeviceV4L2     00:37:16-964 {ispStreamOff      :521} [32m[1mdo ispStreamOff start[0m
+[ 2236.968311] rockit isp stream off
+[ 2237.003447] rkcif-mipi-lvds: stream[0] start stopping, total mode 0x2, cur 0x2
+[ 2237.041530] rockchip-mipi-csi2 mipi0-csi2: stream off, src_sd: ec2f3f65, sd_name:rockchip-csi2-dphy0
+CAMHW:K:camId:0, notify_isp_stream_status off
+[ 2237.041583] rockchip-mipi-csi2 mipi0-csi2: stream OFF
+RTDeviceV4L2     00:37:17-039 {ispStreamOff      :532} [32m[1mdo ispStreamOff done[0m
+[ 2237.041627] rockchip-csi2-dphy csi2-dphy0: csi2_dphy_s_stream_stop stream stop, dphy0
+RTDeviceV4L2     00:37:17-042 {close             :374} [32m[1mdo RTDeviceV4L2 close[0m
+[ 2237.041660] rockchip-csi2-dphy csi2-dphy0: csi2_dphy_s_stream stream on:0, dphy0, ret 0
+MpiAdapterEncode 00:37:17-047 {ma_encode_destroy :2347} [32m[1munmap ptr: 0xa397b000[0m
+[ 2237.041921] rkcif-mipi-lvds: stream[0] stopping finished, dma_en 0x0
+[video.c][rkipc_pipe_jpeg_deinit]:RK_MPI_VENC_DestroyChn success
+[ 2237.041946] rkcif-mipi-lvds: stream[0] start stopping, total mode 0x0, cur 0x2
+[DEBUG rtsp_demo.c:645:rtsp_del_session] del session path: /live/0
+[ 2237.041962] rkcif-mipi-lvds: stream[0] stopping finished, dma_en 0x0
+[DEBUG rtsp_demo.c:645:rtsp_del_session] del session path: /live/1
+[ 2237.049814] mpp_vcodec: 162: destroy chan 4 hnd 77b0fef8 online 1 combo -1 mst -1
+[isp.c][rk_isp_deinit]:cam_id is 0
+[ 2237.050780] mpp_vcodec: 188: destroy chan 4 done
+[isp.c][rk_isp_deinit]:rk_aiq_uapi2_sysctl_stop enter
+[ 2237.084600] stream_cif_mipi_id1: close video, entity use_count 0
+XCORE:K:cid[0] rk_aiq_uapi_sysctl_stop success.
+[ 2237.084654] stream_cif_mipi_id0: close video, entity use_count 1
+[isp.c][rk_isp_deinit]:rk_aiq_uapi2_sysctl_deinit enter
+[ 2237.085136] stream_cif_mipi_id0: s_power 0, entity use_count 0
+MessageParser process loop exit!
+[ 2237.090323] vsys_release, 27
+IPCSERVER:K:cid[0] Deinit success
+[ 2237.090339] vrgn_release, 123
+XCORE:K:cid[0] rk_aiq_uapi_sysctl_deinit_locked success.
+[ 2237.090384] vi_release 99
+[isp.c][rk_isp_deinit]:rk_aiq_uapi2_sysctl_deinit exit
+RKSockServer     00:37:17-169 {start             :162} [31m[1maccept failed[0m
+  334 root     rkipc -a /oem/usr/share/iqfiles
+rkipc active
+Detected USB DISCONNECTED.
+sh: write error: No such device
+(null)           00:37:18-157 {monitor_log_level :190} monitor_log_level quit
+[ntp.c][rkipc_ntp_update]:connect error
+[param.c][rk_param_deinit]:rk_param_deinit
+rkipc exit
+ls: /oem/usr/etc/init.d/S??*: No such file or directory
+Saving random seed... done.
+stop[ 2237.090450] venc_release 51
+[ 2238.535712] printk: udevd: 26 output lines suppressed due to ratelimiting
+Stopping klogd: OK
+Stopping syslogd: OK
+Seeding 256 bits and crediting
+Saving 256 bits of creditable seed for next boot
+[ 2238.608835] ffs_data_put(): freeing
+[ 2238.622461] UBIFS (ubi5:0): un-mount UBI device 5
+[ 2238.622546] UBIFS (ubi5:0): background thread "ubifs_bgt5_0" stops
+umount: devtmpfs busy - remounted read-only
+[ 2238.626695] UBIFS (ubi4:0): un-mount UBI device 4
+[ 2238.626744] UBIFS (ubi4:0): background thread "ubifs_bgt4_0" stops
+[ 2238.643780] UBIFS (ubi0:0): background thread "ubifs_bgt0_0" stops
+The system is going down NOW!
+Sent SIGTERM to all processes
+[ 2238.848263] rockit get a system reboot event
+[ 2239.215307] Set signal voltage to initial state
+[ 2239.226422] mpp_vepu_pp ffa60000.rkvenc-pp: shutdown device
+[ 2239.232012] mpp_rkvenc_540c ffa50000.rkvenc: shutdown device
+[ 2239.237717] mpp_rkvenc_540c ffa50000.rkvenc: shutdown success
+[ 2239.243471] rkisp_hw ffa00000.rkisp: rkisp_hw_shutdown
+[ 2239.248694] reboot: Restarting system with command 'loader'
+DDR 306b9977f5 wesley.yao 23/12/21-09:28:37,fwver: v1.15
+S5P1
+4x
+fc27
+F
+DDRConf1
+DDR2, BW=16 Col=10 Bk=4 CS0 Row=13 CS=1 Size=64MB
+528MHz
+DDR bin out
+
+U-Boot SPL board init
+U-Boot SPL 2017.09 (Sep 22 2026 - 14:07:38)
+SPL Hotkey: ctrl+c
+Trying to boot from MMC2
+ENVF: !bad CRC @ 0x0
+ENVF: !bad CRC @ 0x0
+No env partition table
+ENVF: !bad CRC @ 0x0
+ENVF: !bad CRC @ 0x0
+No env partition table
+spl: partition error
+Trying to boot from MTD1
+ENVF: Primary 0x00000000 - 0x00040000
+No misc partition
+Trying fit image at 0x400 sector
+## Verified-boot: 0
+## Checking uboot 0x00200000 (lzma @0x00400000) ... sha256(7b459f7abb...) + sha256(53e7311107...) + OK
+## Checking fdt 0x00261170 ... sha256(9f596c5683...) + OK
+Total: 398.738/477.980 ms
+
+Jumping to U-Boot(0x00200000)
+
+
+U-Boot 2017.09 (Sep 22 2026 - 14:07:38 +0000)
+
+Model: Rockchip RV1106 EVB Board
+MPIDR: 0xf00
+PreSerial: 2, raw, 0xff4c0000
+DRAM:  64 MiB
+Sysmem: init
+Relocation Offset: 03d80000
+Relocation fdt: 02df9f58 - 02dfede8
+CR: M/C/I
+Using default environment
+
+Bootdev(atags): mtd 1
+ENVF: Primary 0x00000000 - 0x00040000
+PartType: ENV
+Hotkey: ctrl+c
+DM: v2
+boot mode: loader
+RESC: 'boot', blk@0x0000238f
+resource: sha256+
+FIT: no signed, no conf required
+DTB: rk-kernel.dtb
+HASH(c): OK
+Some drivers failed to bind
+Model: Luckfox Pico Mini
+## retrieving sd_update.txt ...
+ENVF: Primary 0x00000000 - 0x00040000
+** Unable to read file sd_update.txt **
+ENVF: Primary 0x00000000 - 0x00040000
+enter Rockusb!
+Enter rockusb failed, fallback to bootrom...RKUARTDDR 306b9977f5 wesley.yao 23/12/21-09:28:37,fwver: v1.15
+S5P1
+4x
+fc27
+F
+DDRConf1
+DDR2, BW=16 Col=10 Bk=4 CS0 Row=13 CS=1 Size=64MB
+528MHz
+DDR bin out
+
+Boot1 Release Time: Feb  6 2024 17:30:35, version: 1.09 NO FTL
+rom_version: 0x30303256
+Boot from dev = 129
+hamming_distance:1103 1106 2
+chip_id:5256110300,0
+ChipType = 27
+0xff3e0040: 0x49
+sfc nor id: ff ef ae
+sfc_nand id: ef ae 21
+sfc_nand_density 40000
+sfc_nand_density 3fc00
+UsbBoot ...9661
+0xff3e0040: 0x49
+powerOn 14810
+SoftReset, 11425DDR 306b9977f5 wesley.yao 23/12/21-09:28:37,fwver: v1.15
+S5P1
+4x
+fc27
+F
+DDRConf1
+DDR2, BW=16 Col=10 Bk=4 CS0 Row=13 CS=1 Size=64MB
+528MHz
+DDR bin out
+
+U-Boot SPL board init
+U-Boot SPL 2017.09 (Sep 24 2026 - 12:20:53)
+SPL Hotkey: ctrl+c
+Trying to boot from MMC2
+ENVF: !bad CRC @ 0x0
+ENVF: !bad CRC @ 0x0
+No env partition table
+ENVF: !bad CRC @ 0x0
+ENVF: !bad CRC @ 0x0
+No env partition table
+spl: partition error
+Trying to boot from MTD1
+ENVF: Primary 0x00000000 - 0x00040000
+No misc partition
+Trying fit image at 0x400 sector
+## Verified-boot: 0
+## Checking uboot 0x00200000 (lzma @0x00400000) ... sha256(39f8e6022c...) + sha256(956f0d7361...) + OK
+## Checking fdt 0x00261170 ... sha256(9f596c5683...) + OK
+Total: 397.322/476.906 ms
+
+Jumping to U-Boot(0x00200000)
+
+
+U-Boot 2017.09 (Sep 24 2026 - 12:20:53 +0000)
+
+Model: Rockchip RV1106 EVB Board
+MPIDR: 0xf00
+PreSerial: 2, raw, 0xff4c0000
+DRAM:  64 MiB
+Sysmem: init
+Relocation Offset: 03d80000
+Relocation fdt: 02df9f58 - 02dfede8
+CR: M/C/I
+Using default environment
+
+Bootdev(atags): mtd 1
+ENVF: Primary 0x00000000 - 0x00040000
+PartType: ENV
+Hotkey: ctrl+c
+DM: v2
+No misc partition
+boot mode: normal
+RESC: 'boot', blk@0x00002393
+resource: sha256+
+FIT: no signed, no conf required
+DTB: rk-kernel.dtb
+HASH(c): OK
+Some drivers failed to bind
+Model: Luckfox Pico Mini
+## retrieving sd_update.txt ...
+ENVF: Primary 0x00000000 - 0x00040000
+** Unable to read file sd_update.txt **
+ENVF: Primary 0x00000000 - 0x00040000
+CLK: (uboot. arm: enter 816000 KHz, init 816000 KHz, kernel 0N/A)
+  apll 816000 KHz
+  dpll 528000 KHz
+  gpll 1188000 KHz
+  cpll 1000000 KHz
+  aclk_peri_root 400000 KHz
+  hclK_peri_root 200000 KHz
+  pclk_peri_root 100000 KHz
+  aclk_bus_root 300000 KHz
+  pclk_top_root 100000 KHz
+  pclk_pmu_root 100000 KHz
+  hclk_pmu_root 200000 KHz
+Net:   eth0: ethernet@ffa80000
+Hit key to stop autoboot('CTRL+C'):  0  0
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> <INTERRUPT>
+=> 
+=> 
+=> bdinfo
+Unknown command 'bdinfo' - try 'help'
+=> 
+Unknown command 'bdinfo' - try 'help'
+=> boot
+## Booting FIT Image at 0x2886900 with size 0x00372600
+Fdt Ramdisk skip relocation
+No misc partition
+## Loading kernel from FIT Image at 02886900 ...
+   Using 'conf' configuration
+## Verified-boot: 0
+   Trying 'kernel' kernel subimage
+     Description:  unavailable
+     Type:         Kernel Image
+     Compression:  uncompressed
+     Data Start:   0x02898f00
+     Data Size:    3538456 Bytes = 3.4 MiB
+     Architecture: ARM
+     OS:           Linux
+     Load Address: 0x00008000
+     Entry Point:  0x00008000
+     Hash algo:    sha256
+     Hash value:   c669e69677afd64b1b1e31fc3954930621986d96815edd40fdf5c99dc13cc821
+   Verifying Hash Integrity ... sha256+ OK
+## Loading fdt from FIT Image at 02886900 ...
+   Using 'conf' configuration
+   Trying 'fdt' fdt subimage
+     Description:  unavailable
+     Type:         Flat Device Tree
+     Compression:  uncompressed
+     Data Start:   0x02887100
+     Data Size:    72712 Bytes = 71 KiB
+     Architecture: ARM
+     Load Address: 0x00c00000
+     Hash algo:    sha256
+     Hash value:   408a42a987669a02d203045eb6d48218d398f483042db1b90cb1081ec4e924a9
+   Verifying Hash Integrity ... sha256+ OK
+   Loading fdt from 0x02886900 to 0x00c00000
+   Booting using the fdt blob at 0x00c00000
+   Loading Kernel Image from 0x02898f00 to 0x00008000 ... OK
+   kernel loaded at 0x00008000, end = 0x00367e18
+   Using Device Tree in place at 00c00000, end 00c14c07
+## reserved-memory:
+  mcu@1800000: addr=1800000 size=40000
+Adding bank: 0x00000000 - 0x04000000 (size: 0x04000000)
+Total: 3244.542/3726.543 ms
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.10.160 (luckfox@3c74a73fc14f) (arm-rockchip830-linux-uclibcgnueabihf-gcc (crosstool-NG 1.24.0) 8.3.0, GNU ld (crosstool-NG 1.24.0) 2.32) #2 Thu Sep 24 12:23:05 UTC 2026
+[    0.000000] CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=50c53c7d
+[    0.000000] CPU: div instructions available: patching division code
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Luckfox Pico Mini
+[    0.000000] Memory policy: Data cache writeback
+[    0.000000] cma: Reserved 24576 KiB at 0x02800000
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x0000000003ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x00000000017fffff]
+[    0.000000]   node   0: [mem 0x0000000001800000-0x000000000183ffff]
+[    0.000000]   node   0: [mem 0x0000000001840000-0x0000000003ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x0000000003ffffff]
+[    0.000000] CPU: All CPU(s) started in SVC mode.
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 16256
+[    0.000000] Kernel command line: user_debug=31 storagemedia=mtd androidboot.storagemedia=mtd androidboot.mode=normal  rootwait earlycon=uart8250,mmio32,0xff4c0000 console=ttyFIQ0 root=ubi0:rootfs snd_soc_core.prealloc_buffer_size_kbytes=16 coherent_pool=0 mtdparts=spi-nand0:256K(env),256K@256K(idblock),512K(uboot),4M(boot),30M(oem),6M(userdata),85M(rootfs) ubi.mtd=6 rootfstype=ubifs rk_dma_heap_cma=24M androidboot.fwver=uboot-09/24/2026
+[    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 32116K/65536K available (4526K kernel code, 434K rwdata, 2072K rodata, 220K init, 166K bss, 8844K reserved, 24576K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+[    0.000000] arch_timer: cp15 timer(s) running at 24.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x588fe9dc0, max_idle_ns: 440795202592 ns
+[    0.000008] sched_clock: 56 bits at 24MHz, resolution 41ns, wraps every 4398046511097ns
+[    0.000021] Switching to timer-based delay loop, resolution 41ns
+[    0.000772] Console: colour dummy device 80x30
+[    0.000827] Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=240000)
+[    0.000844] pid_max: default: 4096 minimum: 301
+[    0.001019] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.001033] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.001674] CPU: Testing write buffer coherency: ok
+[    0.002349] Setting up static identity map for 0x81c0 - 0x81f8
+[    0.002840] devtmpfs: initialized
+[    0.014132] VFP support v0.3: implementor 41 architecture 2 part 30 variant 7 rev 5
+[    0.014328] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.014353] futex hash table entries: 16 (order: -5, 192 bytes, linear)
+[    0.014442] pinctrl core: initialized pinctrl subsystem
+[    0.015597] NET: Registered protocol family 16
+[    0.016105] DMA: failed to allocate 0 KiB pool for atomic coherent allocation
+[    0.016645] Registered FIQ tty driver
+[    0.016974] thermal_sys: Registered thermal governor 'step_wise'
+[    0.016981] thermal_sys: Registered thermal governor 'user_space'
+[    0.017224] cpuidle: using governor menu
+[    0.034337] rockchip-gpio ff380000.gpio: probed /pinctrl/gpio@ff380000
+[    0.035143] rockchip-gpio ff530000.gpio: probed /pinctrl/gpio@ff530000
+[    0.035882] rockchip-gpio ff550000.gpio: probed /pinctrl/gpio@ff550000
+[    0.036543] rockchip-gpio ff560000.gpio: probed /pinctrl/gpio@ff560000
+[    0.036702] rockchip-pinctrl pinctrl: probed pinctrl
+[    0.047766] fiq_debugger fiq_debugger.0: IRQ uart_irq not found
+[    0.047792] fiq_debugger fiq_debugger.0: IRQ wakeup not found
+[    0.048081] printk: console [ttyFIQ0] enabled
+[    0.048276] Registered fiq debugger ttyFIQ0
+[    0.050360] SCSI subsystem initialized
+[    0.050590] usbcore: registered new interface driver usbfs
+[    0.050637] usbcore: registered new interface driver hub
+[    0.050687] usbcore: registered new device driver usb
+[    0.050924] mc: Linux media interface: v0.10
+[    0.050969] videodev: Linux video capture interface: v2.00
+[    0.052172] Advanced Linux Sound Architecture Driver Initialized.
+[    0.052994] rockchip-cpuinfo cpuinfo: SoC		: 11031000
+[    0.053020] rockchip-cpuinfo cpuinfo: Serial		: b1eaf2953f0fb221
+[    0.053412] rockchip,rknpor-powergood ff000000.syscon:rknpor-powergood: probe success!
+[    0.054280] clocksource: Switched to clocksource arch_sys_counter
+[    0.060902] NET: Registered protocol family 2
+[    0.061131] IP idents hash table entries: 2048 (order: 2, 16384 bytes, linear)
+[    0.061659] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.061697] TCP established hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.061718] TCP bind hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.061735] TCP: Hash tables configured (established 1024 bind 1024)
+[    0.061907] MPTCP token hash table entries: 512 (order: 0, 6144 bytes, linear)
+[    0.061964] UDP hash table entries: 256 (order: 0, 4096 bytes, linear)
+[    0.061986] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes, linear)
+[    0.062125] NET: Registered protocol family 1
+[    0.062759] RPC: Registered named UNIX socket transport module.
+[    0.062784] RPC: Registered udp transport module.
+[    0.062791] RPC: Registered tcp transport module.
+[    0.062797] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.063853] rockchip-thermal ff3c8000.tsadc: tsadc is probed successfully!
+[    0.065974] Initialise system trusted keyrings
+[    0.066249] workingset: timestamp_bits=30 max_order=13 bucket_order=0
+[    0.070010] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.070835] NFS: Registering the id_resolver key type
+[    0.070939] Key type id_resolver registered
+[    0.070951] Key type id_legacy registered
+[    0.070998] jffs2: version 2.2. (NAND)  2001-2006 Red Hat, Inc.
+[    0.071545] Key type asymmetric registered
+[    0.071572] Asymmetric key parser 'x509' registered
+[    0.071587] io scheduler mq-deadline registered
+[    0.071996] rockchip-usb2phy ff3e0000.usb2-phy: IRQ index 0 not found
+[    0.076774] dma-pl330 ff420000.dma-controller: Loaded driver for PL330 DMAC-241330
+[    0.076805] dma-pl330 ff420000.dma-controller: 	DBUFF-128x8bytes Num_Chans-8 Num_Peri-32 Num_Events-16
+[    0.077591] rockchip-pvtm ff240000.pvtm: pvtm@0 probed
+[    0.077769] rockchip-pvtm ff390000.pvtm: pvtm@0 probed
+[    0.078084] rockchip-system-monitor rockchip-system-monitor: system monitor probe
+[    0.078617] Serial: 8250/16550 driver, 6 ports, IRQ sharing disabled
+[    0.083997] random: crng init done
+[    0.092987] brd: module loaded
+[    0.098855] loop: module loaded
+[    0.118822] spi-nand spi2.0: Winbond SPI NAND was found.
+[    0.118850] spi-nand spi2.0: 128 MiB, block size: 128 KiB, page size: 2048, OOB size: 128
+[    0.119913] 7 cmdlinepart partitions found on MTD device spi-nand0
+[    0.119929] Creating 7 MTD partitions on "spi-nand0":
+[    0.119944] 0x000000000000-0x000000040000 : "env"
+[    0.121811] 0x000000040000-0x000000080000 : "idblock"
+[    0.123590] 0x000000080000-0x000000100000 : "uboot"
+[    0.125530] 0x000000100000-0x000000500000 : "boot"
+[    0.127360] 0x000000500000-0x000002300000 : "oem"
+[    0.129264] 0x000002300000-0x000002900000 : "userdata"
+[    0.131201] 0x000002900000-0x000007e00000 : "rootfs"
+[    0.133839] wireguard: allowedips self-tests: pass
+[    0.139418] wireguard: nonce counter self-tests: pass
+[    0.144494] wireguard: ratelimiter self-tests: pass
+[    0.144774] wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
+[    0.144792] wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+[    0.150658] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    0.151014] usbcore: registered new interface driver usb-storage
+[    0.151149] usbcore: registered new interface driver usb_ch343
+[    0.151162] ch343: USB serial driver for ch342/ch343/ch344/ch347/ch9101/ch9102/ch9103/ch9104, etc.
+[    0.151169] ch343: V1.5 On 2022.12
+[    0.151356] gadgetfs: USB Gadget filesystem, version 24 Aug 2004
+[    0.151405] Mass Storage Function, version: 2009/09/11
+[    0.151419] LUN: removable file: (no medium)
+[    0.151451] no file given for LUN0
+[    0.151484] udc ffb00000.usb: failed to start g_mass_storage: -22
+[    0.152018] i2c /dev entries driver
+[    0.153834] i2c i2c-4: 1 i2c clients have been registered at 0x30
+[    0.154540] i2c i2c-4: 2 i2c clients have been registered at 0x30
+[    0.155765] usbcore: registered new interface driver uvcvideo
+[    0.155785] USB Video Class driver (1.1.1)
+[    0.156515] cpu cpu0: leakage=18
+[    0.157463] cpu cpu0: avs=0
+[    0.157633] cpu cpu0: opp calibration done
+[    0.157784] cpu cpu0: l=10000 h=2147483647 hyst=5000 l_limit=0 h_limit=0 h_table=0
+[    0.158245] Synopsys Designware Multimedia Card Interface Driver
+[    0.159114] dtbocfg: 0.1.0
+[    0.159167] dtbocfg: OK
+[    0.160779] dwmmc_rockchip ffaa0000.mmc: No normal pinctrl state
+[    0.160814] dwmmc_rockchip ffaa0000.mmc: No idle pinctrl state
+[    0.161051] dwmmc_rockchip ffaa0000.mmc: IDMAC supports 32-bit address mode.
+[    0.161103] dwmmc_rockchip ffaa0000.mmc: Using internal DMA controller.
+[    0.161120] dwmmc_rockchip ffaa0000.mmc: Version ID is 270a
+[    0.161167] dwmmc_rockchip ffaa0000.mmc: DW MMC controller at irq 48,32 bit host data width,256 deep fifo
+[    0.161286] mmc_host mmc1: card is non-removable.
+[    0.162344] usbcore: registered new interface driver snd-usb-audio
+[    0.162962] rv1106-acodec ff480000.acodec: current soc_id: rv1103
+[    0.163059] rv1106-acodec ff480000.acodec: Use pa_ctl_gpio and pa_ctl_delay_ms: 0
+[    0.165389] xt_time: kernel timezone is -0000
+[    0.165828] ipt_CLUSTERIP: ClusterIP Version 0.8 loaded successfully
+[    0.166206] NET: Registered protocol family 10
+[    0.167358] Segment Routing with IPv6
+[    0.168942] NET: Registered protocol family 17
+[    0.169059] Key type dns_resolver registered
+[    0.170178] Loading compiled-in X.509 certificates
+[    0.186674] mmc_host mmc1: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
+[    0.198341] input: adc-keys as /devices/platform/adc-keys/input/input0
+[    0.277675] ubi0: attaching mtd6
+[    0.284383] mmc_host mmc1: Bus speed (slot 0) = 49500000Hz (slot req 50000000Hz, actual 49500000HZ div = 0)
+[    0.284689] mmc1: new high speed SD card at address e624
+[    0.285339] mmcblk1: mmc1:e624 SU02G 1.84 GiB 
+[    0.287660]  mmcblk1: p1
+[    0.403162] ubi0: scanning is finished
+[    0.432305] ubi0: volume 0 ("rootfs") re-sized from 419 to 656 LEBs
+[    0.432893] ubi0: attached mtd6 (name "rootfs", size 85 MiB)
+[    0.432915] ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[    0.432925] ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+[    0.432933] ubi0: VID header offset: 2048 (aligned 2048), data offset: 4096
+[    0.432941] ubi0: good PEBs: 680, bad PEBs: 0, corrupted PEBs: 0
+[    0.432950] ubi0: user volume: 1, internal volumes: 1, max. volumes count: 128
+[    0.432960] ubi0: max/mean erase counter: 1/0, WL threshold: 4096, image sequence number: 715516179
+[    0.432970] ubi0: available PEBs: 0, total reserved PEBs: 680, PEBs reserved for bad PEB handling: 20
+[    0.434501] ALSA device list:
+[    0.434524]   #0: rv-acodec
+[    0.435269] ubi0: background thread "ubi_bgt0d" started, PID 64
+[    0.435386] UBIFS (ubi0:0): Mounting in unauthenticated mode
+[    0.486485] UBIFS (ubi0:0): UBIFS: mounted UBI device 0, volume 0, name "rootfs", R/O mode
+[    0.486516] UBIFS (ubi0:0): LEB size: 126976 bytes (124 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
+[    0.486529] UBIFS (ubi0:0): FS size: 81899520 bytes (78 MiB, 645 LEBs), journal size 9023488 bytes (8 MiB, 72 LEBs)
+[    0.486538] UBIFS (ubi0:0): reserved for root: 0 bytes (0 KiB)
+[    0.486551] UBIFS (ubi0:0): media format: w4/r0 (latest is w5/r0), UUID 2111589B-AB3D-48D8-B394-F923FE6B1F64, small LPT model
+[    0.496407] VFS: Mounted root (ubifs filesystem) readonly on device 0:14.
+[    0.501778] devtmpfs: mounted
+[    0.502009] Freeing unused kernel memory: 220K
+[    0.502019] Kernel memory protection not selected by kernel config.
+[    0.502047] Run /sbin/init as init process
+[    0.556631] process '/bin/busybox' started with executable stack
+[    0.798910] UBIFS (ubi0:0): start fixing up free space
+[    6.136123] UBIFS (ubi0:0): free space fixup complete
+[    6.153245] UBIFS (ubi0:0): background thread "ubifs_bgt0_0" started, PID 67
+Saving 256 bits of creditable seed for next boot
+Starting syslogd: OK
+Starting klogd: OK
+Running sysctl: OK
+Populating /dev using udev: [    6.444150] udevd[97]: starting version 3.2.7
+[    6.459084] udevd[97]: specified group 'input' unknown
+[    6.460063] udevd[97]: specified group 'kvm' unknown
+[    6.481794] udevd[98]: starting eudev-3.2.7
+[    6.860605] udevd[112]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd0ro': No such file or directory
+[    6.871801] udevd[113]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd1ro': No such file or directory
+[    6.882984] udevd[114]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd2ro': No such file or directory
+[    6.906003] udevd[115]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd3ro': No such file or directory
+[    6.916194] udevd[116]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd4ro': No such file or directory
+[    6.926133] udevd[117]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd5ro': No such file or directory
+[    6.938863] udevd[118]: failed to execute '/lib/udev/mtd_probe' 'mtd_probe /dev/mtd6ro': No such file or directory
+[    7.195655] FAT-fs (mmcblk1p1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+done
+/etc/init.d/S20linkmount info: mount point path [IGNORE] not found, skip...
+***********/dev/ubi4_0 not exist***********
+***********/dev/ubi4 not exist***********
+[    7.459760] ubi4: attaching mtd4
+[    7.503247] ubi4: scanning is finished
+[    7.532685] ubi4: volume 0 ("oem") re-sized from 150 to 216 LEBs
+[    7.537434] ubi4: attached mtd4 (name "oem", size 30 MiB)
+UBI device number 4, total 240 LEBs (30474240 bytes, 29.1 MiB), available 0 LEBs (0 bytes), LEB size 126976 bytes (124.0 KiB)
+[    7.537459] ubi4: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[    7.537470] ubi4: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+[    7.537479] ubi4: VID header offset: 2048 (aligned 2048), data offset: 4096
+try to make volume: /dev/ubi4_0 ...
+[    7.537487] ubi4: good PEBs: 240, bad PEBs: 0, corrupted PEBs: 0
+[    7.537497] ubi4: user volume: 1, internal volumes: 1, max. volumes count: 128
+[    7.537507] ubi4: max/mean erase counter: 1/0, WL threshold: 4096, image sequence number: 1257240399
+ubimkvol: error!: bad volume size: "0"
+[    7.537518] ubi4: available PEBs: 0, total reserved PEBs: 240, PEBs reserved for bad PEB handling: 20
+[    7.538809] ubi4: background thread "ubi_bgt4d" started, PID 143
+[    7.608211] UBIFS (ubi4:0): Mounting in unauthenticated mode
+[    7.608465] UBIFS (ubi4:0): background thread "ubifs_bgt4_0" started, PID 148
+[    7.632343] UBIFS (ubi4:0): start fixing up free space
+[    9.367267] UBIFS (ubi4:0): free space fixup complete
+[    9.392242] UBIFS (ubi4:0): UBIFS: mounted UBI device 4, volume 0, name "oem"
+[    9.392281] UBIFS (ubi4:0): LEB size: 126976 bytes (124 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
+[    9.392294] UBIFS (ubi4:0): FS size: 26157056 bytes (24 MiB, 206 LEBs), journal size 4190208 bytes (3 MiB, 33 LEBs)
+[    9.392303] UBIFS (ubi4:0): reserved for root: 0 bytes (0 KiB)
+[    9.392316] UBIFS (ubi4:0): media format: w4/r0 (latest is w5/r0), UUID 9637DF37-DBB8-4B15-87EE-0CB81D81E0F1, small LPT model
+***********/dev/ubi5_0 not exist***********
+***********/dev/ubi5 not exist***********
+[    9.476655] ubi5: attaching mtd5
+[    9.519428] ubi5: scanning is finished
+[    9.548764] ubi5: volume 0 ("userdata") re-sized from 13 to 24 LEBs
+[    9.553195] ubi5: attached mtd5 (name "userdata", size 6 MiB)
+UBI device number 5, total 48 LEBs (6094848 bytes, 5.8 MiB), available 0 LEBs (0 bytes), LEB size 126976 bytes (124.0 KiB)
+[    9.553221] ubi5: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[    9.553231] ubi5: min./max. I/O unit sizes: 2048/2048, sub-page size 2048
+try to make volume: /dev/ubi5_0 ...
+[    9.553240] ubi5: VID header offset: 2048 (aligned 2048), data offset: 4096
+ubimkvol: error!: bad volume size: "0"
+[    9.553247] ubi5: good PEBs: 48, bad PEBs: 0, corrupted PEBs: 0
+[    9.553256] ubi5: user volume: 1, internal volumes: 1, max. volumes count: 128
+[    9.553266] ubi5: max/mean erase counter: 1/0, WL threshold: 4096, image sequence number: 1626902184
+[    9.553276] ubi5: available PEBs: 0, total reserved PEBs: 48, PEBs reserved for bad PEB handling: 20
+[    9.556293] ubi5: background thread "ubi_bgt5d" started, PID 157
+[    9.605481] UBIFS (ubi5:0): Mounting in unauthenticated mode
+[    9.605719] UBIFS (ubi5:0): background thread "ubifs_bgt5_0" started, PID 162
+[    9.633789] UBIFS (ubi5:0): start fixing up free space
+[    9.678974] UBIFS (ubi5:0): free space fixup complete
+[    9.703350] UBIFS (ubi5:0): UBIFS: mounted UBI device 5, volume 0, name "userdata"
+[    9.703388] UBIFS (ubi5:0): LEB size: 126976 bytes (124 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
+[    9.703403] UBIFS (ubi5:0): FS size: 1777664 bytes (1 MiB, 14 LEBs), journal size 1142785 bytes (1 MiB, 9 LEBs)
+[    9.703412] UBIFS (ubi5:0): reserved for root: 0 bytes (0 KiB)
+Initializing random number generator... [    9.703424] UBIFS (ubi5:0): media format: w4/r0 (latest is w5/r0), UUID F206BD12-AD68-4D91-B118-61B51FAEAF42, small LPT model
+done.
+/dev/ubi5_0 on /userdata type ubifs (rw,relatime,assert=read-only,ubi=5,vol=0)
+Starting iptables: [    9.936344] rk_dvbm ffa70000.rkdvbm: probe start
+[    9.936393] rk_dvbm ffa70000.rkdvbm: dvbm ctx caa7cdd7
+[    9.936876] rk_dvbm ffa70000.rkdvbm: probe success
+OK
+Starting network: [    9.978510] sc3336 4-0030: driver version: 00.01.01
+[    9.978600] sc3336 4-0030: Failed to get reset-gpios
+[    9.978655] sc3336 4-0030: could not get default pinstate
+[    9.978664] sc3336 4-0030: could not get sleep pinstate
+[    9.978691] sc3336 4-0030: supply avdd not found, using dummy regulator
+[    9.978927] sc3336 4-0030: supply dovdd not found, using dummy regulator
+[    9.979008] sc3336 4-0030: supply dvdd not found, using dummy regulator
+[    9.997290] sc3336 4-0030: Detected OV00cc41 sensor
+OK
+Starting dhcpcd...
+[   10.079624] rkcifhw ffa10000.rkcif: no iommu attached, using non-iommu buffers
+[   10.079666] rkcifhw ffa10000.rkcif: No reserved memory region assign to CIF
+[   10.080107] rkcif rkcif-mipi-lvds: rkcif driver version: v00.02.00
+[   10.080240] rkcif rkcif-mipi-lvds: attach to cif hw node
+[   10.080254] rkcif rkcif-mipi-lvds: failed to get dphy hw node
+[   10.080265] rkcif rkcif-mipi-lvds: rkcif wait line 0
+[   10.080275] rkcif rkcif-mipi-lvds: rkcif fastboot reserve bufs num 3
+[   10.080291] : terminal subdev does not exist
+dhcpcd-9.4.1 starting
+[   10.080304] : terminal subdev does not exist
+[   10.080312] : terminal subdev does not exist
+[   10.080320] : terminal subdev does not exist
+[   10.080331] : get_remote_sensor: video pad[0] is null
+[   10.080341] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+[   10.080354] : rkcif_scale_set_fmt: req(80, 60) src out(0, 0)
+[   10.080362] : get_remote_sensor: video pad[0] is null
+[   10.080370] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+[   10.080379] : rkcif_scale_set_fmt: req(80, 60) src out(0, 0)
+[   10.080387] : get_remote_sensor: video pad[0] is null
+[   10.080394] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+[   10.080402] : rkcif_scale_set_fmt: req(80, 60) src out(0, 0)
+[   10.080411] : get_remote_sensor: video pad[0] is null
+[   10.080418] : rkcif_update_sensor_info: stream[0] get remote sensor_sd failed!
+[   10.080427] : rkcif_scale_set_fmt: req(80, 60) src out(0, 0)
+no valid interfaces found
+[   10.095272] rkcif rkcif-mipi-lvds: No memory-region-thunderboot specified
+forked to background, child pid 199
+[   10.096519] rockchip-mipi-csi2-hw ffa20000.mipi-csi2-hw: enter mipi csi2 hw probe!
+Starting ntpd: [   10.096729] rockchip-mipi-csi2-hw ffa20000.mipi-csi2-hw: probe success, v4l2_dev:mipi-csi2-hw!
+[   10.096886] rockchip-mipi-csi2-hw ffa30000.mipi-csi2-hw: enter mipi csi2 hw probe!
+[   10.097021] rockchip-mipi-csi2-hw ffa30000.mipi-csi2-hw: probe success, v4l2_dev:mipi-csi2-hw!
+[   10.097537] rockchip-mipi-csi2 mipi0-csi2: attach to csi2 hw node
+0
+[   10.097609] rkcif rkcif-mipi-lvds: Entity type for entity rockchip-mipi-csi2 was not initialized!
+[   10.097630] rockchip-mipi-csi2: Async registered subdev
+[   10.097645] rockchip-mipi-csi2: probe success, v4l2_dev:rkcif-mipi-lvds!
+[   10.164963] rkisp_hw ffa00000.rkisp: is_thunderboot: 0
+[   10.164995] rkisp_hw ffa00000.rkisp: Missing rockchip,grf property
+[   10.165049] rkisp_hw ffa00000.rkisp: max input:0x0@0fps
+[   10.165237] rkisp_hw ffa00000.rkisp: get sram size:253952
+[   10.165251] rkisp_hw ffa00000.rkisp: no iommu attached, using non-iommu buffers
+[   10.165262] rkisp_hw ffa00000.rkisp: No reserved memory region. default cma area!
+[   10.165699] rkisp rkisp-vir0: rkisp driver version: v02.05.00
+[   10.165924] rkisp rkisp-vir0: No memory-region-thunderboot specified
+[   10.167341] rkisp rkisp-vir0: Entity type for entity rkisp-isp-subdev was not initialized!
+[   10.200724] rockchip-csi2-dphy-hw ff3e8000.csi2-dphy-hw: csi2 dphy hw probe successfully!
+[   10.228501] rockchip-csi2-dphy csi2-dphy0: dphy0 matches m00_b_sc3336 4-0030:bus type 5
+[   10.228533] rockchip-csi2-dphy csi2-dphy0: csi2 dphy0 probe successfully!
+0
+0
+[   10.569314] rkcif rkcif-mipi-lvds: clear unready subdev num: 2
+[   10.571736] rkcif-mipi-lvds: Async subdev notifier completed
+[   10.573731] rkisp-vir0: Async subdev notifier completed
+[   10.575852] rkisp rkisp-vir0: clear unready subdev num: 0
+[   10.606213] rga: rga2, irq = 36, match scheduler
+[   10.607316] rga: rga2 hardware loaded successfully, hw_version:3.3.87975.
+[   10.607345] rga: rga2 probe successfully
+[   10.607646] rga_iommu: IOMMU binding successfully, default mapping core[0x4]
+[   10.609052] rga: Module initialized. v1.3.1
+[   10.688822] mpp_vcodec: loading out-of-tree module taints kernel.
+[   10.703625] mpp_vcodec: init new
+[   10.703815] mpp_service mpp-srv: 424abb9b author: Yandong Lin 2024-04-29 [mpp_enc]: fix wrap enc sw timeout when resolution switch
+[   10.703831] mpp_service mpp-srv: probe start
+[   10.706661] mpp_rkvenc_540c ffa50000.rkvenc: probing start
+[   10.706956] mpp_rkvenc_540c ffa50000.rkvenc: probing finish
+[   10.707414] mpp_vepu_pp ffa60000.rkvenc-pp: probe device
+[   10.707524] mpp_vepu_pp ffa60000.rkvenc-pp: shared_rst_a_pp is not found!
+[   10.707537] vepu_pp_init:526: No aclk reset resource define
+Input      rkcif-mipi-lvds Format:SBGGR10_1X10 Size:2304x1296@30fps Offset(0,0)
+[   10.707549] mpp_vepu_pp ffa60000.rkvenc-pp: shared_rst_h_pp is not found!
+[   10.707556] vepu_pp_init:529: No hclk reset resource define
+[   10.709067] mpp_vepu_pp ffa60000.rkvenc-pp: probing finish
+[   10.709391] mpp_service mpp-srv: probe success
+[   10.734867] RKNPU ff660000.npu: RKNPU: rknpu iommu device-tree entry not found!, using non-iommu mode
+[   10.735719] RKNPU ff660000.npu: RKNPU: Initialized RKNPU driver: v0.9.2 for 20230825
+[   10.735843] RKNPU ff660000.npu: dev_pm_opp_set_regulators: no regulator (rknpu) found: -19
+OK
+[   10.832885] rockit_load start
+[   10.853100] rockit_load end
+[   10.876425] rve: rve_irq, irq = 50, match scheduler
+[   10.878264] rve: Driver loaded successfully rve[2] ver:[2021]58.1a
+[   10.878291] rve: probe successfully
+/
+[   10.879616] rve: Module initialized. v1.0.6
+ln: /oem/usr/www/userdata: No such file or directory
+ln: /oem/usr/www/usb0: No such file or directory
+ln: /oem/usr/www/sdcard: No such file or directory
+cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+ifconfig: SIOCGIFFLAGS: No such device
+cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+ssh-keygen: generating new host keys: RSA cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+sc3336                  9940  1 
+cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+cat: can't open '/sys/bus/usb/devices/*/uevent': No such file or directory
+cat: can't open '/sys/bus/usb/devices/*/uevent': No such file or directory
+cat: can't open '/sys/bus/usb/devices/*/uevent': No such file or directory
+cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+cat: can't open '/sys/bus/sdio/devices/*/uevent': No such file or directory
+wlan0 not found. Stop run rkwifi_server.
+[common.c][rkipc_version_dump]:rkipc version: unknown rkipc version for missing VCS info
+[common.c][rkipc_version_dump]:rkipc info: unknown rkipc build info
+[common.c][rkipc_version_dump]:rkipc type: COMPILE_FOR_RV1103_IPC
+[rkipc.c][main]:rkipc_ini_path_ is (null), rkipc_iq_file_path_ is /oem/usr/share/iqfiles, rkipc_log_level is 2
+[param.c][rk_param_init]:g_ini_path_ is /userdata/rkipc.ini
+[isp.c][rk_isp_init]:g_iq_file_dir_ is /oem/usr/share/iqfiles
+[isp.c][rk_isp_init]:cam_id is 0, hdr_mode is close, scenario is normal
+[network.c][ntp_client_thread]:refresh_time_s is 60, ntp_server is 119.28.183.184
+[network.c][rk_net_proc]:Creat rk_net_proc thread!
+rkaiq log level ff1
+[   11.695066] stream_cif_mipi_id0: s_power 1, entity use_count 1
+XCORE:K:rk_aiq_init_lib, ISP HW ver: 32
+[   11.695777] stream_cif_mipi_id0: s_power 0, entity use_count 0
+XCORE:K:
+************************** VERSION INFOS **************************
+version release date: 2024-2-18
+         AIQ:       AIQ v5.0x5.0
+
+git logs:
+25bd14e RV1106: smart_door: release rga/isp/mpp for V1.3.0
+99d080a RV1106/RV1103: Battery/Doorbell: release kmpp/rockit-ko for V1.3.2
+6458e2a RV1106/RV1103: Battery/Doorbell: release kmpp/rockit-ko for V1.3.1
+e8dab39 RV1106: CVR: release rga/isp/mpp for V1.1.0
+a021b32 RV1106/RV1103: Battery/Doorbell: release kmpp/rockit-ko for V1.3.0
+
+************************ VERSION INFOS END ************************
+
+[isp.c][sample_common_isp_init]:ID: 0, sensor_name is m00_b_sc3336 4-0030, iqfiles is /oem/usr/share/iqfiles
+XCORE:K:rk_aiq_uapi_sysctl_preInit_devBufCnt: dev_ent:rkraw_rx, buf_cnt:2
+[isp.c][sample_common_isp_init]:main_scene is normal, sub_scene is day
+[isp.c][sample_common_isp_init]:00:00:11.698169: rk_aiq_uapi2_sysctl_preInit_scene begin
+XCORE:K:rk_aiq_uapi_sysctl_preInit_scene: main_scene: normal, sub_scene: day
+[isp.c][sample_common_isp_init]:00:00:11.698351: rk_aiq_uapi2_sysctl_preInit_scene over
+XCORE:E:invalid main scene len!
+
+[   12.144371] stream_cif_mipi_id0: s_power 1, entity use_count 1
+[   12.146047] stream_cif_mipi_id0: open video, entity use_countt 2
+IPCSERVER:K:cid[0] Process path:/tmp/UNIX.domain0, sockfd:14
+[   12.146179] stream_cif_mipi_id1: open video, entity use_countt 1
+XCORE:K:cid[0] rk_aiq_uapi_sysctl_init success. iq:/oem/usr/share/iqfiles/sc3336_CMK-OT2119-PC1_30IRC-F16.json
+[isp.c][sample_common_isp_init]:00:00:12.147548: rk_aiq_uapi2_sysctl_init over
+[   12.192932] rkisp rkisp-vir0: first params buf queue
+XCORE:K:cid[0] rk_aiq_uapi_sysctl_prepare success. mode:0 
+[isp.c][sample_common_isp_run]:00:00:12.188918: rk_aiq_uapi2_sysctl_prepare succeed
+CAMHW:K:cid[0] start success. isGroup:0, isOnline:1, isMultiIsp:0, init_ens:0x1bfc0ffc4739
+XCORE:K:cid[0] rk_aiq_uapi_sysctl_start success.
+[isp.c][sample_common_isp_run]:00:00:12.196147: rk_aiq_uapi2_sysctl_start succeed
+[   12.250442] udevd[363]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video1': No such file or directory
+[   12.252946] udevd[364]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video2': No such file or directory
+[   12.258954] udevd[366]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video4': No such file or directory
+[   12.261573] udevd[362]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video0': No such file or directory
+[   12.264817] udevd[365]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video3': No such file or directory
+[   12.270991] udevd[367]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video5': No such file or directory
+[   12.272258] udevd[368]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video6': No such file or directory
+[   12.273577] udevd[369]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video7': No such file or directory
+failed to open /sys/class/pwm/pwmchip3/export
+[   12.285089] udevd[370]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video8': No such file or directory
+[isp.c][rk_isp_set_light_strength]:pwm3 init failed -2
+[   12.286323] udevd[371]: failed to execute '/lib/udev/v4l_id' 'v4l_id /dev/video9': No such file or directory
+[isp.c][rk_isp_set_blc_strength]:blc mode is not enabled
+[isp.c][rk_isp_set_hlc_level]:hlc mode is not enabled
+[isp.c][rk_isp_set_white_blance_red]:white blance is auto, not support set gain
+[isp.c][rk_isp_set_white_blance_green]:white blance is auto, not support set gain
+[isp.c][rk_isp_set_white_blance_blue]:white blance is auto, not support set gain
+ALDCH:E:uapi want to disalbe ldch, but ldch has been disalbed!
+ALDCH:E:uapi want to disalbe ldch, but ldch has been disalbed!
+[32m[1mrockit log path (null), log_size = 0, can use export rt_log_path=, export rt_log_size= change[0m
+log_file = (nil) 
+RTVersion        00:00:12-408 {dump              :064} ---------------------------------------------------------
+RTVersion        00:00:12-411 {dump              :065} rockit version: git-4720dc10a Tue Apr 30 15:47:55 2024 +0800
+RTVersion        00:00:12-411 {dump              :066} rockit building: built- 2024-04-30 15:53:43
+RTVersion        00:00:12-411 {dump              :067} ---------------------------------------------------------
+[32m[1mrockit default level 4, can use export rt_log_level=x, x=0,1,2,3,4,5,6 change[0m
+(null)           00:00:12-411 {read_log_level    :098} text is all=4
+(null)           00:00:12-411 {read_log_level    :100} module is all, log_level is 4
+(null)           00:00:12-437 {monitor_log_level :149} #Start monitor_log_level thread, arg:(nil)
+[video.c][rk_video_init]:enable_jpeg is 1, enable_venc_0 is 1, enable_venc_1 is 1, enable_rtsp is 1, enable_rtmp is 0
+RKViDev          00:00:12-509 {vi_set_dev_attr   :612} [33m[1mVI_DEV_ATTR_S all parameter reserved[0m
+[   12.467405] vsys dev open 27
+RTIsp3x          00:00:12-521 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+[   12.526440] stream_cif_mipi_id0: open video, entity use_countt 3
+RTDeviceSensorV4 00:00:12-532 {ispOpenDevice     :502} [32m[1mv4l2_open(/dev/video0), handler=46[0m
+[   12.526544] stream_cif_mipi_id0: close video, entity use_count 2
+RTDeviceSensorV4 00:00:12-532 {ispOpenDevice     :502} [32m[1mv4l2_open(/dev/v4l-subdev2), handler=48[0m
+[   12.536826] stream_cif_mipi_id0: open video, entity use_countt 3
+RTDeviceSensorV4 00:00:12-533 {close             :112} [32m[1mdo RTDeviceSensorV4L2 close[0m
+[   12.538207] stream_cif_mipi_id0: close video, entity use_count 2
+RTDeviceSensorV4 00:00:12-536 {close             :112} [32m[1mdo RTDeviceSensorV4L2 close[0m
+[   12.564436] stream_cif_mipi_id0: open video, entity use_countt 3
+[INFO  rtsp_demo.c:280:rtsp_new_demo] rtsp server demo starting on port 554
+[   12.564623] stream_cif_mipi_id0: close video, entity use_count 2
+[DEBUG rtsp_demo.c:480:rtsp_new_session] add session path: /live/0
+[   12.576717] stream_cif_mipi_id0: open video, entity use_countt 3
+rtsp streamq_alloc size is 1753484
+[   12.576810] stream_cif_mipi_id0: close video, entity use_count 2
+rtsp streamq_alloc size is 59884
+[   12.587314] rkisp-vir0: rockit wrap buf:0x2d12000
+[DEBUG rtsp_demo.c:480:rtsp_new_session] add session path: /live/1
+[   12.587335] rkisp queue buf done
+rtsp streamq_alloc size is 1753484
+[   12.587986] rkisp-vir0: wrap_line mode can not set the mirror
+rtsp streamq_alloc size is 59884
+[   12.588233] rkisp_hw ffa00000.rkisp: set isp clk = 198000000Hz
+RKViChn          00:00:12-550 {prepareRuntime    :354} ---------------------------------------------------------
+[   12.590099] rkcif-mipi-lvds: stream[0] start streaming
+RKViChn          00:00:12-550 {prepareRuntime    :356} vi version: 1.22, name:vvi
+[   12.590283] rockchip-mipi-csi2 mipi0-csi2: stream on, src_sd: 06033721, sd_name:rockchip-csi2-dphy0
+RKViChn          00:00:12-550 {prepareRuntime    :357} rockit-ko version: vmpi:28ee389dbc33
+[   12.590297] rockchip-mipi-csi2 mipi0-csi2: stream ON
+RKViChn          00:00:12-550 {prepareRuntime    :358} rockit-ko building: -2024-05-24-18:15:06
+[   12.590359] rockchip-csi2-dphy0: dphy0, data_rate_mbps 510
+RKViChn          00:00:12-550 {prepareRuntime    :359} ---------------------------------------------------------
+[   12.590398] rockchip-csi2-dphy csi2-dphy0: csi2_dphy_s_stream stream on:1, dphy0, ret 0
+cmpi             00:00:12-555 {prepareRuntime    :378} [32m[1mmb pool create success, MBCnt= 2[0m
+[   12.618339] rkisp-vir0: wrap_line mode can not set the mirror
+[video.c][rkipc_pipe_0_init]:set vi channel wrap line: 324, wrapBuffSize = 1119744
+[   12.625907] mpp_vcodec: 45: num_chan = 0
+cmpi             00:00:12-558 {updateWrapLine    :1968} [31m[1mtmp wrap_line: 324, cur wrap_line: 324, cur_w: 2304, cur_h: 1296, max_res_width: 2304[0m
+[   12.626107] mpp_vcodec: 387: attr->max_width = 2304, attr->max_height = 1296
+RTIsp3x          00:00:12-559 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+[   12.633424] mpp_vcodec: 103: create channel 0 handle f756a9b1 online 1
+cmpi             00:00:12-564 {createRuntime     :634} [32m[1m>>>>>>>>> Sensor link info dump: <<<<<<<<<[0m
+[   12.671057] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-564 {createRuntime     :636} [32m[1m	 vicap media name           : /dev/media0[0m
+[   12.671093] 532: MPP_ENC_SET_RC_CFG bps 11197440 [10497600 : 11897280] fps [30:30] gop 60
+cmpi             00:00:12-564 {createRuntime     :637} [32m[1m	 vicap model name           : rkcif-mipi-lvds[0m
+[   12.671118] h265e_proc_prep_cfg:422: MPP_ENC_SET_PREP_CFG w:h [2304:1296] stride [2304:1296]
+cmpi             00:00:12-564 {createRuntime     :638} [32m[1m	 camera id                  : 0[0m
+[   12.671135] 270: send header for set cfg change input/format 
+cmpi             00:00:12-564 {createRuntime     :639} [32m[1m	 sensor name                : m00_b_sc3336 4-0030[0m
+[   12.680139] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-564 {createRuntime     :641} [32m[1m	 stream_cif_mipi_id0 video name: /dev/video0[0m
+[   12.680189] 532: MPP_ENC_SET_RC_CFG bps 2048000 [1920000 : 2176000] fps [30:30] gop 50
+cmpi             00:00:12-564 {createRuntime     :642} [32m[1m	 stream_cif_mipi_id1 video name: /dev/video1[0m
+[   12.680206] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-564 {createRuntime     :643} [32m[1m	 stream_cif_mipi_id2 video name: /dev/video2[0m
+[   12.680481] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-564 {createRuntime     :644} [32m[1m	 stream_cif_mipi_id3 video name: /dev/video3[0m
+[   12.680505] 532: MPP_ENC_SET_RC_CFG bps 2048000 [1920000 : 2176000] fps [25:25] gop 50
+cmpi             00:00:12-564 {createRuntime     :646} [32m[1m	 sensor raw width           : 2304[0m
+[   12.680523] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-565 {createRuntime     :647} [32m[1m	 sensor raw height          : 1296[0m
+[   12.680718] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-565 {createRuntime     :648} [32m[1m---------------------------------------------------------[0m
+[   12.680732] 532: MPP_ENC_SET_RC_CFG bps 2048000 [1920000 : 2176000] fps [25:25] gop 50
+cmpi             00:00:12-565 {createRuntime     :654} [32m[1m	 isp media name           : /dev/media1[0m
+[   12.680747] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-565 {createRuntime     :655} [32m[1m	 isp model name           : rkisp0[0m
+[   12.687929] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-565 {createRuntime     :656} [32m[1m	 isp driver name          : rkisp-vir0[0m
+[   12.687966] 532: MPP_ENC_SET_RC_CFG bps 2048000 [1920000 : 2176000] fps [25:25] gop 50
+cmpi             00:00:12-565 {createRuntime     :657} [32m[1m	 isp dev name             : /dev/v4l-subdev3[0m
+[   12.687991] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-565 {createRuntime     :659} [32m[1m	 isp rawrd0_m_path        : /dev/video17[0m
+[   12.690923] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-565 {createRuntime     :660} [32m[1m	 isp rawrd1_l_path        : [0m
+[   12.690972] 532: MPP_ENC_SET_RC_CFG bps 2048000 [1920000 : 2176000] fps [25:25] gop 50
+cmpi             00:00:12-565 {createRuntime     :661} [32m[1m	 isp rawrd2_s_path        : /dev/video18[0m
+[   12.690992] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-565 {createRuntime     :664} [32m[1m	 mainpath video name      : /dev/video11[0m
+[   12.695628] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-565 {createRuntime     :665} [32m[1m	 selfpath video name      : /dev/video12[0m
+[   12.695676] 532: MPP_ENC_SET_RC_CFG bps 2048000 [1920000 : 2176000] fps [25:25] gop 50
+cmpi             00:00:12-565 {createRuntime     :666} [32m[1m	 bypasspath video name    : /dev/video13[0m
+[   12.695694] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-565 {createRuntime     :667} [32m[1m	 sensor link type         : 2[0m
+[   12.695967] 1155: mode cbr bps [1920000:2048000:2176000] fps fix [25/1] -> fix [25/1] gop i [50] v [0]
+cmpi             00:00:12-565 {createRuntime     :668} [32m[1m	 sensor is united         : 0[0m
+[   12.699829] stream_cif_mipi_id0: open video, entity use_countt 3
+cmpi             00:00:12-565 {createRuntime     :672} [32m[1m---------------------------------------------------------[0m
+[   12.699936] stream_cif_mipi_id0: close video, entity use_count 2
+cmpi             00:00:12-565 {createRuntime     :708} [32m[1m[WRAP MODE]:set wrap buffer cnt = 2, wrap buff size = 1119744[0m
+[   12.710162] stream_cif_mipi_id0: open video, entity use_countt 3
+RTIsp3x          00:00:12-572 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+[   12.723521] stream_cif_mipi_id0: close video, entity use_count 2
+RTDeviceV4L2     00:00:12-573 {open              :137} [32m[1mcameraIndex:0, entityName:rkisp_mainpath[0m
+[   12.726729] rkisp queue buf done
+RTDeviceV4L2     00:00:12-573 {open              :143} [32m[1mopen video name(/dev/video11)[0m
+[   12.726895] rkisp-vir0: wrap_line mode can not set the mirror
+RKViChn          00:00:12-573 {setFrameRate      :1469} [33m[1m[vi] dev(0) ch(0) illegal param s32SrcFrameRate(0) s32DstFrameRate(0)[0m
+[   12.728059] rkisp-vir0: wrap_line mode can not set the mirror
+RTDeviceV4L2     00:00:12-580 {ispCameraInfo     :567} [33m[1mcurrent device:/dev/video11 isn't compatible(cap:0x84201000) device,memoryType:4, retry:0[0m
+[   12.728573] mpp_vcodec: 45: num_chan = 1
+RTDeviceV4L2     00:00:12-580 {ispInitFormat     :767} [32m[1mioctl VIDIOC_S_FMT OK[0m
+[   12.728846] mpp_vcodec: 387: attr->max_width = 704, attr->max_height = 576
+cmpi             00:00:12-583 {start             :1093} [32m[1m=========== vi Start startRuntime ===========[0m
+[   12.730641] mpp_vcodec: 103: create channel 1 handle 9f4a4968 online 0
+RTDeviceV4L2     00:00:12-583 {ispStreamOn       :458} [32m[1mdo ispStreamOn start[0m
+[   12.736264] 836: MPP_ENC_SET_CFG in 
+CAMHW:K:camId:0, notify_isp_stream_status on
+[   12.736301] 532: MPP_ENC_SET_RC_CFG bps 1520640 [1425600 : 1615680] fps [30:30] gop 60
+RTDeviceV4L2     00:00:12-603 {ispStreamOn       :511} [32m[1mdo ispStreamOn done[0m
+[   12.736318] h265e_proc_prep_cfg:422: MPP_ENC_SET_PREP_CFG w:h [704:576] stride [704:576]
+[video.c][rk_video_set_frame_rate]:num is 25, den is 1
+[   12.736331] 270: send header for set cfg change input/format 
+[video.c][rk_video_set_frame_rate]:old VI framerate is [-1:-1]
+[   12.742240] 836: MPP_ENC_SET_CFG in 
+[video.c][rk_video_set_frame_rate]:new VI framerate is [25:25]
+[   12.742266] 532: MPP_ENC_SET_RC_CFG bps 512000 [480000 : 544000] fps [30:30] gop 50
+MpiAdapterEncode 00:00:12-621 {ma_encode_create  :1743} [32m[1mringbuf buf_size 1495040[0m
+[   12.742291] 270: send header for set cfg change rc_mode/fps/gop
+MpiAdapterEncode 00:00:12-639 {ma_encode_create  :1782} [32m[1mmem_fd = 54[0m
+[   12.742471] 836: MPP_ENC_SET_CFG in 
+RKViChn          00:00:12-693 {prepareRuntime    :354} ---------------------------------------------------------
+[   12.742489] 532: MPP_ENC_SET_RC_CFG bps 512000 [480000 : 544000] fps [30:30] gop 50
+RKViChn          00:00:12-693 {prepareRuntime    :356} vi version: 1.22, name:vvi
+[   12.742499] 270: send header for set cfg change rc_mode/fps/gop
+RKViChn          00:00:12-693 {prepareRuntime    :357} rockit-ko version: vmpi:28ee389dbc33
+[   12.742651] 836: MPP_ENC_SET_CFG in 
+RKViChn          00:00:12-693 {prepareRuntime    :358} rockit-ko building: -2024-05-24-18:15:06
+[   12.742667] 532: MPP_ENC_SET_RC_CFG bps 512000 [480000 : 544000] fps [30:30] gop 50
+RKViChn          00:00:12-693 {prepareRuntime    :359} ---------------------------------------------------------
+[   12.742678] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-693 {prepareRuntime    :378} [32m[1mmb pool create success, MBCnt= 4[0m
+[   12.742791] 836: MPP_ENC_SET_CFG in 
+RTIsp3x          00:00:12-695 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+[   12.742805] 532: MPP_ENC_SET_RC_CFG bps 512000 [480000 : 544000] fps [30:30] gop 50
+cmpi             00:00:12-701 {createRuntime     :634} [32m[1m>>>>>>>>> Sensor link info dump: <<<<<<<<<[0m
+[   12.742859] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-702 {createRuntime     :636} [32m[1m	 vicap media name           : /dev/media0[0m
+[   12.743158] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-702 {createRuntime     :637} [32m[1m	 vicap model name           : rkcif-mipi-lvds[0m
+[   12.743185] 532: MPP_ENC_SET_RC_CFG bps 512000 [480000 : 544000] fps [30:30] gop 50
+cmpi             00:00:12-702 {createRuntime     :638} [32m[1m	 camera id                  : 0[0m
+[   12.743214] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-702 {createRuntime     :639} [32m[1m	 sensor name                : m00_b_sc3336 4-0030[0m
+[   12.743358] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-702 {createRuntime     :641} [32m[1m	 stream_cif_mipi_id0 video name: /dev/video0[0m
+[   12.743374] 532: MPP_ENC_SET_RC_CFG bps 512000 [480000 : 544000] fps [30:30] gop 50
+cmpi             00:00:12-702 {createRuntime     :642} [32m[1m	 stream_cif_mipi_id1 video name: /dev/video1[0m
+[   12.743385] 270: send header for set cfg change rc_mode/fps/gop
+cmpi             00:00:12-702 {createRuntime     :643} [32m[1m	 stream_cif_mipi_id2 video name: /dev/video2[0m
+[   12.757164] mpp_vcodec: 45: num_chan = 2
+cmpi             00:00:12-702 {createRuntime     :644} [32m[1m	 stream_cif_mipi_id3 video name: /dev/video3[0m
+[   12.758884] mpp_vcodec: 103: create channel 4 handle 1193b5b9 online 1
+cmpi             00:00:12-702 {createRuntime     :646} [32m[1m	 sensor raw width           : 2304[0m
+[   12.765386] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-702 {createRuntime     :647} [32m[1m	 sensor raw height          : 1296[0m
+[   12.765426] 532: MPP_ENC_SET_RC_CFG bps 11197440 [10497600 : 11897280] fps [30:30] gop 60
+cmpi             00:00:12-702 {createRuntime     :648} [32m[1m---------------------------------------------------------[0m
+[   12.765747] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-702 {createRuntime     :654} [32m[1m	 isp media name           : /dev/media1[0m
+[   12.765768] 532: MPP_ENC_SET_RC_CFG bps 11197440 [10497600 : 11897280] fps [30:30] gop 0
+cmpi             00:00:12-702 {createRuntime     :655} [32m[1m	 isp model name           : rkisp0[0m
+[   12.765985] 836: MPP_ENC_SET_CFG in 
+cmpi             00:00:12-702 {createRuntime     :656} [32m[1m	 isp driver name          : rkisp-vir0[0m
+[   12.766009] 532: MPP_ENC_SET_RC_CFG bps 11197440 [10497600 : 11897280] fps [30:30] gop 0
+cmpi             00:00:12-702 {createRuntime     :657} [32m[1m	 isp dev name             : /dev/v4l-subdev3[0m
+[   12.778089] stream_cif_mipi_id0: open video, entity use_countt 3
+cmpi             00:00:12-702 {createRuntime     :659} [32m[1m	 isp rawrd0_m_path        : /dev/video17[0m
+[   12.778202] stream_cif_mipi_id0: close video, entity use_count 2
+cmpi             00:00:12-702 {createRuntime     :660} [32m[1m	 isp rawrd1_l_path        : [0m
+[   12.784232] 1155: mode cbr bps [480000:512000:544000] fps fix [30/1] -> fix [30/1] gop i [50] v [0]
+cmpi             00:00:12-702 {createRuntime     :661} [32m[1m	 isp rawrd2_s_path        : /dev/video18[0m
+[   12.797284] stream_cif_mipi_id0: open video, entity use_countt 3
+cmpi             00:00:12-702 {createRuntime     :664} [32m[1m	 mainpath video name      : /dev/video11[0m
+[   12.797490] stream_cif_mipi_id0: close video, entity use_count 2
+cmpi             00:00:12-702 {createRuntime     :665} [32m[1m	 selfpath video name      : /dev/video12[0m
+[   12.799717] rkisp queue buf done
+cmpi             00:00:12-702 {createRuntime     :666} [32m[1m	 bypasspath video name    : /dev/video13[0m
+[   12.802393] rkisp-vir0: wrap_line mode can not set the mirror
+cmpi             00:00:12-702 {createRuntime     :667} [32m[1m	 sensor link type         : 2[0m
+[   12.808611] vepu_pp_create_chn 0
+cmpi             00:00:12-702 {createRuntime     :668} [32m[1m	 sensor is united         : 0[0m
+cmpi             00:00:12-702 {createRuntime     :672} [32m[1m---------------------------------------------------------[0m
+cmpi             00:00:12-702 {createRuntime     :711} [32m[1m[non-WRAP MODE]: buff size = 608256[0m
+RTIsp3x          00:00:12-705 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+RTDeviceV4L2     00:00:12-721 {open              :137} [32m[1mcameraIndex:0, entityName:rkisp_selfpath[0m
+RTDeviceV4L2     00:00:12-721 {open              :143} [32m[1mopen video name(/dev/video12)[0m
+RKViChn          00:00:12-721 {setFrameRate      :1469} [33m[1m[vi] dev(0) ch(1) illegal param s32SrcFrameRate(0) s32DstFrameRate(0)[0m
+RTDeviceV4L2     00:00:12-721 {ispCameraInfo     :567} [33m[1mcurrent device:/dev/video12 isn't compatible(cap:0x84201000) device,memoryType:4, retry:0[0m
+RTDeviceV4L2     00:00:12-722 {ispInitFormat     :767} [32m[1mioctl VIDIOC_S_FMT OK[0m
+cmpi             00:00:12-722 {start             :1093} [32m[1m=========== vi Start startRuntime ===========[0m
+RTDeviceV4L2     00:00:12-722 {ispStreamOn       :458} [32m[1mdo ispStreamOn start[0m
+RTDeviceV4L2     00:00:12-722 {ispStreamOn       :511} [32m[1mdo ispStreamOn done[0m
+[video.c][rk_video_set_frame_rate]:num is 30, den is 1
+[video.c][rk_video_set_frame_rate]:old VI framerate is [-1:-1]
+[video.c][rk_video_set_frame_rate]:new VI framerate is [25:30]
+RKViChn          00:00:12-723 {setFrameRate      :1469} [33m[1m[vi] dev(0) ch(1) illegal param s32SrcFrameRate(25) s32DstFrameRate(30)[0m
+MpiAdapterEncode 00:00:12-724 {ma_encode_create  :1743} [32m[1mringbuf buf_size 204800[0m
+MpiAdapterEncode 00:00:12-731 {ma_encode_create  :1782} [32m[1mmem_fd = 59[0m
+MpiAdapterEncode 00:00:12-742 {ma_encode_get_pack:2079} [32m[1mmap ptr: 0xa425e000, fd 60[0m
+[DEBUG utils.c:186:rtsp_codec_data_parse_from_user_h265] vps 23
+[DEBUG utils.c:194:rtsp_codec_data_parse_from_user_h265] sps 43
+[DEBUG utils.c:202:rtsp_codec_data_parse_from_user_h265] pps 9
+MpiAdapterEncode 00:00:12-752 {ma_encode_create  :1743} [32m[1mringbuf buf_size 1048576[0m
+MpiAdapterEncode 00:00:12-754 {ma_encode_create  :1782} [32m[1mmem_fd = 63[0m
+RKViChn          00:00:12-771 {prepareRuntime    :354} ---------------------------------------------------------
+RKViChn          00:00:12-771 {prepareRuntime    :356} vi version: 1.22, name:vvi
+RKViChn          00:00:12-771 {prepareRuntime    :357} rockit-ko version: vmpi:28ee389dbc33
+RKViChn          00:00:12-772 {prepareRuntime    :358} rockit-ko building: -2024-05-24-18:15:06
+RKViChn          00:00:12-772 {prepareRuntime    :359} ---------------------------------------------------------
+cmpi             00:00:12-772 {prepareRuntime    :378} [32m[1mmb pool create success, MBCnt= 2[0m
+RTIsp3x          00:00:12-773 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+cmpi             00:00:12-775 {createRuntime     :634} [32m[1m>>>>>>>>> Sensor link info dump: <<<<<<<<<[0m
+cmpi             00:00:12-775 {createRuntime     :636} [32m[1m	 vicap media name           : /dev/media0[0m
+cmpi             00:00:12-775 {createRuntime     :637} [32m[1m	 vicap model name           : rkcif-mipi-lvds[0m
+cmpi             00:00:12-775 {createRuntime     :638} [32m[1m	 camera id                  : 0[0m
+cmpi             00:00:12-775 {createRuntime     :639} [32m[1m	 sensor name                : m00_b_sc3336 4-0030[0m
+cmpi             00:00:12-775 {createRuntime     :641} [32m[1m	 stream_cif_mipi_id0 video name: /dev/video0[0m
+cmpi             00:00:12-775 {createRuntime     :642} [32m[1m	 stream_cif_mipi_id1 video name: /dev/video1[0m
+cmpi             00:00:12-775 {createRuntime     :643} [32m[1m	 stream_cif_mipi_id2 video name: /dev/video2[0m
+cmpi             00:00:12-775 {createRuntime     :644} [32m[1m	 stream_cif_mipi_id3 video name: /dev/video3[0m
+cmpi             00:00:12-775 {createRuntime     :646} [32m[1m	 sensor raw width           : 2304[0m
+cmpi             00:00:12-775 {createRuntime     :647} [32m[1m	 sensor raw height          : 1296[0m
+cmpi             00:00:12-775 {createRuntime     :648} [32m[1m---------------------------------------------------------[0m
+cmpi             00:00:12-775 {createRuntime     :654} [32m[1m	 isp media name           : /dev/media1[0m
+cmpi             00:00:12-775 {createRuntime     :655} [32m[1m	 isp model name           : rkisp0[0m
+cmpi             00:00:12-775 {createRuntime     :656} [32m[1m	 isp driver name          : rkisp-vir0[0m
+cmpi             00:00:12-775 {createRuntime     :657} [32m[1m	 isp dev name             : /dev/v4l-subdev3[0m
+cmpi             00:00:12-775 {createRuntime     :659} [32m[1m	 isp rawrd0_m_path        : /dev/video17[0m
+cmpi             00:00:12-775 {createRuntime     :660} [32m[1m	 isp rawrd1_l_path        : [0m
+cmpi             00:00:12-775 {createRuntime     :661} [32m[1m	 isp rawrd2_s_path        : /dev/video18[0m
+cmpi             00:00:12-775 {createRuntime     :664} [32m[1m	 mainpath video name      : /dev/video11[0m
+cmpi             00:00:12-775 {createRuntime     :665} [32m[1m	 selfpath video name      : /dev/video12[0m
+cmpi             00:00:12-775 {createRuntime     :666} [32m[1m	 bypasspath video name    : /dev/video13[0m
+cmpi             00:00:12-775 {createRuntime     :667} [32m[1m	 sensor link type         : 2[0m
+cmpi             00:00:12-775 {createRuntime     :668} [32m[1m	 sensor is united         : 0[0m
+cmpi             00:00:12-776 {createRuntime     :672} [32m[1m---------------------------------------------------------[0m
+cmpi             00:00:12-776 {createRuntime     :711} [32m[1m[non-WRAP MODE]: buff size = 290304[0m
+MpiAdapterEncode 00:00:12-784 {ma_encode_get_pack:2079} [32m[1mmap ptr: 0xa3dfa000, fd 66[0m
+[DEBUG utils.c:186:rtsp_codec_data_parse_from_user_h265] vps 23
+[DEBUG utils.c:194:rtsp_codec_data_parse_from_user_h265] sps 43
+[DEBUG utils.c:202:rtsp_codec_data_parse_from_user_h265] pps 9
+RTIsp3x          00:00:12-792 {ispInitDevice     :591} [32m[1msensor name = m00_b_sc3336 4-0030[0m
+RTDeviceV4L2     00:00:12-794 {open              :137} [32m[1mcameraIndex:0, entityName:rkisp_bypasspath[0m
+RTDeviceV4L2     00:00:12-794 {open              :143} [32m[1mopen video name(/dev/video13)[0m
+RKViChn          00:00:12-794 {setFrameRate      :1469} [33m[1m[vi] dev(0) ch(2) illegal param s32SrcFrameRate(0) s32DstFrameRate(0)[0m
+RTDeviceV4L2     00:00:12-795 {ispCameraInfo     :567} [33m[1mcurrent device:/dev/video13 isn't compatible(cap:0x84201000) device,memoryType:4, retry:0[0m
+RTDeviceV4L2     00:00:12-795 {ispInitFormat     :767} [32m[1mioctl VIDIOC_S_FMT OK[0m
+cmpi             00:00:12-795 {start             :1093} [32m[1m=========== vi Start startRuntime ===========[0m
+RTDeviceV4L2     00:00:12-797 {ispStreamOn       :458} [32m[1mdo ispStreamOn start[0m
+RTDeviceV4L2     00:00:12-798 {ispStreamOn       :511} [32m[1mdo ispStreamOn done[0m
+MpiAdapterEncode 00:00:12-822 {ma_encode_get_pack:2079} [32m[1mmap ptr: 0xa39fa000, fd 70[0m
+[#Start osd_time_server thread, arg:(nil)
+server.c][rkipc_server_thread]:#Start rkipc_server_thread thread, arg:(nil)
+[storage.c][rkipc_storage_set_dev_attr]:mount path is /userdata, dev_path is /dev/ubi5_0
+[storage.c][rkipc_storage_para_init]:DevAttr set:  AutoDel--1, FreeSizeDel--500~1000, Path--/userdata/video0, Limit--300
+[storage.c][rkipc_storage_para_init]:DevAttr set:  AutoDel--1, FreeSizeDel--500~1000, Path--/userdata/video1, Limit--300
+[storage.c][rkipc_storage_para_init]:DevAttr set:  AutoDel--1, FreeSizeDel--500~1000, Path--/userdata/video2, Limit--300
+[osd.c][osd_time_server]:osd_time_id is 1
+[osd.c][osd_time_server]:osd_data.text.font_color is fff799
+[osd.c][osd_time_server]:osd_data.text.format is 24hour CHR-YYYY-MM-DD
+[storage.c][rkipc_storage_auto_delete_init]:mountpath:/userdata,devpath:,devtype:,devattr:
+[storage.c][rkipc_storage_file_scan_thread]:/userdata, /dev/ubi5_0, ubifs, rw,relatime,assert=read-only,ubi=5,vol=0
+[storage.c][rkipc_storage_file_scan_thread]:[00:00:12.933787] i is 0, before rkipc_storage_read_file_list
+[storage.c][rkipc_storage_file_scan_thread]:[00:00:12.934097] i is 0, after rkipc_storage_read_file_list
+[storage.c][rkipc_storage_file_scan_thread]:[00:00:12.934301] i is 1, before rkipc_storage_read_file_list
+[storage.c][rkipc_storage_file_scan_thread]:[00:00:12.934479] i is 1, after rkipc_storage_read_file_list
+[storage.c][rkipc_storage_file_scan_thread]:[00:00:12.934617] i is 2, before rkipc_storage_read_file_list
+[storage.c][rkipc_storage_file_scan_thread]:[00:00:12.934764] i is 2, after rkipc_storage_read_file_list
+[storage.c][rkipc_storage_file_scan_thread]:total_size = 916, free_size = 836
+[storage.c][rkipc_storage_file_monitor_thread]:pHandle->dev_sta.mount_status is 4
+cmpi             00:00:12-957 {mb_create_pool    :231} [32m[1mallocated buffer(this=0x1e0e58, data=0xa2be9000, size=40960, id=225)[0m
+cmpi             00:00:12-957 {mb_create_pool    :231} [32m[1mallocated buffer(this=0x1ec128, data=0xa2bdf000, size=40960, id=226)[0m
+cmpi             00:00:12-965 {attachToChn       :594} [31m[1mThe channel attr attach mapid: 0x0.[0m
+cmpi             00:00:12-966 {attachToChn       :594} [31m[1mThe channel attr attach mapid: 0x0.[0m
+cmpi             00:00:12-966 {attachToChn       :594} [31m[1mThe channel attr attach mapid: 0x0.[0m
+[video.c][rkipc_ivs_get_results]:MD: md_area is 184320, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 184320, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 98304, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:OD flag:1
+ECDSA ED25519 
+Starting sshd: OK
+Starting telnetd: OK
+/etc/init.d/S50usbdevice: line 148: can't open : no such file
+Debug: configfs_init
+[   18.498368] file system registered
+mkdir: can't create directory '/sys/kernel/config/usb_gadget/rockchip/functions/mtp.gs0': No such file or directory
+[   18.532359] using random self ethernet address
+[   18.532401] using random host ethernet address
+[   18.540302] using random self ethernet address
+[   18.540401] using random host ethernet address
+[   18.566962] Mass Storage Function, version: 2009/09/11
+[   18.567033] LUN: removable file: (no medium)
+[   18.688387] read descriptors
+[   18.688732] read strings
+[   19.694828] usb0: HOST MAC 02:4c:46:4d:42:01
+[   19.694873] usb0: MAC 02:4c:46:4d:42:02
+[network.c][rk_network_get_cable_state]:read Cable state
+[   19.953007] dwc3 ffb00000.usb: device reset
+[   20.001061] android_work: sent uevent USB_STATE=CONNECTED
+[   20.005294] android_work: sent uevent USB_STATE=CONFIGURED
+[network.c][rk_network_get_cable_state]:read Cable state
+[   20.067064] IPv6: ADDRCONF(NETDEV_CHANGE): usb0: link becomes ready
+[network.c][rk_network_get_cable_state]:read Cable state
+[network.c][rk_network_get_cable_state]:read Cable state
+/usr/bin/luckfox-config: line 262: warning: command substitution: ignored null byte in input
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+Only Luckfox Pico Ultra /Luckfox Pico Ultra W support RGB
+Complete configuration loading
+/root/main.py and /root/boot.py not exist ,pass...
+OK
+hwclock: can't open '/dev/misc/rtc': No such file or directory
+RTC does not require time calibration
+current_ip = 
+TARGET_IP = 172.32.0.93
+[video.c][rkipc_ivs_get_results]:OD flag:1
+luckfox : set usb0 ip
+172.32.0.93
+usb0 config success
+
+Welcome to luckfox pico
+luckfox login: [video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:MD: md_area is 61440, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 102400, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 184320, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 184320, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 64512, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:MD: md_area is 71680, md_area_threshold is 55987
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[video.c][rkipc_ivs_get_results]:OD flag:1

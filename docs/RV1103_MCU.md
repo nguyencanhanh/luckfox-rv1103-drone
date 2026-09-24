@@ -19,7 +19,7 @@ SDK: LuckfoxTECH/luckfox-pico `main` @ `824b817f889c2cbff1d48fcdb18ab494a68f69d1
 | Lệnh build | `./build.sh mcu <Board-Sensor-Light>` | `project/build.sh:876-919, 2764-2765` | tên board phải có đúng 3 phần ngăn bởi `-`, nếu không `mcu/build.sh lunch` báo "Not found" |
 | Firmware ra ở đâu | `output/out/mcu_out/rtthread.bin` | `project/build.sh:57,70` | |
 | MCU boot thế nào | SPL nạp ảnh FIT "standalone" tên `mcu0`, rồi: đặt vùng ngoại vi không cache, reset MCU, ghi `HPMCU_BOOT_ADDR`, nhả reset | `UB/common/spl/spl_fit.c:655-676` → `UB/arch/arm/mach-rockchip/rv1106/rv1106.c:548-566` | xem mục 2 |
-| Linux và MCU chạy đồng thời? | Có cơ chế: node `rockchip,amp` giữ clock MCU bật | `DTS/rv1106-amp.dtsi`; include từ `DTS/rv1103-luckfox-pico-ipc.dtsi:5`; driver `K/drivers/soc/rockchip/rockchip_amp.c` (probe gọi `clk_bulk_prepare_enable`) | **chưa chứng minh bằng chạy thật** |
+| Linux và MCU chạy đồng thời? | **Có (TEST 2026-09-24)**. Node `rockchip,amp` giữ clock MCU bật (clk_summary: `clk_core_mcu` 297 MHz, enable 1) | `DTS/rv1106-amp.dtsi`; `K/drivers/soc/rockchip/rockchip_amp.c`; `logs/m1_first_log.txt` | Linux vẫn chạy `rkipc`, SSH/ADB bình thường khi MCU chạy |
 
 ## 2. Đường khởi động MCU
 
@@ -33,8 +33,8 @@ SDK: LuckfoxTECH/luckfox-pico `main` @ `824b817f889c2cbff1d48fcdb18ab494a68f69d1
 | Đường chính thức của SDK: loader thunder-boot có mục `Hpmcu=` | `project/build.sh:697-723`; `rkbin/RKBOOT/RV1106MINIALL_SPI_NAND_TB.ini:20,22` | Luckfox Mini không dùng TB |
 
 Repo này nạp MCU **từ Linux** bằng `linux/mcu-tool`, làm đúng 5 lệnh ghi của `rv1106.c:552-559` qua `/dev/mem`.
-Linux có quyền ghi `CORE_SGRF` (thanh ghi secure) hay không: **UNKNOWN — NEED VERIFICATION**. Tool đọc lại và dừng nếu ghi không ăn.
-Nếu không ghi được, dùng đường SPL FIT ở trên.
+**TEST 2026-09-24: chạy được.** Linux ghi được `CORE_SGRF_HPMCU_BOOT_ADDR` (đọc lại 0x01800000), MCU boot và in log
+(`logs/m1_load.txt`, `logs/m1_first_log.txt`). Nạp lại nhiều lần (`stop` rồi `load`) cũng chạy.
 
 ## 3. Thanh ghi điều khiển MCU
 
@@ -52,8 +52,9 @@ Nếu không ghi được, dùng đường SPL FIT ở trên.
 |---|---|
 | Tick RT-Thread = mtime với bộ chia 1000, bước 297000/1000 = 297 đếm = 1 ms | `BSP/board/common/board_base.c:117`; `timer.c:135-147`; `timer.h:34-35` |
 | Độ phân giải mtime ≈ 3,37 µs, quá thô để đo jitter | suy ra từ trên; ngữ nghĩa bộ chia (chia N hay N+1): **UNKNOWN** |
+| **TEST: tick RT-Thread dài 1,000999 ms, chậm 0,1%**. `mcycle` đo theo đồng hồ Linux = 297 000 180 Hz (lệch < sai số đo, `logs/m1_clock.txt`), nên sai lệch nằm ở bộ chia mtime: phần cứng chia cho DIV+1 = 1001, SDK tính theo 1000 | `board_base.c:117`, `timer.c:140` |
 | **Lỗi trong SDK**: `timer_cmp.time_cmph + 1;` không có tác dụng, nửa trên thanh so sánh không bao giờ tăng | `BSP/drivers/timer.c:128` | khi 32 bit thấp của mtime tràn (≈ 2³²/297 kHz ≈ 4,0 h) tick có thể hỏng. **Phải kiểm tra trong bài test 6 h/24 h** |
-| CSR `mcycle` được khai báo | `BSP/cpu/riscv_csr_encoding.h:863,1371` | lõi có bật bộ đếm hay không: **UNKNOWN**; firmware tự kiểm tra và lùi về mtime |
+| CSR `mcycle` chạy, 297 MHz | `BSP/cpu/riscv_csr_encoding.h:863,1371`; **TEST** `mcu-tool status` báo nguồn `mcycle`, `mcu-tool clock` đo 297 000 180 Hz | |
 
 ## 5. Ngoại vi MCU nhìn thấy
 

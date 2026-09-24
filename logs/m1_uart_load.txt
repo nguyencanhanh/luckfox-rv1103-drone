@@ -1,0 +1,1057 @@
+[  280.994528] rkvenc_540c: rkvenc_task_timeout:1985: task 13403 state 0xf processing time out!
+[  280.994577] rkvenc_540c: dvbm_en     -   1
+[  280.994593] rkvenc_540c: fmt         -   1
+[  280.994609] rkvenc_540c: jpg_en      -   0
+[  280.994628] rkvenc_540c: vsldy       -   0x07000320
+[  280.994644] rkvenc_540c: st_wdg      -   0x00000000
+[  280.994661] rkvenc_540c: st_ppl      -   0x00000500
+[  280.994677] rkvenc_540c: st_vsp0     -   0x0030007e
+[  280.994694] rkvenc_540c: st_vsp1     -   0x0030007e
+[  280.994710] rkvenc_540c: vepu_cycle  -   0x01303888
+[  281.234425] rkvenc_540c: rkvenc_task_timeout:1985: task 13405 state 0xf processing time out!
+[  281.234504] rkvenc_540c: dvbm_en     -   1
+[  281.234520] rkvenc_540c: fmt         -   1
+[  281.234536] rkvenc_540c: jpg_en      -   0
+[  281.234552] rkvenc_540c: vsldy       -   0x07000000
+[  281.234568] rkvenc_540c: st_wdg      -   0x00000000
+[  281.234583] rkvenc_540c: st_ppl      -   0x00000000
+[  281.234599] rkvenc_540c: st_vsp0     -   0x0022001a
+[  281.234614] rkvenc_540c: st_vsp1     -   0x0022001a
+[  281.234632] rkvenc_540c: vepu_cycle  -   0x00000000
+[  281.474618] rkvenc_540c: rkvenc_task_timeout:1985: task 13409 state 0xf processing time out!
+[  281.474675] rkvenc_540c: dvbm_en     -   1
+[  281.474687] rkvenc_540c: fmt         -   1
+[  281.474698] rkvenc_540c: jpg_en      -   0
+[  281.474709] rkvenc_540c: vsldy       -   0x07000000
+[  281.474721] rkvenc_540c: st_wdg      -   0x00000000
+[  281.474731] rkvenc_540c: st_ppl      -   0x00000000
+[  281.474742] rkvenc_540c: st_vsp0     -   0x0022001a
+[  281.474754] rkvenc_540c: st_vsp1     -   0x0022001a
+[  281.474765] rkvenc_540c: vepu_cycle  -   0x00000000
+[  281.714648] rkvenc_540c: rkvenc_task_timeout:1985: task 13413 state 0xf processing time out!
+[  281.714712] rkvenc_540c: dvbm_en     -   1
+[  281.714724] rkvenc_540c: fmt         -   1
+[  281.714734] rkvenc_540c: jpg_en      -   0
+[  281.714746] rkvenc_540c: vsldy       -   0x07000000
+[  281.714758] rkvenc_540c: st_wdg      -   0x00000000
+[  281.714769] rkvenc_540c: st_ppl      -   0x00000000
+[  281.714779] rkvenc_540c: st_vsp0     -   0x0022001a
+[  281.714791] rkvenc_540c: st_vsp1     -   0x0022001a
+[  281.714803] rkvenc_540c: vepu_cycle  -   0x00000000
+[  281.954595] rkvenc_540c: rkvenc_task_timeout:1985: task 13417 state 0xf processing time out!
+[  281.954645] rkvenc_540c: dvbm_en     -   1
+[  281.954657] rkvenc_540c: fmt         -   1
+[  281.954670] rkvenc_540c: jpg_en      -   0
+[  281.954683] rkvenc_540c: vsldy       -   0x07000000
+[  281.954698] rkvenc_540c: st_wdg      -   0x00000000
+[  281.954710] rkvenc_540c: st_ppl      -   0x00000000
+[  281.954721] rkvenc_540c: st_vsp0     -   0x0022001a
+[  281.954732] rkvenc_540c: st_vsp1     -   0x0022001a
+[  281.954744] rkvenc_540c: vepu_cycle  -   0x00000000
+[  282.194462] rkvenc_540c: rkvenc_task_timeout:1985: task 13421 state 0xf processing time out!
+[  282.194531] rkvenc_540c: dvbm_en     -   1
+[  282.194548] rkvenc_540c: fmt         -   1
+[  282.194565] rkvenc_540c: jpg_en      -   0
+[  282.194581] rkvenc_540c: vsldy       -   0x07000000
+[  282.194598] rkvenc_540c: st_wdg      -   0x00000000
+[  282.194613] rkvenc_540c: st_ppl      -   0x00000000
+[  282.194629] rkvenc_540c: st_vsp0     -   0x0022001a
+[  282.194647] rkvenc_540c: st_vsp1     -   0x0022001a
+[  282.194663] rkvenc_540c: vepu_cycle  -   0x00000000
+[  282.434427] rkvenc_540c: rkvenc_task_timeout:1985: task 13425 state 0xf processing time out!
+[  282.434499] rkvenc_540c: dvbm_en     -   1
+[  282.434516] rkvenc_540c: fmt         -   1
+[  282.434532] rkvenc_540c: jpg_en      -   0
+[  282.434549] rkvenc_540c: vsldy       -   0x07000000
+[  282.434566] rkvenc_540c: st_wdg      -   0x00000000
+[  282.434582] rkvenc_540c: st_ppl      -   0x00000000
+[  282.434598] rkvenc_540c: st_vsp0     -   0x0022001a
+[  282.434615] rkvenc_540c: st_vsp1     -   0x0022001a
+[  282.434632] rkvenc_540c: vepu_cycle  -   0x00000000
+[  282.674649] rkvenc_540c: rkvenc_task_timeout:1985: task 13429 state 0xf processing time out!
+[  282.674708] rkvenc_540c: dvbm_en     -   1
+[  282.674720] rkvenc_540c: fmt         -   1
+[  282.674731] rkvenc_540c: jpg_en      -   0
+[  282.674742] rkvenc_540c: vsldy       -   0x07000000
+[  282.674754] rkvenc_540c: st_wdg      -   0x00000000
+[  282.674766] rkvenc_540c: st_ppl      -   0x00000000
+[  282.674777] rkvenc_540c: st_vsp0     -   0x0022001a
+[  282.674788] rkvenc_540c: st_vsp1     -   0x0022001a
+[  282.674800] rkvenc_540c: vepu_cycle  -   0x00000000
+[  282.914646] rkvenc_540c: rkvenc_task_timeout:1985: task 13433 state 0xf processing time out!
+[  282.914711] rkvenc_540c: dvbm_en     -   1
+[  282.914723] rkvenc_540c: fmt         -   1
+[  282.914735] rkvenc_540c: jpg_en      -   0
+[  282.914747] rkvenc_540c: vsldy       -   0x07000000
+[  282.914758] rkvenc_540c: st_wdg      -   0x00000000
+[  282.914770] rkvenc_540c: st_ppl      -   0x00000000
+[  282.914781] rkvenc_540c: st_vsp0     -   0x0022001a
+[  282.914792] rkvenc_540c: st_vsp1     -   0x0022001a
+[  282.914803] rkvenc_540c: vepu_cycle  -   0x00000000
+[  283.154452] rkvenc_540c: rkvenc_task_timeout:1985: task 13437 state 0xf processing time out!
+[  283.154520] rkvenc_540c: dvbm_en     -   1
+[  283.154538] rkvenc_540c: fmt         -   1
+[  283.154554] rkvenc_540c: jpg_en      -   0
+[  283.154570] rkvenc_540c: vsldy       -   0x07000000
+[  283.154587] rkvenc_540c: st_wdg      -   0x00000000
+[  283.154603] rkvenc_540c: st_ppl      -   0x00000000
+[  283.154619] rkvenc_540c: st_vsp0     -   0x0022001a
+[  283.154638] rkvenc_540c: st_vsp1     -   0x0022001a
+[  283.154655] rkvenc_540c: vepu_cycle  -   0x00000000
+[  283.394448] rkvenc_540c: rkvenc_task_timeout:1985: task 13441 state 0xf processing time out!
+[  283.394517] rkvenc_540c: dvbm_en     -   1
+[  283.394534] rkvenc_540c: fmt         -   1
+[  283.394550] rkvenc_540c: jpg_en      -   0
+[  283.394567] rkvenc_540c: vsldy       -   0x07000000
+[  283.394584] rkvenc_540c: st_wdg      -   0x00000000
+[  283.394600] rkvenc_540c: st_ppl      -   0x00000000
+[  283.394616] rkvenc_540c: st_vsp0     -   0x0022001a
+[  283.394633] rkvenc_540c: st_vsp1     -   0x0022001a
+[  283.394650] rkvenc_540c: vepu_cycle  -   0x00000000
+[  283.634641] rkvenc_540c: rkvenc_task_timeout:1985: task 13445 state 0xf processing time out!
+[  283.634708] rkvenc_540c: dvbm_en     -   1
+[  283.634720] rkvenc_540c: fmt         -   1
+[  283.634731] rkvenc_540c: jpg_en      -   0
+[  283.634742] rkvenc_540c: vsldy       -   0x07000000
+[  283.634755] rkvenc_540c: st_wdg      -   0x00000000
+[  283.634766] rkvenc_540c: st_ppl      -   0x00000000
+[  283.634777] rkvenc_540c: st_vsp0     -   0x0022001a
+[  283.634789] rkvenc_540c: st_vsp1     -   0x0022001a
+[  283.634801] rkvenc_540c: vepu_cycle  -   0x00000000
+[  283.874599] rkvenc_540c: rkvenc_task_timeout:1985: task 13449 state 0xf processing time out!
+[  283.874651] rkvenc_540c: dvbm_en     -   1
+[  283.874664] rkvenc_540c: fmt         -   1
+[  283.874679] rkvenc_540c: jpg_en      -   0
+[  283.874691] rkvenc_540c: vsldy       -   0x07000000
+[  283.874705] rkvenc_540c: st_wdg      -   0x00000000
+[  283.874716] rkvenc_540c: st_ppl      -   0x00000000
+[  283.874727] rkvenc_540c: st_vsp0     -   0x0022001a
+[  283.874738] rkvenc_540c: st_vsp1     -   0x0022001a
+[  283.874750] rkvenc_540c: vepu_cycle  -   0x00000000
+[  284.114414] rkvenc_540c: rkvenc_task_timeout:1985: task 13453 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  284.114467] rkvenc_540c: dvbm_en     -   1
+[  284.114481] rkvenc_540c: fmt         -   1
+[  284.114495] rkvenc_540c: jpg_en      -   0
+[  284.114507] rkvenc_540c: vsldy       -   0x07000000
+[  284.114518] rkvenc_540c: st_wdg      -   0x00000000
+[  284.114529] rkvenc_540c: st_ppl      -   0x00000000
+[  284.114541] rkvenc_540c: st_vsp0     -   0x0022001a
+[  284.114552] rkvenc_540c: st_vsp1     -   0x0022001a
+[  284.114563] rkvenc_540c: vepu_cycle  -   0x00000000
+[  284.354458] rkvenc_540c: rkvenc_task_timeout:1985: task 13457 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  284.354526] rkvenc_540c: dvbm_en     -   1
+[  284.354544] rkvenc_540c: fmt         -   1
+[  284.354559] rkvenc_540c: jpg_en      -   0
+[  284.354576] rkvenc_540c: vsldy       -   0x07000000
+[  284.354593] rkvenc_540c: st_wdg      -   0x00000000
+[  284.354609] rkvenc_540c: st_ppl      -   0x00000000
+[  284.354625] rkvenc_540c: st_vsp0     -   0x0022001a
+[  284.354641] rkvenc_540c: st_vsp1     -   0x0022001a
+[  284.354658] rkvenc_540c: vepu_cycle  -   0x00000000
+[  284.594440] rkvenc_540c: rkvenc_task_timeout:1985: task 13461 state 0xf processing time out!
+[  284.594515] rkvenc_540c: dvbm_en     -   1
+[  284.594532] rkvenc_540c: fmt         -   1
+[  284.594548] rkvenc_540c: jpg_en      -   0
+[  284.594565] rkvenc_540c: vsldy       -   0x07000000
+[  284.594581] rkvenc_540c: st_wdg      -   0x00000000
+[  284.594598] rkvenc_540c: st_ppl      -   0x00000000
+[  284.594614] rkvenc_540c: st_vsp0     -   0x0022001a
+[  284.594632] rkvenc_540c: st_vsp1     -   0x0022001a
+[  284.594648] rkvenc_540c: vepu_cycle  -   0x00000000
+[  284.834597] rkvenc_540c: rkvenc_task_timeout:1985: task 13465 state 0xf processing time out!
+[  284.834648] rkvenc_540c: dvbm_en     -   1
+[  284.834662] rkvenc_540c: fmt         -   1
+[  284.834675] rkvenc_540c: jpg_en      -   0
+[  284.834689] rkvenc_540c: vsldy       -   0x07000000
+[  284.834701] rkvenc_540c: st_wdg      -   0x00000000
+[  284.834712] rkvenc_540c: st_ppl      -   0x00000000
+[  284.834723] rkvenc_540c: st_vsp0     -   0x0022001a
+[  284.834736] rkvenc_540c: st_vsp1     -   0x0022001a
+[  284.834746] rkvenc_540c: vepu_cycle  -   0x00000000
+[  285.074405] rkvenc_540c: rkvenc_task_timeout:1985: task 13469 state 0xf processing time out!
+[  285.074470] rkvenc_540c: dvbm_en     -   1
+[  285.074489] rkvenc_540c: fmt         -   1
+[  285.074505] rkvenc_540c: jpg_en      -   0
+[  285.074522] rkvenc_540c: vsldy       -   0x07000000
+[  285.074539] rkvenc_540c: st_wdg      -   0x00000000
+[  285.074556] rkvenc_540c: st_ppl      -   0x00000000
+[  285.074572] rkvenc_540c: st_vsp0     -   0x0022001a
+[  285.074589] rkvenc_540c: st_vsp1     -   0x0022001a
+[  285.074606] rkvenc_540c: vepu_cycle  -   0x00000000
+[  285.314471] rkvenc_540c: rkvenc_task_timeout:1985: task 13473 state 0xf processing time out!
+[  285.314533] rkvenc_540c: dvbm_en     -   1
+[  285.314551] rkvenc_540c: fmt         -   1
+[  285.314567] rkvenc_540c: jpg_en      -   0
+[  285.314583] rkvenc_540c: vsldy       -   0x07000000
+[  285.314600] rkvenc_540c: st_wdg      -   0x00000000
+[  285.314616] rkvenc_540c: st_ppl      -   0x00000000
+[  285.314633] rkvenc_540c: st_vsp0     -   0x0022001a
+[  285.314651] rkvenc_540c: st_vsp1     -   0x0022001a
+[  285.314667] rkvenc_540c: vepu_cycle  -   0x00000000
+[  285.554650] rkvenc_540c: rkvenc_task_timeout:1985: task 13477 state 0xf processing time out!
+[  285.554714] rkvenc_540c: dvbm_en     -   1
+[  285.554726] rkvenc_540c: fmt         -   1
+[  285.554737] rkvenc_540c: jpg_en      -   0
+[  285.554749] rkvenc_540c: vsldy       -   0x07000000
+[  285.554760] rkvenc_540c: st_wdg      -   0x00000000
+[  285.554771] rkvenc_540c: st_ppl      -   0x00000000
+[  285.554782] rkvenc_540c: st_vsp0     -   0x0022001a
+[  285.554794] rkvenc_540c: st_vsp1     -   0x0022001a
+[  285.554806] rkvenc_540c: vepu_cycle  -   0x00000000
+[  285.794594] rkvenc_540c: rkvenc_task_timeout:1985: task 13481 state 0xf processing time out!
+[  285.794647] rkvenc_540c: dvbm_en     -   1
+[  285.794660] rkvenc_540c: fmt         -   1
+[  285.794674] rkvenc_540c: jpg_en      -   0
+[  285.794687] rkvenc_540c: vsldy       -   0x07000000
+[  285.794698] rkvenc_540c: st_wdg      -   0x00000000
+[  285.794710] rkvenc_540c: st_ppl      -   0x00000000
+[  285.794721] rkvenc_540c: st_vsp0     -   0x0022001a
+[  285.794733] rkvenc_540c: st_vsp1     -   0x0022001a
+[  285.794744] rkvenc_540c: vepu_cycle  -   0x00000000
+[  286.034602] rkvenc_540c: rkvenc_task_timeout:1985: task 13485 state 0xf processing time out!
+[  286.034657] rkvenc_540c: dvbm_en     -   1
+[  286.034672] rkvenc_540c: fmt         -   1
+[  286.034686] rkvenc_540c: jpg_en      -   0
+[  286.034698] rkvenc_540c: vsldy       -   0x07000000
+[  286.034711] rkvenc_540c: st_wdg      -   0x00000000
+[  286.034722] rkvenc_540c: st_ppl      -   0x00000000
+[  286.034733] rkvenc_540c: st_vsp0     -   0x0022001a
+[  286.034744] rkvenc_540c: st_vsp1     -   0x0022001a
+[  286.034756] rkvenc_540c: vepu_cycle  -   0x00000000
+[  286.274474] rkvenc_540c: rkvenc_task_timeout:1985: task 13489 state 0xf processing time out!
+[  286.274538] rkvenc_540c: dvbm_en     -   1
+[  286.274555] rkvenc_540c: fmt         -   1
+[  286.274571] rkvenc_540c: jpg_en      -   0
+[  286.274588] rkvenc_540c: vsldy       -   0x07000000
+[  286.274604] rkvenc_540c: st_wdg      -   0x00000000
+[  286.274621] rkvenc_540c: st_ppl      -   0x00000000
+[  286.274639] rkvenc_540c: st_vsp0     -   0x0022001a
+[  286.274656] rkvenc_540c: st_vsp1     -   0x0022001a
+[  286.274672] rkvenc_540c: vepu_cycle  -   0x00000000
+[  286.514432] rkvenc_540c: rkvenc_task_timeout:1985: task 13493 state 0xf processing time out!
+[  286.514507] rkvenc_540c: dvbm_en     -   1
+[  286.514524] rkvenc_540c: fmt         -   1
+[  286.514540] rkvenc_540c: jpg_en      -   0
+[  286.514556] rkvenc_540c: vsldy       -   0x07000000
+[  286.514573] rkvenc_540c: st_wdg      -   0x00000000
+[  286.514590] rkvenc_540c: st_ppl      -   0x00000000
+[  286.514606] rkvenc_540c: st_vsp0     -   0x0022001a
+[  286.514622] rkvenc_540c: st_vsp1     -   0x0022001a
+[  286.514639] rkvenc_540c: vepu_cycle  -   0x00000000
+[  286.754644] rkvenc_540c: rkvenc_task_timeout:1985: task 13497 state 0xf processing time out!
+[  286.754708] rkvenc_540c: dvbm_en     -   1
+[  286.754721] rkvenc_540c: fmt         -   1
+[  286.754733] rkvenc_540c: jpg_en      -   0
+[  286.754744] rkvenc_540c: vsldy       -   0x07000000
+[  286.754757] rkvenc_540c: st_wdg      -   0x00000000
+[  286.754767] rkvenc_540c: st_ppl      -   0x00000000
+[  286.754778] rkvenc_540c: st_vsp0     -   0x0022001a
+[  286.754790] rkvenc_540c: st_vsp1     -   0x0022001a
+[  286.754801] rkvenc_540c: vepu_cycle  -   0x00000000
+[  286.994644] rkvenc_540c: rkvenc_task_timeout:1985: task 13501 state 0xf processing time out!
+[  286.994708] rkvenc_540c: dvbm_en     -   1
+[  286.994720] rkvenc_540c: fmt         -   1
+[  286.994731] rkvenc_540c: jpg_en      -   0
+[  286.994743] rkvenc_540c: vsldy       -   0x07000000
+[  286.994755] rkvenc_540c: st_wdg      -   0x00000000
+[  286.994766] rkvenc_540c: st_ppl      -   0x00000000
+[  286.994778] rkvenc_540c: st_vsp0     -   0x0022001a
+[  286.994789] rkvenc_540c: st_vsp1     -   0x0022001a
+[  286.994801] rkvenc_540c: vepu_cycle  -   0x00000000
+[  287.234447] rkvenc_540c: rkvenc_task_timeout:1985: task 13505 state 0xf processing time out!
+[  287.234517] rkvenc_540c: dvbm_en     -   1
+[  287.234535] rkvenc_540c: fmt         -   1
+[  287.234551] rkvenc_540c: jpg_en      -   0
+[  287.234568] rkvenc_540c: vsldy       -   0x07000000
+[  287.234584] rkvenc_540c: st_wdg      -   0x00000000
+[  287.234600] rkvenc_540c: st_ppl      -   0x00000000
+[  287.234617] rkvenc_540c: st_vsp0     -   0x0022001a
+[  287.234635] rkvenc_540c: st_vsp1     -   0x0022001a
+[  287.234651] rkvenc_540c: vepu_cycle  -   0x00000000
+[  287.474402] rkvenc_540c: rkvenc_task_timeout:1985: task 13509 state 0xf processing time out!
+[  287.474467] rkvenc_540c: dvbm_en     -   1
+[  287.474486] rkvenc_540c: fmt         -   1
+[  287.474505] rkvenc_540c: jpg_en      -   0
+[  287.474521] rkvenc_540c: vsldy       -   0x07000000
+[  287.474538] rkvenc_540c: st_wdg      -   0x00000000
+[  287.474554] rkvenc_540c: st_ppl      -   0x00000000
+[  287.474570] rkvenc_540c: st_vsp0     -   0x0022001a
+[  287.474586] rkvenc_540c: st_vsp1     -   0x0022001a
+[  287.474603] rkvenc_540c: vepu_cycle  -   0x00000000
+[  287.714631] rkvenc_540c: rkvenc_task_timeout:1985: task 13513 state 0xf processing time out!
+[  287.714698] rkvenc_540c: dvbm_en     -   1
+[  287.714711] rkvenc_540c: fmt         -   1
+[  287.714723] rkvenc_540c: jpg_en      -   0
+[  287.714734] rkvenc_540c: vsldy       -   0x07000000
+[  287.714746] rkvenc_540c: st_wdg      -   0x00000000
+[  287.714756] rkvenc_540c: st_ppl      -   0x00000000
+[  287.714767] rkvenc_540c: st_vsp0     -   0x0022001a
+[  287.714779] rkvenc_540c: st_vsp1     -   0x0022001a
+[  287.714790] rkvenc_540c: vepu_cycle  -   0x00000000
+[  287.954712] rkvenc_540c: rkvenc_task_timeout:1985: task 13517 state 0xf processing time out!
+[  287.954750] rkvenc_540c: dvbm_en     -   1
+[  287.954762] rkvenc_540c: fmt         -   1
+[  287.954773] rkvenc_540c: jpg_en      -   0
+[  287.954785] rkvenc_540c: vsldy       -   0x07000000
+[  287.954797] rkvenc_540c: st_wdg      -   0x00000000
+[  287.954808] rkvenc_540c: st_ppl      -   0x00000000
+[  287.954819] rkvenc_540c: st_vsp0     -   0x0022001a
+[  287.954831] rkvenc_540c: st_vsp1     -   0x0022001a
+[  287.954843] rkvenc_540c: vepu_cycle  -   0x00000000
+[  288.194445] rkvenc_540c: rkvenc_task_timeout:1985: task 13521 state 0xf processing time out!
+[  288.194519] rkvenc_540c: dvbm_en     -   1
+[  288.194536] rkvenc_540c: fmt         -   1
+[  288.194553] rkvenc_540c: jpg_en      -   0
+[  288.194570] rkvenc_540c: vsldy       -   0x07000000
+[  288.194586] rkvenc_540c: st_wdg      -   0x00000000
+[  288.194602] rkvenc_540c: st_ppl      -   0x00000000
+[  288.194619] rkvenc_540c: st_vsp0     -   0x0022001a
+[  288.194637] rkvenc_540c: st_vsp1     -   0x0022001a
+[  288.194655] rkvenc_540c: vepu_cycle  -   0x00000000
+[  288.434449] rkvenc_540c: rkvenc_task_timeout:1985: task 13525 state 0xf processing time out!
+[  288.434520] rkvenc_540c: dvbm_en     -   1
+[  288.434538] rkvenc_540c: fmt         -   1
+[  288.434554] rkvenc_540c: jpg_en      -   0
+[  288.434570] rkvenc_540c: vsldy       -   0x07000000
+[  288.434588] rkvenc_540c: st_wdg      -   0x00000000
+[  288.434604] rkvenc_540c: st_ppl      -   0x00000000
+[  288.434621] rkvenc_540c: st_vsp0     -   0x0022001a
+[  288.434639] rkvenc_540c: st_vsp1     -   0x0022001a
+[  288.434655] rkvenc_540c: vepu_cycle  -   0x00000000
+[  288.674596] rkvenc_540c: rkvenc_task_timeout:1985: task 13529 state 0xf processing time out!
+[  288.674646] rkvenc_540c: dvbm_en     -   1
+[  288.674660] rkvenc_540c: fmt         -   1
+[  288.674672] rkvenc_540c: jpg_en      -   0
+[  288.674686] rkvenc_540c: vsldy       -   0x07000000
+[  288.674701] rkvenc_540c: st_wdg      -   0x00000000
+[  288.674713] rkvenc_540c: st_ppl      -   0x00000000
+[  288.674724] rkvenc_540c: st_vsp0     -   0x0022001a
+[  288.674736] rkvenc_540c: st_vsp1     -   0x0022001a
+[  288.674746] rkvenc_540c: vepu_cycle  -   0x00000000
+[  288.914537] rkvenc_540c: rkvenc_task_timeout:1985: task 13533 state 0xf processing time out!
+[  288.914584] rkvenc_540c: dvbm_en     -   1
+[  288.914600] rkvenc_540c: fmt         -   1
+[  288.914617] rkvenc_540c: jpg_en      -   0
+[  288.914635] rkvenc_540c: vsldy       -   0x07000000
+[  288.914653] rkvenc_540c: st_wdg      -   0x00000000
+[  288.914671] rkvenc_540c: st_ppl      -   0x00000000
+[  288.914688] rkvenc_540c: st_vsp0     -   0x0022001a
+[  288.914704] rkvenc_540c: st_vsp1     -   0x0022001a
+[  288.914720] rkvenc_540c: vepu_cycle  -   0x00000000
+[  289.154639] rkvenc_540c: rkvenc_task_timeout:1985: task 13537 state 0xf processing time out!
+[  289.154698] rkvenc_540c: dvbm_en     -   1
+[  289.154712] rkvenc_540c: fmt         -   1
+[  289.154723] rkvenc_540c: jpg_en      -   0
+[  289.154735] rkvenc_540c: vsldy       -   0x07000000
+[  289.154748] rkvenc_540c: st_wdg      -   0x00000000
+[  289.154759] rkvenc_540c: st_ppl      -   0x00000000
+[  289.154771] rkvenc_540c: st_vsp0     -   0x0022001a
+[  289.154782] rkvenc_540c: st_vsp1     -   0x0022001a
+[  289.154794] rkvenc_540c: vepu_cycle  -   0x00000000
+[  289.394639] rkvenc_540c: rkvenc_task_timeout:1985: task 13541 state 0xf processing time out!
+[  289.394699] rkvenc_540c: dvbm_en     -   1
+[  289.394713] rkvenc_540c: fmt         -   1
+[  289.394724] rkvenc_540c: jpg_en      -   0
+[  289.394735] rkvenc_540c: vsldy       -   0x07000000
+[  289.394748] rkvenc_540c: st_wdg      -   0x00000000
+[  289.394758] rkvenc_540c: st_ppl      -   0x00000000
+[  289.394770] rkvenc_540c: st_vsp0     -   0x0022001a
+[  289.394781] rkvenc_540c: st_vsp1     -   0x0022001a
+[  289.394792] rkvenc_540c: vepu_cycle  -   0x00000000
+[  289.634602] rkvenc_540c: rkvenc_task_timeout:1985: task 13545 state 0xf processing time out!
+[  289.634658] rkvenc_540c: dvbm_en     -   1
+[  289.634670] rkvenc_540c: fmt         -   1
+[  289.634684] rkvenc_540c: jpg_en      -   0
+[  289.634698] rkvenc_540c: vsldy       -   0x07000000
+[  289.634711] rkvenc_540c: st_wdg      -   0x00000000
+[  289.634723] rkvenc_540c: st_ppl      -   0x00000000
+[  289.634734] rkvenc_540c: st_vsp0     -   0x0022001a
+[  289.634745] rkvenc_540c: st_vsp1     -   0x0022001a
+[  289.634757] rkvenc_540c: vepu_cycle  -   0x00000000
+[  289.874452] rkvenc_540c: rkvenc_task_timeout:1985: task 13549 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  289.874523] rkvenc_540c: dvbm_en     -   1
+[  289.874540] rkvenc_540c: fmt         -   1
+[  289.874556] rkvenc_540c: jpg_en      -   0
+[  289.874573] rkvenc_540c: vsldy       -   0x07000000
+[  289.874590] rkvenc_540c: st_wdg      -   0x00000000
+[  289.874606] rkvenc_540c: st_ppl      -   0x00000000
+[  289.874622] rkvenc_540c: st_vsp0     -   0x0022001a
+[  289.874639] rkvenc_540c: st_vsp1     -   0x0022001a
+[  289.874656] rkvenc_540c: vepu_cycle  -   0x00000000
+[  290.114419] rkvenc_540c: rkvenc_task_timeout:1985: task 13553 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  290.114491] rkvenc_540c: dvbm_en     -   1
+[  290.114509] rkvenc_540c: fmt         -   1
+[  290.114525] rkvenc_540c: jpg_en      -   0
+[  290.114542] rkvenc_540c: vsldy       -   0x07000000
+[  290.114559] rkvenc_540c: st_wdg      -   0x00000000
+[  290.114574] rkvenc_540c: st_ppl      -   0x00000000
+[  290.114591] rkvenc_540c: st_vsp0     -   0x0022001a
+[  290.114608] rkvenc_540c: st_vsp1     -   0x0022001a
+[  290.114624] rkvenc_540c: vepu_cycle  -   0x00000000
+[  290.354659] rkvenc_540c: rkvenc_task_timeout:1985: task 13557 state 0xf processing time out!
+[  290.354718] rkvenc_540c: dvbm_en     -   1
+[  290.354731] rkvenc_540c: fmt         -   1
+[  290.354741] rkvenc_540c: jpg_en      -   0
+[  290.354753] rkvenc_540c: vsldy       -   0x07000000
+[  290.354764] rkvenc_540c: st_wdg      -   0x00000000
+[  290.354776] rkvenc_540c: st_ppl      -   0x00000000
+[  290.354788] rkvenc_540c: st_vsp0     -   0x0022001a
+[  290.354799] rkvenc_540c: st_vsp1     -   0x0022001a
+[  290.354811] rkvenc_540c: vepu_cycle  -   0x00000000
+[  290.594699] rkvenc_540c: rkvenc_task_timeout:1985: task 13561 state 0xf processing time out!
+[  290.594738] rkvenc_540c: dvbm_en     -   1
+[  290.594750] rkvenc_540c: fmt         -   1
+[  290.594761] rkvenc_540c: jpg_en      -   0
+[  290.594773] rkvenc_540c: vsldy       -   0x07000000
+[  290.594785] rkvenc_540c: st_wdg      -   0x00000000
+[  290.594796] rkvenc_540c: st_ppl      -   0x00000000
+[  290.594807] rkvenc_540c: st_vsp0     -   0x0022001a
+[  290.594818] rkvenc_540c: st_vsp1     -   0x0022001a
+[  290.594831] rkvenc_540c: vepu_cycle  -   0x00000000
+[  290.834457] rkvenc_540c: rkvenc_task_timeout:1985: task 13565 state 0xf processing time out!
+[  290.834526] rkvenc_540c: dvbm_en     -   1
+[  290.834544] rkvenc_540c: fmt         -   1
+[  290.834560] rkvenc_540c: jpg_en      -   0
+[  290.834577] rkvenc_540c: vsldy       -   0x07000000
+[  290.834593] rkvenc_540c: st_wdg      -   0x00000000
+[  290.834609] rkvenc_540c: st_ppl      -   0x00000000
+[  290.834626] rkvenc_540c: st_vsp0     -   0x0022001a
+[  290.834643] rkvenc_540c: st_vsp1     -   0x0022001a
+[  290.834660] rkvenc_540c: vepu_cycle  -   0x00000000
+[  291.074418] rkvenc_540c: rkvenc_task_timeout:1985: task 13569 state 0xf processing time out!
+[  291.074476] rkvenc_540c: dvbm_en     -   1
+[  291.074491] rkvenc_540c: fmt         -   1
+[  291.074503] rkvenc_540c: jpg_en      -   0
+[  291.074516] rkvenc_540c: vsldy       -   0x07000000
+[  291.074528] rkvenc_540c: st_wdg      -   0x00000000
+[  291.074539] rkvenc_540c: st_ppl      -   0x00000000
+[  291.074551] rkvenc_540c: st_vsp0     -   0x0022001a
+[  291.074562] rkvenc_540c: st_vsp1     -   0x0022001a
+[  291.074574] rkvenc_540c: vepu_cycle  -   0x00000000
+[  291.314650] rkvenc_540c: rkvenc_task_timeout:1985: task 13573 state 0xf processing time out!
+[  291.314713] rkvenc_540c: dvbm_en     -   1
+[  291.314725] rkvenc_540c: fmt         -   1
+[  291.314736] rkvenc_540c: jpg_en      -   0
+[  291.314748] rkvenc_540c: vsldy       -   0x07000000
+[  291.314760] rkvenc_540c: st_wdg      -   0x00000000
+[  291.314771] rkvenc_540c: st_ppl      -   0x00000000
+[  291.314782] rkvenc_540c: st_vsp0     -   0x0022001a
+[  291.314794] rkvenc_540c: st_vsp1     -   0x0022001a
+[  291.314805] rkvenc_540c: vepu_cycle  -   0x00000000
+[  291.554653] rkvenc_540c: rkvenc_task_timeout:1985: task 13577 state 0xf processing time out!
+[  291.554714] rkvenc_540c: dvbm_en     -   1
+[  291.554727] rkvenc_540c: fmt         -   1
+[  291.554738] rkvenc_540c: jpg_en      -   0
+[  291.554750] rkvenc_540c: vsldy       -   0x07000000
+[  291.554761] rkvenc_540c: st_wdg      -   0x00000000
+[  291.554773] rkvenc_540c: st_ppl      -   0x00000000
+[  291.554784] rkvenc_540c: st_vsp0     -   0x0022001a
+[  291.554796] rkvenc_540c: st_vsp1     -   0x0022001a
+[  291.554807] rkvenc_540c: vepu_cycle  -   0x00000000
+[  291.794598] rkvenc_540c: rkvenc_task_timeout:1985: task 13581 state 0xf processing time out!
+[  291.794651] rkvenc_540c: dvbm_en     -   1
+[  291.794663] rkvenc_540c: fmt         -   1
+[  291.794674] rkvenc_540c: jpg_en      -   0
+[  291.794687] rkvenc_540c: vsldy       -   0x07000000
+[  291.794701] rkvenc_540c: st_wdg      -   0x00000000
+[  291.794712] rkvenc_540c: st_ppl      -   0x00000000
+[  291.794724] rkvenc_540c: st_vsp0     -   0x0022001a
+[  291.794735] rkvenc_540c: st_vsp1     -   0x0022001a
+[  291.794747] rkvenc_540c: vepu_cycle  -   0x00000000
+[  292.034451] rkvenc_540c: rkvenc_task_timeout:1985: task 13585 state 0xf processing time out!
+[  292.034524] rkvenc_540c: dvbm_en     -   1
+[  292.034542] rkvenc_540c: fmt         -   1
+[  292.034558] rkvenc_540c: jpg_en      -   0
+[  292.034574] rkvenc_540c: vsldy       -   0x07000000
+[  292.034591] rkvenc_540c: st_wdg      -   0x00000000
+[  292.034607] rkvenc_540c: st_ppl      -   0x00000000
+[  292.034624] rkvenc_540c: st_vsp0     -   0x0022001a
+[  292.034641] rkvenc_540c: st_vsp1     -   0x0022001a
+[  292.034659] rkvenc_540c: vepu_cycle  -   0x00000000
+[  292.274647] rkvenc_540c: rkvenc_task_timeout:1985: task 13589 state 0xf processing time out!
+[  292.274712] rkvenc_540c: dvbm_en     -   1
+[  292.274724] rkvenc_540c: fmt         -   1
+[  292.274735] rkvenc_540c: jpg_en      -   0
+[  292.274747] rkvenc_540c: vsldy       -   0x07000000
+[  292.274759] rkvenc_540c: st_wdg      -   0x00000000
+[  292.274770] rkvenc_540c: st_ppl      -   0x00000000
+[  292.274781] rkvenc_540c: st_vsp0     -   0x0022001a
+[  292.274793] rkvenc_540c: st_vsp1     -   0x0022001a
+[  292.274804] rkvenc_540c: vepu_cycle  -   0x00000000
+[  292.514646] rkvenc_540c: rkvenc_task_timeout:1985: task 13593 state 0xf processing time out!
+[  292.514712] rkvenc_540c: dvbm_en     -   1
+[  292.514724] rkvenc_540c: fmt         -   1
+[  292.514735] rkvenc_540c: jpg_en      -   0
+[  292.514747] rkvenc_540c: vsldy       -   0x07000000
+[  292.514759] rkvenc_540c: st_wdg      -   0x00000000
+[  292.514770] rkvenc_540c: st_ppl      -   0x00000000
+[  292.514781] rkvenc_540c: st_vsp0     -   0x0022001a
+[  292.514793] rkvenc_540c: st_vsp1     -   0x0022001a
+[  292.514804] rkvenc_540c: vepu_cycle  -   0x00000000
+[  292.754600] rkvenc_540c: rkvenc_task_timeout:1985: task 13597 state 0xf processing time out!
+[  292.754647] rkvenc_540c: dvbm_en     -   1
+[  292.754660] rkvenc_540c: fmt         -   1
+[  292.754671] rkvenc_540c: jpg_en      -   0
+[  292.754683] rkvenc_540c: vsldy       -   0x07000000
+[  292.754698] rkvenc_540c: st_wdg      -   0x00000000
+[  292.754709] rkvenc_540c: st_ppl      -   0x00000000
+[  292.754720] rkvenc_540c: st_vsp0     -   0x0022001a
+[  292.754732] rkvenc_540c: st_vsp1     -   0x0022001a
+[  292.754743] rkvenc_540c: vepu_cycle  -   0x00000000
+[  292.994447] rkvenc_540c: rkvenc_task_timeout:1985: task 13601 state 0xf processing time out!
+[  292.994517] rkvenc_540c: dvbm_en     -   1
+[  292.994534] rkvenc_540c: fmt         -   1
+[  292.994551] rkvenc_540c: jpg_en      -   0
+[  292.994568] rkvenc_540c: vsldy       -   0x07000000
+[  292.994585] rkvenc_540c: st_wdg      -   0x00000000
+[  292.994601] rkvenc_540c: st_ppl      -   0x00000000
+[  292.994618] rkvenc_540c: st_vsp0     -   0x0022001a
+[  292.994635] rkvenc_540c: st_vsp1     -   0x0022001a
+[  292.994651] rkvenc_540c: vepu_cycle  -   0x00000000
+[  293.234502] rkvenc_540c: rkvenc_task_timeout:1985: task 13605 state 0xf processing time out!
+[  293.234552] rkvenc_540c: dvbm_en     -   1
+[  293.234569] rkvenc_540c: fmt         -   1
+[  293.234585] rkvenc_540c: jpg_en      -   0
+[  293.234602] rkvenc_540c: vsldy       -   0x07000000
+[  293.234620] rkvenc_540c: st_wdg      -   0x00000000
+[  293.234636] rkvenc_540c: st_ppl      -   0x00000000
+[  293.234653] rkvenc_540c: st_vsp0     -   0x0022001a
+[  293.234671] rkvenc_540c: st_vsp1     -   0x0022001a
+[  293.234688] rkvenc_540c: vepu_cycle  -   0x00000000
+[  293.474647] rkvenc_540c: rkvenc_task_timeout:1985: task 13609 state 0xf processing time out!
+[  293.474710] rkvenc_540c: dvbm_en     -   1
+[  293.474721] rkvenc_540c: fmt         -   1
+[  293.474733] rkvenc_540c: jpg_en      -   0
+[  293.474744] rkvenc_540c: vsldy       -   0x07000000
+[  293.474756] rkvenc_540c: st_wdg      -   0x00000000
+[  293.474768] rkvenc_540c: st_ppl      -   0x00000000
+[  293.474779] rkvenc_540c: st_vsp0     -   0x0022001a
+[  293.474790] rkvenc_540c: st_vsp1     -   0x0022001a
+[  293.474802] rkvenc_540c: vepu_cycle  -   0x00000000
+[  293.714632] rkvenc_540c: rkvenc_task_timeout:1985: task 13613 state 0xf processing time out!
+[  293.714698] rkvenc_540c: dvbm_en     -   1
+[  293.714710] rkvenc_540c: fmt         -   1
+[  293.714722] rkvenc_540c: jpg_en      -   0
+[  293.714733] rkvenc_540c: vsldy       -   0x07000000
+[  293.714745] rkvenc_540c: st_wdg      -   0x00000000
+[  293.714756] rkvenc_540c: st_ppl      -   0x00000000
+[  293.714767] rkvenc_540c: st_vsp0     -   0x0022001a
+[  293.714779] rkvenc_540c: st_vsp1     -   0x0022001a
+[  293.714790] rkvenc_540c: vepu_cycle  -   0x00000000
+[  293.954443] rkvenc_540c: rkvenc_task_timeout:1985: task 13617 state 0xf processing time out!
+[  293.954511] rkvenc_540c: dvbm_en     -   1
+[  293.954528] rkvenc_540c: fmt         -   1
+[  293.954544] rkvenc_540c: jpg_en      -   0
+[  293.954562] rkvenc_540c: vsldy       -   0x07000000
+[  293.954579] rkvenc_540c: st_wdg      -   0x00000000
+[  293.954595] rkvenc_540c: st_ppl      -   0x00000000
+[  293.954611] rkvenc_540c: st_vsp0     -   0x0022001a
+[  293.954629] rkvenc_540c: st_vsp1     -   0x0022001a
+[  293.954645] rkvenc_540c: vepu_cycle  -   0x00000000
+[  294.194640] rkvenc_540c: rkvenc_task_timeout:1985: task 13621 state 0xf processing time out!
+[  294.194701] rkvenc_540c: dvbm_en     -   1
+[  294.194714] rkvenc_540c: fmt         -   1
+[  294.194725] rkvenc_540c: jpg_en      -   0
+[  294.194737] rkvenc_540c: vsldy       -   0x07000000
+[  294.194749] rkvenc_540c: st_wdg      -   0x00000000
+[  294.194760] rkvenc_540c: st_ppl      -   0x00000000
+[  294.194771] rkvenc_540c: st_vsp0     -   0x0022001a
+[  294.194783] rkvenc_540c: st_vsp1     -   0x0022001a
+[  294.194794] rkvenc_540c: vepu_cycle  -   0x00000000
+[  294.434670] rkvenc_540c: rkvenc_task_timeout:1985: task 13625 state 0xf processing time out!
+[  294.434724] rkvenc_540c: dvbm_en     -   1
+[  294.434736] rkvenc_540c: fmt         -   1
+[  294.434747] rkvenc_540c: jpg_en      -   0
+[  294.434759] rkvenc_540c: vsldy       -   0x07000000
+[  294.434771] rkvenc_540c: st_wdg      -   0x00000000
+[  294.434782] rkvenc_540c: st_ppl      -   0x00000000
+[  294.434793] rkvenc_540c: st_vsp0     -   0x0022001a
+[  294.434805] rkvenc_540c: st_vsp1     -   0x0022001a
+[  294.434817] rkvenc_540c: vepu_cycle  -   0x00000000
+[  294.674603] rkvenc_540c: rkvenc_task_timeout:1985: task 13629 state 0xf processing time out!
+[  294.674659] rkvenc_540c: dvbm_en     -   1
+[  294.674675] rkvenc_540c: fmt         -   1
+[  294.674689] rkvenc_540c: jpg_en      -   0
+[  294.674701] rkvenc_540c: vsldy       -   0x07000000
+[  294.674713] rkvenc_540c: st_wdg      -   0x00000000
+[  294.674724] rkvenc_540c: st_ppl      -   0x00000000
+[  294.674736] rkvenc_540c: st_vsp0     -   0x0022001a
+[  294.674747] rkvenc_540c: st_vsp1     -   0x0022001a
+[  294.674759] rkvenc_540c: vepu_cycle  -   0x00000000
+[  294.914451] rkvenc_540c: rkvenc_task_timeout:1985: task 13633 state 0xf processing time out!
+[  294.914522] rkvenc_540c: dvbm_en     -   1
+[  294.914540] rkvenc_540c: fmt         -   1
+[  294.914556] rkvenc_540c: jpg_en      -   0
+[  294.914572] rkvenc_540c: vsldy       -   0x07000000
+[  294.914589] rkvenc_540c: st_wdg      -   0x00000000
+[  294.914606] rkvenc_540c: st_ppl      -   0x00000000
+[  294.914622] rkvenc_540c: st_vsp0     -   0x0022001a
+[  294.914640] rkvenc_540c: st_vsp1     -   0x0022001a
+[  294.914659] rkvenc_540c: vepu_cycle  -   0x00000000
+[  295.154453] rkvenc_540c: rkvenc_task_timeout:1985: task 13637 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  295.154520] rkvenc_540c: dvbm_en     -   1
+[  295.154537] rkvenc_540c: fmt         -   1
+[  295.154554] rkvenc_540c: jpg_en      -   0
+[  295.154570] rkvenc_540c: vsldy       -   0x07000000
+[  295.154587] rkvenc_540c: st_wdg      -   0x00000000
+[  295.154603] rkvenc_540c: st_ppl      -   0x00000000
+[  295.154620] rkvenc_540c: st_vsp0     -   0x0022001a
+[  295.154638] rkvenc_540c: st_vsp1     -   0x0022001a
+[  295.154655] rkvenc_540c: vepu_cycle  -   0x00000000
+[  295.394637] rkvenc_540c: rkvenc_task_timeout:1985: task 13641 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  295.394702] rkvenc_540c: dvbm_en     -   1
+[  295.394715] rkvenc_540c: fmt         -   1
+[  295.394726] rkvenc_540c: jpg_en      -   0
+[  295.394738] rkvenc_540c: vsldy       -   0x07000000
+[  295.394749] rkvenc_540c: st_wdg      -   0x00000000
+[  295.394761] rkvenc_540c: st_ppl      -   0x00000000
+[  295.394772] rkvenc_540c: st_vsp0     -   0x0022001a
+[  295.394783] rkvenc_540c: st_vsp1     -   0x0022001a
+[  295.394795] rkvenc_540c: vepu_cycle  -   0x00000000
+[  295.634640] rkvenc_540c: rkvenc_task_timeout:1985: task 13645 state 0xf processing time out!
+[  295.634708] rkvenc_540c: dvbm_en     -   1
+[  295.634720] rkvenc_540c: fmt         -   1
+[  295.634732] rkvenc_540c: jpg_en      -   0
+[  295.634743] rkvenc_540c: vsldy       -   0x07000000
+[  295.634755] rkvenc_540c: st_wdg      -   0x00000000
+[  295.634766] rkvenc_540c: st_ppl      -   0x00000000
+[  295.634777] rkvenc_540c: st_vsp0     -   0x0022001a
+[  295.634788] rkvenc_540c: st_vsp1     -   0x0022001a
+[  295.634799] rkvenc_540c: vepu_cycle  -   0x00000000
+[  295.874648] rkvenc_540c: rkvenc_task_timeout:1985: task 13649 state 0xf processing time out!
+[  295.874706] rkvenc_540c: dvbm_en     -   1
+[  295.874718] rkvenc_540c: fmt         -   1
+[  295.874729] rkvenc_540c: jpg_en      -   0
+[  295.874741] rkvenc_540c: vsldy       -   0x07000000
+[  295.874753] rkvenc_540c: st_wdg      -   0x00000000
+[  295.874764] rkvenc_540c: st_ppl      -   0x00000000
+[  295.874776] rkvenc_540c: st_vsp0     -   0x0022001a
+[  295.874788] rkvenc_540c: st_vsp1     -   0x0022001a
+[  295.874800] rkvenc_540c: vepu_cycle  -   0x00000000
+[  296.114565] rkvenc_540c: rkvenc_task_timeout:1985: task 13653 state 0xf processing time out!
+[  296.114604] rkvenc_540c: dvbm_en     -   1
+[  296.114616] rkvenc_540c: fmt         -   1
+[  296.114628] rkvenc_540c: jpg_en      -   0
+[  296.114640] rkvenc_540c: vsldy       -   0x07000000
+[  296.114653] rkvenc_540c: st_wdg      -   0x00000000
+[  296.114665] rkvenc_540c: st_ppl      -   0x00000000
+[  296.114678] rkvenc_540c: st_vsp0     -   0x0022001a
+[  296.114690] rkvenc_540c: st_vsp1     -   0x0022001a
+[  296.114702] rkvenc_540c: vepu_cycle  -   0x00000000
+[  296.354425] rkvenc_540c: rkvenc_task_timeout:1985: task 13657 state 0xf processing time out!
+[  296.354498] rkvenc_540c: dvbm_en     -   1
+[  296.354515] rkvenc_540c: fmt         -   1
+[  296.354532] rkvenc_540c: jpg_en      -   0
+[  296.354549] rkvenc_540c: vsldy       -   0x07000000
+[  296.354565] rkvenc_540c: st_wdg      -   0x00000000
+[  296.354581] rkvenc_540c: st_ppl      -   0x00000000
+[  296.354598] rkvenc_540c: st_vsp0     -   0x0022001a
+[  296.354615] rkvenc_540c: st_vsp1     -   0x0022001a
+[  296.354632] rkvenc_540c: vepu_cycle  -   0x00000000
+[  296.594642] rkvenc_540c: rkvenc_task_timeout:1985: task 13661 state 0xf processing time out!
+[  296.594705] rkvenc_540c: dvbm_en     -   1
+[  296.594717] rkvenc_540c: fmt         -   1
+[  296.594728] rkvenc_540c: jpg_en      -   0
+[  296.594740] rkvenc_540c: vsldy       -   0x07000000
+[  296.594751] rkvenc_540c: st_wdg      -   0x00000000
+[  296.594763] rkvenc_540c: st_ppl      -   0x00000000
+[  296.594774] rkvenc_540c: st_vsp0     -   0x0022001a
+[  296.594786] rkvenc_540c: st_vsp1     -   0x0022001a
+[  296.594797] rkvenc_540c: vepu_cycle  -   0x00000000
+[  296.834646] rkvenc_540c: rkvenc_task_timeout:1985: task 13665 state 0xf processing time out!
+[  296.834708] rkvenc_540c: dvbm_en     -   1
+[  296.834720] rkvenc_540c: fmt         -   1
+[  296.834731] rkvenc_540c: jpg_en      -   0
+[  296.834743] rkvenc_540c: vsldy       -   0x07000000
+[  296.834755] rkvenc_540c: st_wdg      -   0x00000000
+[  296.834766] rkvenc_540c: st_ppl      -   0x00000000
+[  296.834777] rkvenc_540c: st_vsp0     -   0x0022001a
+[  296.834789] rkvenc_540c: st_vsp1     -   0x0022001a
+[  296.834801] rkvenc_540c: vepu_cycle  -   0x00000000
+[  297.074596] rkvenc_540c: rkvenc_task_timeout:1985: task 13669 state 0xf processing time out!
+[  297.074643] rkvenc_540c: dvbm_en     -   1
+[  297.074656] rkvenc_540c: fmt         -   1
+[  297.074668] rkvenc_540c: jpg_en      -   0
+[  297.074679] rkvenc_540c: vsldy       -   0x07000000
+[  297.074693] rkvenc_540c: st_wdg      -   0x00000000
+[  297.074706] rkvenc_540c: st_ppl      -   0x00000000
+[  297.074717] rkvenc_540c: st_vsp0     -   0x0022001a
+[  297.074729] rkvenc_540c: st_vsp1     -   0x0022001a
+[  297.074740] rkvenc_540c: vepu_cycle  -   0x00000000
+[  297.314449] rkvenc_540c: rkvenc_task_timeout:1985: task 13673 state 0xf processing time out!
+[  297.314520] rkvenc_540c: dvbm_en     -   1
+[  297.314537] rkvenc_540c: fmt         -   1
+[  297.314554] rkvenc_540c: jpg_en      -   0
+[  297.314570] rkvenc_540c: vsldy       -   0x07000000
+[  297.314587] rkvenc_540c: st_wdg      -   0x00000000
+[  297.314604] rkvenc_540c: st_ppl      -   0x00000000
+[  297.314621] rkvenc_540c: st_vsp0     -   0x0022001a
+[  297.314639] rkvenc_540c: st_vsp1     -   0x0022001a
+[  297.314656] rkvenc_540c: vepu_cycle  -   0x00000000
+[  297.554402] rkvenc_540c: rkvenc_task_timeout:1985: task 13677 state 0xf processing time out!
+[  297.554469] rkvenc_540c: dvbm_en     -   1
+[  297.554487] rkvenc_540c: fmt         -   1
+[  297.554504] rkvenc_540c: jpg_en      -   0
+[  297.554520] rkvenc_540c: vsldy       -   0x07000000
+[  297.554537] rkvenc_540c: st_wdg      -   0x00000000
+[  297.554553] rkvenc_540c: st_ppl      -   0x00000000
+[  297.554569] rkvenc_540c: st_vsp0     -   0x0022001a
+[  297.554586] rkvenc_540c: st_vsp1     -   0x0022001a
+[  297.554602] rkvenc_540c: vepu_cycle  -   0x00000000
+[  297.794417] rkvenc_540c: rkvenc_task_timeout:1985: task 13681 state 0xf processing time out!
+[  297.794467] rkvenc_540c: dvbm_en     -   1
+[  297.794483] rkvenc_540c: fmt         -   1
+[  297.794494] rkvenc_540c: jpg_en      -   0
+[  297.794507] rkvenc_540c: vsldy       -   0x07000000
+[  297.794519] rkvenc_540c: st_wdg      -   0x00000000
+[  297.794530] rkvenc_540c: st_ppl      -   0x00000000
+[  297.794541] rkvenc_540c: st_vsp0     -   0x0022001a
+[  297.794553] rkvenc_540c: st_vsp1     -   0x0022001a
+[  297.794564] rkvenc_540c: vepu_cycle  -   0x00000000
+[  298.034627] rkvenc_540c: rkvenc_task_timeout:1985: task 13685 state 0xf processing time out!
+[  298.034695] rkvenc_540c: dvbm_en     -   1
+[  298.034706] rkvenc_540c: fmt         -   1
+[  298.034718] rkvenc_540c: jpg_en      -   0
+[  298.034729] rkvenc_540c: vsldy       -   0x07000000
+[  298.034741] rkvenc_540c: st_wdg      -   0x00000000
+[  298.034753] rkvenc_540c: st_ppl      -   0x00000000
+[  298.034765] rkvenc_540c: st_vsp0     -   0x0022001a
+[  298.034776] rkvenc_540c: st_vsp1     -   0x0022001a
+[  298.034788] rkvenc_540c: vepu_cycle  -   0x00000000
+[  298.274450] rkvenc_540c: rkvenc_task_timeout:1985: task 13689 state 0xf processing time out!
+[  298.274518] rkvenc_540c: dvbm_en     -   1
+[  298.274535] rkvenc_540c: fmt         -   1
+[  298.274552] rkvenc_540c: jpg_en      -   0
+[  298.274569] rkvenc_540c: vsldy       -   0x07000000
+[  298.274585] rkvenc_540c: st_wdg      -   0x00000000
+[  298.274601] rkvenc_540c: st_ppl      -   0x00000000
+[  298.274617] rkvenc_540c: st_vsp0     -   0x0022001a
+[  298.274636] rkvenc_540c: st_vsp1     -   0x0022001a
+[  298.274652] rkvenc_540c: vepu_cycle  -   0x00000000
+[  298.514456] rkvenc_540c: rkvenc_task_timeout:1985: task 13693 state 0xf processing time out!
+[  298.514523] rkvenc_540c: dvbm_en     -   1
+[  298.514541] rkvenc_540c: fmt         -   1
+[  298.514557] rkvenc_540c: jpg_en      -   0
+[  298.514574] rkvenc_540c: vsldy       -   0x07000000
+[  298.514591] rkvenc_540c: st_wdg      -   0x00000000
+[  298.514607] rkvenc_540c: st_ppl      -   0x00000000
+[  298.514624] rkvenc_540c: st_vsp0     -   0x0022001a
+[  298.514641] rkvenc_540c: st_vsp1     -   0x0022001a
+[  298.514657] rkvenc_540c: vepu_cycle  -   0x00000000
+[  298.754675] rkvenc_540c: rkvenc_task_timeout:1985: task 13697 state 0xf processing time out!
+[  298.754729] rkvenc_540c: dvbm_en     -   1
+[  298.754741] rkvenc_540c: fmt         -   1
+[  298.754752] rkvenc_540c: jpg_en      -   0
+[  298.754763] rkvenc_540c: vsldy       -   0x07000000
+[  298.754775] rkvenc_540c: st_wdg      -   0x00000000
+[  298.754786] rkvenc_540c: st_ppl      -   0x00000000
+[  298.754797] rkvenc_540c: st_vsp0     -   0x0022001a
+[  298.754809] rkvenc_540c: st_vsp1     -   0x0022001a
+[  298.754820] rkvenc_540c: vepu_cycle  -   0x00000000
+[  298.994660] rkvenc_540c: rkvenc_task_timeout:1985: task 13701 state 0xf processing time out!
+[  298.994718] rkvenc_540c: dvbm_en     -   1
+[  298.994731] rkvenc_540c: fmt         -   1
+[  298.994742] rkvenc_540c: jpg_en      -   0
+[  298.994754] rkvenc_540c: vsldy       -   0x07000000
+[  298.994766] rkvenc_540c: st_wdg      -   0x00000000
+[  298.994777] rkvenc_540c: st_ppl      -   0x00000000
+[  298.994789] rkvenc_540c: st_vsp0     -   0x0022001a
+[  298.994800] rkvenc_540c: st_vsp1     -   0x0022001a
+[  298.994812] rkvenc_540c: vepu_cycle  -   0x00000000
+[  299.234449] rkvenc_540c: rkvenc_task_timeout:1985: task 13705 state 0xf processing time out!
+[  299.234522] rkvenc_540c: dvbm_en     -   1
+[  299.234539] rkvenc_540c: fmt         -   1
+[  299.234556] rkvenc_540c: jpg_en      -   0
+[  299.234573] rkvenc_540c: vsldy       -   0x07000000
+[  299.234590] rkvenc_540c: st_wdg      -   0x00000000
+[  299.234606] rkvenc_540c: st_ppl      -   0x00000000
+[  299.234622] rkvenc_540c: st_vsp0     -   0x0022001a
+[  299.234641] rkvenc_540c: st_vsp1     -   0x0022001a
+[  299.234659] rkvenc_540c: vepu_cycle  -   0x00000000
+[  299.474506] rkvenc_540c: rkvenc_task_timeout:1985: task 13709 state 0xf processing time out!
+[  299.474557] rkvenc_540c: dvbm_en     -   1
+[  299.474574] rkvenc_540c: fmt         -   1
+[  299.474591] rkvenc_540c: jpg_en      -   0
+[  299.474608] rkvenc_540c: vsldy       -   0x07000000
+[  299.474625] rkvenc_540c: st_wdg      -   0x00000000
+[  299.474643] rkvenc_540c: st_ppl      -   0x00000000
+[  299.474660] rkvenc_540c: st_vsp0     -   0x0022001a
+[  299.474676] rkvenc_540c: st_vsp1     -   0x0022001a
+[  299.474694] rkvenc_540c: vepu_cycle  -   0x00000000
+[  299.714639] rkvenc_540c: rkvenc_task_timeout:1985: task 13713 state 0xf processing time out!
+[  299.714698] rkvenc_540c: dvbm_en     -   1
+[  299.714710] rkvenc_540c: fmt         -   1
+[  299.714721] rkvenc_540c: jpg_en      -   0
+[  299.714733] rkvenc_540c: vsldy       -   0x07000000
+[  299.714745] rkvenc_540c: st_wdg      -   0x00000000
+[  299.714756] rkvenc_540c: st_ppl      -   0x00000000
+[  299.714768] rkvenc_540c: st_vsp0     -   0x0022001a
+[  299.714779] rkvenc_540c: st_vsp1     -   0x0022001a
+[  299.714790] rkvenc_540c: vepu_cycle  -   0x00000000
+[  299.954640] rkvenc_540c: rkvenc_task_timeout:1985: task 13717 state 0xf processing time out!
+[  299.954698] rkvenc_540c: dvbm_en     -   1
+[  299.954710] rkvenc_540c: fmt         -   1
+[  299.954722] rkvenc_540c: jpg_en      -   0
+[  299.954733] rkvenc_540c: vsldy       -   0x07000000
+[  299.954745] rkvenc_540c: st_wdg      -   0x00000000
+[  299.954756] rkvenc_540c: st_ppl      -   0x00000000
+[  299.954768] rkvenc_540c: st_vsp0     -   0x0022001a
+[  299.954779] rkvenc_540c: st_vsp1     -   0x0022001a
+[  299.954790] rkvenc_540c: vepu_cycle  -   0x00000000
+[  300.194446] rkvenc_540c: rkvenc_task_timeout:1985: task 13721 state 0xf processing time out!
+[  300.194519] rkvenc_540c: dvbm_en     -   1
+[  300.194536] rkvenc_540c: fmt         -   1
+[  300.194552] rkvenc_540c: jpg_en      -   0
+[  300.194570] rkvenc_540c: vsldy       -   0x07000000
+[  300.194586] rkvenc_540c: st_wdg      -   0x00000000
+[  300.194603] rkvenc_540c: st_ppl      -   0x00000000
+[  300.194619] rkvenc_540c: st_vsp0     -   0x0022001a
+[  300.194637] rkvenc_540c: st_vsp1     -   0x0022001a
+[  300.194654] rkvenc_540c: vepu_cycle  -   0x00000000
+[  300.434415] rkvenc_540c: rkvenc_task_timeout:1985: task 13725 state 0xf processing time out!
+[  300.434482] rkvenc_540c: dvbm_en     -   1
+[  300.434499] rkvenc_540c: fmt         -   1
+[  300.434517] rkvenc_540c: jpg_en      -   0
+[  300.434533] rkvenc_540c: vsldy       -   0x07000000
+[  300.434550] rkvenc_540c: st_wdg      -   0x00000000
+[  300.434566] rkvenc_540c: st_ppl      -   0x00000000
+[  300.434583] rkvenc_540c: st_vsp0     -   0x0022001a
+[  300.434599] rkvenc_540c: st_vsp1     -   0x0022001a
+[  300.434616] rkvenc_540c: vepu_cycle  -   0x00000000
+[  300.674638] rkvenc_540c: rkvenc_task_timeout:1985: task 13729 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  300.674698] rkvenc_540c: dvbm_en     -   1
+[  300.674712] rkvenc_540c: fmt         -   1
+[  300.674723] rkvenc_540c: jpg_en      -   0
+[  300.674734] rkvenc_540c: vsldy       -   0x07000000
+[  300.674746] rkvenc_540c: st_wdg      -   0x00000000
+[  300.674757] rkvenc_540c: st_ppl      -   0x00000000
+[  300.674769] rkvenc_540c: st_vsp0     -   0x0022001a
+[  300.674780] rkvenc_540c: st_vsp1     -   0x0022001a
+[  300.674791] rkvenc_540c: vepu_cycle  -   0x00000000
+[  300.914647] rkvenc_540c: rkvenc_task_timeout:1985: task 13733 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  300.914709] rkvenc_540c: dvbm_en     -   1
+[  300.914721] rkvenc_540c: fmt         -   1
+[  300.914733] rkvenc_540c: jpg_en      -   0
+[  300.914744] rkvenc_540c: vsldy       -   0x07000000
+[  300.914756] rkvenc_540c: st_wdg      -   0x00000000
+[  300.914768] rkvenc_540c: st_ppl      -   0x00000000
+[  300.914779] rkvenc_540c: st_vsp0     -   0x0022001a
+[  300.914791] rkvenc_540c: st_vsp1     -   0x0022001a
+[  300.914803] rkvenc_540c: vepu_cycle  -   0x00000000
+[  301.154534] rkvenc_540c: rkvenc_task_timeout:1985: task 13737 state 0xf processing time out!
+[  301.154582] rkvenc_540c: dvbm_en     -   1
+[  301.154599] rkvenc_540c: fmt         -   1
+[  301.154616] rkvenc_540c: jpg_en      -   0
+[  301.154633] rkvenc_540c: vsldy       -   0x07000000
+[  301.154651] rkvenc_540c: st_wdg      -   0x00000000
+[  301.154670] rkvenc_540c: st_ppl      -   0x00000000
+[  301.154686] rkvenc_540c: st_vsp0     -   0x0022001a
+[  301.154703] rkvenc_540c: st_vsp1     -   0x0022001a
+[  301.154720] rkvenc_540c: vepu_cycle  -   0x00000000
+[  301.394643] rkvenc_540c: rkvenc_task_timeout:1985: task 13741 state 0xf processing time out!
+[  301.394706] rkvenc_540c: dvbm_en     -   1
+[  301.394718] rkvenc_540c: fmt         -   1
+[  301.394730] rkvenc_540c: jpg_en      -   0
+[  301.394741] rkvenc_540c: vsldy       -   0x07000000
+[  301.394753] rkvenc_540c: st_wdg      -   0x00000000
+[  301.394764] rkvenc_540c: st_ppl      -   0x00000000
+[  301.394776] rkvenc_540c: st_vsp0     -   0x0022001a
+[  301.394787] rkvenc_540c: st_vsp1     -   0x0022001a
+[  301.394798] rkvenc_540c: vepu_cycle  -   0x00000000
+[  301.634639] rkvenc_540c: rkvenc_task_timeout:1985: task 13745 state 0xf processing time out!
+[  301.634701] rkvenc_540c: dvbm_en     -   1
+[  301.634713] rkvenc_540c: fmt         -   1
+[  301.634725] rkvenc_540c: jpg_en      -   0
+[  301.634737] rkvenc_540c: vsldy       -   0x07000000
+[  301.634749] rkvenc_540c: st_wdg      -   0x00000000
+[  301.634760] rkvenc_540c: st_ppl      -   0x00000000
+[  301.634771] rkvenc_540c: st_vsp0     -   0x0022001a
+[  301.634783] rkvenc_540c: st_vsp1     -   0x0022001a
+[  301.634795] rkvenc_540c: vepu_cycle  -   0x00000000
+[  301.874598] rkvenc_540c: rkvenc_task_timeout:1985: task 13749 state 0xf processing time out!
+[  301.874651] rkvenc_540c: dvbm_en     -   1
+[  301.874664] rkvenc_540c: fmt         -   1
+[  301.874678] rkvenc_540c: jpg_en      -   0
+[  301.874691] rkvenc_540c: vsldy       -   0x07000000
+[  301.874704] rkvenc_540c: st_wdg      -   0x00000000
+[  301.874716] rkvenc_540c: st_ppl      -   0x00000000
+[  301.874727] rkvenc_540c: st_vsp0     -   0x0022001a
+[  301.874739] rkvenc_540c: st_vsp1     -   0x0022001a
+[  301.874750] rkvenc_540c: vepu_cycle  -   0x00000000
+[  302.114529] rkvenc_540c: rkvenc_task_timeout:1985: task 13753 state 0xf processing time out!
+[  302.114578] rkvenc_540c: dvbm_en     -   1
+[  302.114594] rkvenc_540c: fmt         -   1
+[  302.114611] rkvenc_540c: jpg_en      -   0
+[  302.114629] rkvenc_540c: vsldy       -   0x07000000
+[  302.114648] rkvenc_540c: st_wdg      -   0x00000000
+[  302.114665] rkvenc_540c: st_ppl      -   0x00000000
+[  302.114682] rkvenc_540c: st_vsp0     -   0x0022001a
+[  302.114699] rkvenc_540c: st_vsp1     -   0x0022001a
+[  302.114716] rkvenc_540c: vepu_cycle  -   0x00000000
+[  302.354450] rkvenc_540c: rkvenc_task_timeout:1985: task 13757 state 0xf processing time out!
+[  302.354520] rkvenc_540c: dvbm_en     -   1
+[  302.354537] rkvenc_540c: fmt         -   1
+[  302.354553] rkvenc_540c: jpg_en      -   0
+[  302.354570] rkvenc_540c: vsldy       -   0x07000000
+[  302.354587] rkvenc_540c: st_wdg      -   0x00000000
+[  302.354604] rkvenc_540c: st_ppl      -   0x00000000
+[  302.354621] rkvenc_540c: st_vsp0     -   0x0022001a
+[  302.354639] rkvenc_540c: st_vsp1     -   0x0022001a
+[  302.354656] rkvenc_540c: vepu_cycle  -   0x00000000
+[  302.594597] rkvenc_540c: rkvenc_task_timeout:1985: task 13761 state 0xf processing time out!
+[  302.594651] rkvenc_540c: dvbm_en     -   1
+[  302.594664] rkvenc_540c: fmt         -   1
+[  302.594677] rkvenc_540c: jpg_en      -   0
+[  302.594690] rkvenc_540c: vsldy       -   0x07000000
+[  302.594701] rkvenc_540c: st_wdg      -   0x00000000
+[  302.594713] rkvenc_540c: st_ppl      -   0x00000000
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[  302.594724] rkvenc_540c: st_vsp0     -   0x0022001a
+[  302.594735] rkvenc_540c: st_vsp1     -   0x0022001a
+[  302.594747] rkvenc_540c: vepu_cycle  -   0x00000000
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[  302.834439] rkvenc_540c: rkvenc_task_timeout:1985: task 13765 state 0xf processing time out!
+[  302.834511] rkvenc_540c: dvbm_en     -   1
+[  302.834528] rkvenc_540c: fmt         -   1
+[  302.834545] rkvenc_540c: jpg_en      -   0
+[  302.834562] rkvenc_540c: vsldy       -   0x07000000
+[  302.834579] rkvenc_540c: st_wdg      -   0x00000000
+[  302.834595] rkvenc_540c: st_ppl      -   0x00000000
+[  302.834612] rkvenc_540c: st_vsp0     -   0x0022001a
+[  302.834630] rkvenc_540c: st_vsp1     -   0x0022001a
+[  302.834646] rkvenc_540c: vepu_cycle  -   0x00000000
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[  303.074389] rkvenc_540c: rkvenc_task_timeout:1985: task 13769 state 0xf processing time out!
+[  303.074432] rkvenc_540c: dvbm_en     -   1
+[  303.074445] rkvenc_540c: fmt         -   1
+[  303.074457] rkvenc_540c: jpg_en      -   0
+[  303.074470] rkvenc_540c: vsldy       -   0x07000000
+[  303.074482] rkvenc_540c: st_wdg      -   0x00000000
+[  303.074493] rkvenc_540c: st_ppl      -   0x00000000
+[  303.074505] rkvenc_540c: st_vsp0     -   0x0022001a
+[  303.074517] rkvenc_540c: st_vsp1     -   0x0022001a
+[  303.074528] rkvenc_540c: vepu_cycle  -   0x00000000
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[  303.314675] rkvenc_540c: rkvenc_task_timeout:1985: task 13773 state 0xf processing time out!
+[  303.314728] rkvenc_540c: dvbm_en     -   1
+[  303.314740] rkvenc_540c: fmt         -   1
+[  303.314751] rkvenc_540c: jpg_en      -   0
+[  303.314762] rkvenc_540c: vsldy       -   0x07000000
+[  303.314774] rkvenc_540c: st_wdg      -   0x00000000
+[  303.314785] rkvenc_540c: st_ppl      -   0x00000000
+[  303.314797] rkvenc_540c: st_vsp0     -   0x0022001a
+[  303.314809] rkvenc_540c: st_vsp1     -   0x0022001a
+[  303.314820] rkvenc_540c: vepu_cycle  -   0x00000000
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[  303.554652] rkvenc_540c: rkvenc_task_timeout:1985: task 13777 state 0xf processing time out!
+[  303.554716] rkvenc_540c: dvbm_en     -   1
+[  303.554728] rkvenc_540c: fmt         -   1
+[  303.554739] rkvenc_540c: jpg_en      -   0
+[  303.554751] rkvenc_540c: vsldy       -   0x07000000
+[  303.554763] rkvenc_540c: st_wdg      -   0x00000000
+[  303.554774] rkvenc_540c: st_ppl      -   0x00000000
+[  303.554786] rkvenc_540c: st_vsp0     -   0x0022001a
+[  303.554797] rkvenc_540c: st_vsp1     -   0x0022001a
+[  303.554808] rkvenc_540c: vepu_cycle  -   0x00000000
+[video.c][rkipc_ivs_get_results]:OD flag:1
+[  303.794656] rkvenc_540c: rkvenc_task_timeout:1985: task 13781 state 0xf processing time out!
+[  303.794711] rkvenc_540c: dvbm_en     -   1
+[  303.794723] rkvenc_540c: fmt         -   1
+[  303.794734] rkvenc_540c: jpg_en      -   0
+[  303.794745] rkvenc_540c: vsldy       -   0x07000000
+[  303.794758] rkvenc_540c: st_wdg      -   0x00000000
+[  303.794769] rkvenc_540c: st_ppl      -   0x00000000
+[  303.794780] rkvenc_540c: st_vsp0     -   0x0022001a
+[  303.794792] rkvenc_540c: st_vsp1     -   0x0022001a
+[  303.794803] rkvenc_540c: vepu_cycle  -   0x00000000
+[  304.034475] rkvenc_540c: rkvenc_task_timeout:1985: task 13785 state 0xf processing time out!
+[  304.034536] rkvenc_540c: dvbm_en     -   1
+[  304.034553] rkvenc_540c: fmt         -   1
+[  304.034569] rkvenc_540c: jpg_en      -   0
+[  304.034586] rkvenc_540c: vsldy       -   0x07000000
+[  304.034604] rkvenc_540c: st_wdg      -   0x00000000
+[  304.034621] rkvenc_540c: st_ppl      -   0x00000000
+[  304.034637] rkvenc_540c: st_vsp0     -   0x0022001a
+[  304.034655] rkvenc_540c: st_vsp1     -   0x0022001a
+[  304.034675] rkvenc_540c: vepu_cycle  -   0x00000000
+[  304.274651] rkvenc_540c: rkvenc_task_timeout:1985: task 13789 state 0xf processing time out!
+[  304.274714] rkvenc_540c: dvbm_en     -   1
+[  304.274726] rkvenc_540c: fmt         -   1
+[  304.274737] rkvenc_540c: jpg_en      -   0
+[  304.274749] rkvenc_540c: vsldy       -   0x07000000
+[  304.274761] rkvenc_540c: st_wdg      -   0x00000000
+[  304.274772] rkvenc_540c: st_ppl      -   0x00000000
+[  304.274784] rkvenc_540c: st_vsp0     -   0x0022001a
+[  304.274795] rkvenc_540c: st_vsp1     -   0x0022001a
+[  304.274806] rkvenc_540c: vepu_cycle  -   0x00000000
+[  304.514634] rkvenc_540c: rkvenc_task_timeout:1985: task 13793 state 0xf processing time out!
+[  304.514699] rkvenc_540c: dvbm_en     -   1
+[  304.514712] rkvenc_540c: fmt         -   1
+[  304.514723] rkvenc_540c: jpg_en      -   0
+[  304.514735] rkvenc_540c: vsldy       -   0x07000000
+[  304.514747] rkvenc_540c: st_wdg      -   0x00000000
+[  304.514758] rkvenc_540c: st_ppl      -   0x00000000
+[  304.514769] rkvenc_540c: st_vsp0     -   0x0022001a
+[  304.514781] rkvenc_540c: st_vsp1     -   0x0022001a
+[  304.514792] rkvenc_540c: vepu_cycle  -   0x00000000
+[  304.754623] rkvenc_540c: rkvenc_task_timeout:1985: task 13797 state 0xf processing time out!
+[  304.754686] rkvenc_540c: dvbm_en     -   1
+[  304.754699] rkvenc_540c: fmt         -   1
+[  304.754711] rkvenc_540c: jpg_en      -   0
+[  304.754722] rkvenc_540c: vsldy       -   0x07000000
+[  304.754734] rkvenc_540c: st_wdg      -   0x00000000
+[  304.754746] rkvenc_540c: st_ppl      -   0x00000000
+[  304.754757] rkvenc_540c: st_vsp0     -   0x0022001a
+[  304.754768] rkvenc_540c: st_vsp1     -   0x0022001a
+[  304.754780] rkvenc_540c: vepu_cycle  -   0x00000000
+[  304.994464] rkvenc_540c: rkvenc_task_timeout:1985: task 13801 state 0xf processing time out!
+[  304.994534] rkvenc_540c: dvbm_en     -   1
+[  304.994552] rkvenc_540c: fmt         -   1
+[  304.994569] rkvenc_540c: jpg_en      -   0
+[  304.994586] rkvenc_540c: vsldy       -   0x07000000
+[  304.994602] rkvenc_540c: st_wdg      -   0x00000000
+[  304.994619] rkvenc_540c: st_ppl      -   0x00000000
+[  304.994635] rkvenc_540c: st_vsp0     -   0x0022001a
+[  304.994652] rkvenc_540c: st_vsp1     -   0x0022001a
+[  304.994670] rkvenc_540c: vepu_cycle  -   0x00000000
+[  305.234403] rkvenc_540c: rkvenc_task_timeout:1985: task 13805 state 0xf processing time out!
+[  305.234473] rkvenc_540c: dvbm_en     -   1
+[  305.234492] rkvenc_540c: fmt         -   1
+[  305.234510] rkvenc_540c: jpg_en      -   0
+[  305.234526] rkvenc_540c: vsldy       -   0x07000000
+[  305.234543] rkvenc_540c: st_wdg      -   0x00000000
+[  305.234559] rkvenc_540c: st_ppl      -   0x00000000
+[  305.234576] rkvenc_540c: st_vsp0     -   0x0022001a
+[  305.234592] rkvenc_540c: st_vsp1     -   0x0022001a
+[  305.234609] rkvenc_540c: vepu_cycle  -   0x00000000
+[  305.474642] rkvenc_540c: rkvenc_task_timeout:1985: task 13809 state 0xf processing time out!
+[  305.474705] rkvenc_540c: dvbm_en     -   1
+[  305.474717] rkvenc_540c: fmt         -   1
+[  305.474729] rkvenc_540c: jpg_en      -   0
+[  305.474740] rkvenc_540c: vsldy       -   0x07000000
+[  305.474752] rkvenc_540c: st_wdg      -   0x00000000
+[  305.474764] rkvenc_540c: st_ppl      -   0x00000000
+[  305.474775] rkvenc_540c: st_vsp0     -   0x0022001a
+[  305.474787] rkvenc_540c: st_vsp1     -   0x0022001a
+[  305.474798] rkvenc_540c: vepu_cycle  -   0x00000000
+[  305.714648] rkvenc_540c: rkvenc_task_timeout:1985: task 13813 state 0xf processing time out!
+[WARN  rtsp_demo.c:1660:rtsp_tx_video] not found nal header
+[  305.714712] rkvenc_540c: dvbm_en     -   1
+[  305.714724] rkvenc_540c: fmt         -   1
+[  305.714735] rkvenc_540c: jpg_en      -   0
+[  305.714747] rkvenc_540c: vsldy       -   0x07000000
+[  305.714759] rkvenc_540c: st_wdg      -   0x00000000
+[  305.714770] rkvenc_540c: st_ppl      -   0x00000000
+[  305.714781] rkvenc_540c: st_vsp0     -   0x0022001a
+[  305.714793] rkvenc_540c: st_vsp1     -   0x0022001a
+[  305.714804] rkvenc_540c: vepu_cycle  -   0x00000000
+[vi
+[60512 byte]

@@ -1,0 +1,24 @@
+
+version info: 2024-10-09 16:52:50.571345 6129964c9(rtt) 6129964c9(hal) 6129964c9(battery-ipc)
+bench: probing mcycle
+bench: clock mcycle 297000000 Hz, target 1000000 ns
+bench: started, run length 1000000
+Hello RV1103 MCU 0
+Hello RV1103 MCU 1
+Hello RV1103 MCU 2
+Hello RV1103 MCU 3
+Hello RV1103 MCU 4
+Hello RV1103 MCU 5
+
+======
+clock           mcycle, 297000000 Hz danh nghia
+target period   1000000 ns, 1000000 vong moi lan chay
+heartbeat       5
+runs done       0
+live (lan chay hien tai):
+  iterations      4999
+  missed          0   (chu ky > 1.5 x target)
+  overruns        0   (lo tick)
+  period ns       min 925693  avg 1000999  max 1107808
+  jitter max ns   107808
+  latency ns      min 5013  avg 9114  max 43457

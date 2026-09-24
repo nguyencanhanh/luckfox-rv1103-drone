@@ -11,4 +11,4 @@
 .DS_Store
 /out/
 /.board
-/logs/*.txt
+/logs/phase0_search_all.txt

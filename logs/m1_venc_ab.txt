@@ -1,0 +1,3 @@
+MCU dang giu reset
+MCU DUNG: 27 timeout / 30s
+MCU CHAY: 27 timeout / 30s
