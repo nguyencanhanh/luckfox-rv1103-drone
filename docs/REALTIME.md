@@ -7,10 +7,14 @@ Code: `mcu/bsp/luckfox_mini-M1-NONE/rt_bench.c`. Chưa được gọi hệ thố
 | Kịch bản | Log | n | missed | overrun | period min / avg / max (µs) | jitter max | P50 / P95 / P99 / P99.9 / P99.99 (µs) | latency avg / P99 / P99.99 / max (µs) |
 |---|---|---|---|---|---|---|---|---|
 | Firmware mặc định: `rkipc` chạy (camera + ISP + encoder), load 11,3 | `logs/m1_run1_rkipc.txt` | 1 000 000 | 0 | 0 | 894,7 / 1000,999 / 1116,7 | 116,7 µs | 1001,25 / 1010,0 / 1021,25 / 1053,0 / 1099,75 | 9,1 / 21,6 / 63,7 / 107,1 |
+| Linux idle: `RkLunch-stop.sh`, không còn `rkipc`, CPU idle 83% (load ≈ 10 do các luồng media kernel ở trạng thái D) | `logs/m1_run2_idle.txt` | 1 000 000 | 0 | 0 | 984,9 / 1000,999 / 1018,2 | 18,2 µs | 1001,0 / 1001,5 / 1001,75 / 1008,0 / 1013,0 | 6,8 / 7,3 / 13,0 / 15,1 |
 
 - Chu kỳ trung bình 1,000999 ms thay vì 1 ms: tick RT-Thread của SDK chậm 0,1% (xem [RV1103_MCU.md §4](RV1103_MCU.md)).
 - Percentile là cận trên của ô histogram (250 ns cho period, 100 ns cho latency).
-- 9 mẫu latency vượt 100 µs (`hist overflow`).
+- Lần chạy dưới tải `rkipc` có 9 mẫu latency vượt 100 µs (`hist overflow`).
+- **Tải media trên Linux làm jitter của MCU tăng khoảng 6,4 lần** (18,2 → 116,7 µs), dù MCU có lõi riêng.
+  Giả thuyết: code và dữ liệu MCU nằm trong DDR, tranh băng thông với ISP/encoder khi cache miss. **Chưa chứng minh nguyên nhân.**
+  Có thể thử: chạy vòng lặp từ `hpmcu_sram` (8 KB), kiểm tra D-cache MCU có bật không.
 
 ## Cách đo
 

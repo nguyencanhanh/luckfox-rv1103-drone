@@ -1,0 +1,27 @@
+clock           mcycle, 297000000 Hz danh nghia
+target period   1000000 ns, 1000000 vong moi lan chay
+heartbeat       1028
+runs done       1
+live (lan chay hien tai):
+  iterations      28001
+  missed          0   (chu ky > 1.5 x target)
+  overruns        0   (lo tick)
+  period ns       min 970888  avg 1000999  max 1034569
+  jitter max ns   34569
+  latency ns      min 5121  avg 6652  max 26939
+last (lan chay hoan tat gan nhat):
+  iterations      1000000
+  missed          0   (chu ky > 1.5 x target)
+  overruns        0   (lo tick)
+  period ns       min 984878  avg 1000999  max 1018218
+  jitter max ns   18218
+  period pct ns   P50 1001000  P95 1001500  P99 1001750  P99.9 1008000  P99.99 1013000
+  latency ns      min 4296  avg 6807  max 15114  P99 7300  P99.99 13000
+  hist overflow   0
+====
+bench: run 1 done
+bench: final n=1000000 missed=0 overrun=0 period ns min=984878 avg=1000999 max=1018218 jitter=18218
+bench: final period ns p50=1001000 p95=1001500 p99=1001750 p99.9=1008000 p99.99=1013000
+bench: final latency ns min=4296 avg=6807 max=15114 p99=7300 p99.99=13000 overflow=0
+10.08 10.14 9.79 1/79 3331
+0

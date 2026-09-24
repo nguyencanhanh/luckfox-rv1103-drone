@@ -11,9 +11,9 @@
 | MCU firmware boot | **PASS** (nạp từ Linux bằng `mcu-tool`) | `logs/m1_load.txt`, `logs/m1_first_log.txt` |
 | UART debug | **Linux: PASS** (UART2 qua J-Link VCOM, 115200). **MCU: không có UART** trong SDK cho RV1106, dùng log trong RAM (`mcu-tool log`) | `logs/m1_uart_boot1.txt` |
 | Vòng lặp 1 kHz chạy | **PASS**: 1 000 000 vòng, 0 missed, 0 overrun | `logs/m1_run1_rkipc.txt` |
-| Đo jitter | **PASS** (dưới tải `rkipc`): jitter max 116,7 µs, P99.99 1099,75 µs | [REALTIME.md](REALTIME.md) |
+| Đo jitter | **PASS**: Linux idle jitter max 18,2 µs; dưới tải `rkipc` 116,7 µs | [REALTIME.md](REALTIME.md) |
 
-Milestone 1: **PASS, có một điểm lệch**: debug MCU qua log trong RAM thay vì UART (SDK không hỗ trợ UART cho MCU RV1106). Chưa có mốc Linux idle để so sánh.
+Milestone 1: **PASS, có một điểm lệch**: debug MCU qua log trong RAM thay vì UART (SDK không hỗ trợ UART cho MCU RV1106).
 
 ## Cần có
 
