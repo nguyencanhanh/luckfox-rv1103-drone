@@ -1,0 +1,5 @@
+repo:    https://github.com/LuckfoxTECH/luckfox-pico
+branch:  main
+commit:  824b817f889c2cbff1d48fcdb18ab494a68f69d1
+tarball: dl/luckfox-pico-main.tar.gz  sha256 f1bd340ae4618373fea3f525143d3fb53b178c514a78b3d67d1879a6fa043fd8
+board:   project/cfg/BoardConfig_IPC/BoardConfig-SPI_NAND-Buildroot-RV1103_Luckfox_Pico_Mini-IPC.mk

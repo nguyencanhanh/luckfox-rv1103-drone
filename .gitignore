@@ -1,0 +1,14 @@
+# SDK tarball, anh firmware, log build: lon va tao lai duoc
+/dl/
+/images/
+/log/
+/build.log
+/logs/*.log
+# rkdeveloptool la repo rieng (tu build cho macOS)
+/tools-rkdeveloptool/
+# ban sao DTS cua SDK chi de doc, tao lai bang tools/extract_sdk_ref.sh
+/linux/dts/sdk/
+.DS_Store
+/out/
+/.board
+/logs/*.txt

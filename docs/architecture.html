@@ -1,0 +1,308 @@
+<title>RV1103 Linux và HPMCU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F3F6F6; --panel:#FFFFFF; --soc:#E8EFEF; --ink:#17252A; --muted:#56676C; --line:#B3C1C3;
+  --linux:#2B6CB0; --linux-bg:#E3EDF8; --mcu:#B45309; --mcu-bg:#FBEEDC; --warn:#C0392B; --warn-bg:#FBE9E7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F1618; --panel:#172226; --soc:#131D20; --ink:#DDE6E7; --muted:#93A4A8; --line:#3C4D51;
+    --linux:#7DB3E8; --linux-bg:#18293A; --mcu:#F0A45A; --mcu-bg:#33250F; --warn:#F07366; --warn-bg:#3A1C19;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1618; --panel:#172226; --soc:#131D20; --ink:#DDE6E7; --muted:#93A4A8; --line:#3C4D51;
+  --linux:#7DB3E8; --linux-bg:#18293A; --mcu:#F0A45A; --mcu-bg:#33250F; --warn:#F07366; --warn-bg:#3A1C19;
+}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:40px 64px;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px;max-width:68ch}
+.eyebrow{font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:30px;line-height:1.2;margin:0;text-wrap:balance}
+h2{font-size:20px;line-height:1.3;margin:0;text-wrap:balance}
+p{margin:0}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.88em}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:28px;height:0;border-top:2px solid var(--ink)}
+.sw.w{border-top:2px dashed var(--warn)}
+.sw.g{border-top:2px dashed var(--muted)}
+.chip{width:14px;height:14px;border-radius:3px;border:1.5px solid}
+.chip.l{background:var(--linux-bg);border-color:var(--linux)}
+.chip.m{background:var(--mcu-bg);border-color:var(--mcu)}
+section{display:flex;flex-direction:column;gap:14px}
+figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.scroll{overflow-x:auto}
+svg{display:block;width:100%;height:auto;min-width:760px}
+figcaption{font-size:14px;color:var(--muted);max-width:75ch}
+.stale{background:var(--warn-bg);border:1px solid var(--warn);border-radius:8px;padding:12px 14px;font-size:14px}
+.todo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.todo li{background:var(--warn-bg);border:1px solid var(--warn);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.todo b{color:var(--warn)}
+/* SVG */
+.soc{fill:var(--soc);stroke:var(--line)}
+.b{fill:var(--panel);stroke:var(--line);stroke-width:1.2}
+.bl{fill:var(--linux-bg);stroke:var(--linux);stroke-width:1.5}
+.bm{fill:var(--mcu-bg);stroke:var(--mcu);stroke-width:1.5}
+.bx{fill:var(--panel);stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
+.zone{fill:none;stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
+.lane{fill:var(--soc)}
+.t{font:600 13px "Be Vietnam Pro",sans-serif;fill:var(--ink)}
+.s{font:11.5px "Be Vietnam Pro",sans-serif;fill:var(--muted)}
+.m{font:11px "JetBrains Mono",monospace;fill:var(--muted)}
+.cap{font:600 11px "JetBrains Mono",monospace;letter-spacing:.06em;fill:var(--muted)}
+.tw{fill:var(--warn)}
+.tl{fill:var(--linux)}
+.tm{fill:var(--mcu)}
+.ln{fill:none;stroke:var(--ink);stroke-width:1.4}
+.lw{fill:none;stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
+.lg{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:4 4}
+.ah{fill:var(--ink)} .aw{fill:var(--warn)} .ag{fill:var(--muted)}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Luckfox Pico Mini · RV1103</div>
+  <h1>Linux trên Cortex-A7 và RT-Thread trên HPMCU</h1>
+  <p>Ba sơ đồ: phần cứng dùng chung, thứ tự khởi động, và đường đi của log từ MCU sang Linux. Mọi địa chỉ đều lấy từ source SDK hoặc đo trên board (chi tiết trong <code>docs/MEMORY_MAP.md</code>).</p>
+  <p class="stale"><b>Cập nhật 2026-09-24:</b> các sơ đồ dưới đây vẽ bố cục mặc định của SDK. Vùng MCU <code>0x40000</code> nằm trong kernel Linux (<code>0x8000–0x78C364</code>), nên repo chuyển MCU sang <code>0x01800000</code> và nạp MCU từ Linux bằng <code>mcu-tool</code>. SPL build sẵn của Luckfox cũng có mã nạp MCU qua FIT. Xem <code>docs/MEMORY_MAP.md</code> và <code>docs/RV1103_MCU.md</code>.</p>
+  <div class="legend">
+    <span><i class="chip l"></i>Linux (Cortex-A7)</span>
+    <span><i class="chip m"></i>HPMCU (RISC-V)</span>
+    <span><i class="sw"></i>đang chạy trên Luckfox</span>
+    <span><i class="sw w"></i>chưa có trên Luckfox / rủi ro</span>
+    <span><i class="sw g"></i>có phần cứng, chưa dùng</span>
+  </div>
+</header>
+
+<section>
+  <h2>1. Phần cứng: hai nhân dùng chung DDR</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 560" role="img" aria-label="Cortex-A7 chạy Linux và HPMCU chạy RT-Thread nằm chung trong RV1103, nối qua mailbox, thanh ghi boot và INT_MUX, dùng chung DDR 64 MB; vùng 0x40000 đến 0x7EFFF của MCU chưa được Linux chừa ra.">
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+        <marker id="w1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
+        <marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ag"/></marker>
+      </defs>
+      <rect class="soc" x="16" y="16" width="928" height="364" rx="10"/>
+      <text class="cap" x="32" y="40">RV1103 SOC (HỌ RV1106)</text>
+
+      <rect class="bl" x="40" y="60" width="280" height="164" rx="8"/>
+      <text class="t tl" x="56" y="88">Cortex-A7 · Linux</text>
+      <text class="s" x="56" y="112">ARMv7, 1 nhân, 1104 MHz</text>
+      <text class="s" x="56" y="132">Buildroot, console trên UART2</text>
+      <text class="s" x="56" y="152">ngắt qua GIC</text>
+      <text class="s" x="56" y="172">RAM dùng được: 32 MB + CMA 24 MB</text>
+
+      <rect class="bm" x="640" y="60" width="280" height="164" rx="8"/>
+      <text class="t tm" x="656" y="88">HPMCU · RT-Thread 3.1.3</text>
+      <text class="s" x="656" y="112">RISC-V SCR1, rv32imc, 297 MHz</text>
+      <text class="s" x="656" y="132">ngắt qua IPIC + INT_MUX</text>
+      <text class="m" x="656" y="152">tick: mtime 0xFF1E0000</text>
+      <text class="s" x="656" y="172">không có UART riêng</text>
+
+      <rect class="b" x="380" y="60" width="200" height="44" rx="6"/>
+      <text class="t" x="480" y="78" text-anchor="middle">Mailbox</text>
+      <text class="m" x="480" y="95" text-anchor="middle">0xFF5C0000</text>
+      <line class="lg" x1="322" y1="82" x2="378" y2="82" marker-start="url(#g1)" marker-end="url(#g1)"/>
+      <line class="lg" x1="582" y1="82" x2="638" y2="82" marker-start="url(#g1)" marker-end="url(#g1)"/>
+      <text class="m" x="350" y="74" text-anchor="middle">SPI 1</text>
+
+      <rect class="b" x="380" y="122" width="200" height="44" rx="6"/>
+      <text class="t" x="480" y="140" text-anchor="middle">Boot addr + reset</text>
+      <text class="m" x="480" y="157" text-anchor="middle">SGRF 0xFF076044 · CRU</text>
+      <line class="ln" x1="320" y1="144" x2="378" y2="144" marker-end="url(#a1)"/>
+      <text class="s" x="349" y="136" text-anchor="middle">U-Boot ghi</text>
+      <line class="ln" x1="580" y1="144" x2="638" y2="144" marker-end="url(#a1)"/>
+      <text class="s" x="609" y="136" text-anchor="middle">entry</text>
+
+      <rect class="b" x="380" y="184" width="200" height="44" rx="6"/>
+      <text class="t" x="480" y="202" text-anchor="middle">INT_MUX</text>
+      <text class="m" x="480" y="219" text-anchor="middle">0xFF5D0000</text>
+      <line class="ln" x1="580" y1="206" x2="638" y2="206" marker-end="url(#a1)"/>
+      <text class="s" x="609" y="198" text-anchor="middle">ngắt</text>
+
+      <!-- Linux bus to peripherals -->
+      <path class="ln" d="M180 224V272M140 272H600M140 272V290M370 272V290M600 272V290"/>
+      <text class="s tl" x="196" y="264">Linux sở hữu pinmux và driver</text>
+      <!-- MCU unmasks GPIO IRQ -->
+      <path class="lw" d="M700 224V250H420V288" marker-end="url(#w1)"/>
+      <text class="s tw" x="560" y="244" text-anchor="middle">⚠ drv_gpio unmask IRQ GPIO0–4</text>
+      <!-- MCU to sram -->
+      <line class="lg" x1="830" y1="224" x2="830" y2="288" marker-end="url(#g1)"/>
+      <text class="s" x="838" y="262">chưa kiểm chứng</text>
+
+      <rect class="b" x="40" y="290" width="200" height="60" rx="6"/>
+      <text class="t" x="140" y="314" text-anchor="middle">UART2</text>
+      <text class="s" x="140" y="334" text-anchor="middle">console Linux</text>
+      <rect class="b" x="270" y="290" width="200" height="60" rx="6"/>
+      <text class="t" x="370" y="314" text-anchor="middle">GPIO0–4</text>
+      <text class="s" x="370" y="334" text-anchor="middle">ngắt do Linux xử lý</text>
+      <rect class="b" x="500" y="290" width="200" height="60" rx="6"/>
+      <text class="t" x="600" y="314" text-anchor="middle">I2C4 · MIPI refclk</text>
+      <text class="s" x="600" y="334" text-anchor="middle">camera, Linux sở hữu</text>
+      <rect class="b" x="730" y="290" width="200" height="60" rx="6"/>
+      <text class="t" x="830" y="314" text-anchor="middle">hpmcu_sram 8 KB</text>
+      <text class="m" x="830" y="334" text-anchor="middle">0xFF6FE000</text>
+
+      <!-- DDR -->
+      <line class="ln" x1="120" y1="380" x2="120" y2="428" marker-start="url(#a1)" marker-end="url(#a1)"/>
+      <text class="s" x="128" y="408">A7 đọc/ghi</text>
+      <line class="ln" x1="400" y1="380" x2="400" y2="428" marker-start="url(#a1)" marker-end="url(#a1)"/>
+      <text class="s" x="408" y="408">MCU chạy code, ghi log</text>
+      <rect class="bl" x="40" y="430" width="160" height="56"/>
+      <text class="t" x="120" y="454" text-anchor="middle">Linux</text>
+      <text class="m" x="120" y="472" text-anchor="middle">0x0–0x3FFFF</text>
+      <rect class="bm" x="200" y="430" width="240" height="56"/>
+      <text class="t" x="320" y="454" text-anchor="middle">code + heap MCU</text>
+      <text class="m" x="320" y="472" text-anchor="middle">0x40000 · 240 KB</text>
+      <rect class="bm" x="440" y="430" width="160" height="56" style="fill-opacity:.55"/>
+      <text class="t" x="520" y="454" text-anchor="middle">log MCU</text>
+      <text class="m" x="520" y="472" text-anchor="middle">0x7C000 · 12 KB</text>
+      <rect class="bl" x="600" y="430" width="320" height="56"/>
+      <text class="t" x="760" y="454" text-anchor="middle">Linux + CMA</text>
+      <text class="m" x="760" y="472" text-anchor="middle">0x7F000–0x3FFFFFF</text>
+      <rect class="zone" x="196" y="426" width="408" height="64" rx="4"/>
+      <text class="s tw" x="400" y="510" text-anchor="middle">⚠ DTS Luckfox chưa có reserved-memory: Linux vẫn cấp phát vùng 0x40000–0x7EFFF</text>
+      <text class="cap" x="40" y="540">DDR 64 MB · KHÔNG THEO TỈ LỆ</text>
+    </svg>
+    </div>
+    <figcaption>Hai nhân không có RAM riêng đủ lớn: code của MCU nằm trong DDR mà Linux đang dùng. Mailbox là kênh trao đổi sẵn có trong phần cứng nhưng firmware hello world chưa dùng tới.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>2. Khởi động: ai nạp và ai nhả MCU</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 384" role="img" aria-label="Luồng khởi động: loader nạp U-Boot, U-Boot boot kernel. Các bước nạp rtthread.bin vào 0x40000 và nhả reset MCU chỉ có trong luồng thunder-boot, chưa có trên Luckfox.">
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+        <marker id="w2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
+      </defs>
+      <rect class="lane" x="16" y="24" width="928" height="72" rx="6"/>
+      <rect class="lane" x="16" y="104" width="928" height="102" rx="6"/>
+      <rect class="lane" x="16" y="214" width="928" height="72" rx="6"/>
+      <rect class="lane" x="16" y="294" width="928" height="72" rx="6"/>
+      <text class="cap" x="28" y="64">LOADER</text>
+      <text class="cap" x="28" y="160">U-BOOT</text>
+      <text class="cap tl" x="28" y="254">LINUX</text>
+      <text class="cap tm" x="28" y="334">HPMCU</text>
+
+      <rect class="b" x="170" y="36" width="170" height="48" rx="6"/>
+      <text class="t" x="255" y="56" text-anchor="middle">Loader SPL</text>
+      <text class="s" x="255" y="74" text-anchor="middle">nạp U-Boot từ NAND</text>
+      <rect class="bx" x="360" y="36" width="170" height="48" rx="6"/>
+      <text class="t" x="445" y="56" text-anchor="middle">nạp rtthread.bin</text>
+      <text class="m" x="445" y="74" text-anchor="middle">→ DDR 0x40000</text>
+      <line class="lw" x1="340" y1="60" x2="358" y2="60" marker-end="url(#w2)"/>
+
+      <path class="ln" d="M255 84V140H358" marker-end="url(#a2)"/>
+      <rect class="b" x="360" y="116" width="170" height="48" rx="6"/>
+      <text class="t" x="445" y="136" text-anchor="middle">U-Boot khởi động</text>
+      <text class="s" x="445" y="154" text-anchor="middle">đọc DTB, env</text>
+      <rect class="bx" x="550" y="116" width="170" height="48" rx="6"/>
+      <text class="t" x="635" y="136" text-anchor="middle">ghi BOOT_ADDR</text>
+      <text class="s" x="635" y="154" text-anchor="middle">reset rồi nhả reset MCU</text>
+      <rect class="b" x="740" y="116" width="170" height="48" rx="6"/>
+      <text class="t" x="825" y="136" text-anchor="middle">nạp kernel + DTB</text>
+      <text class="s" x="825" y="154" text-anchor="middle">nhảy vào kernel</text>
+      <line class="lw" x1="530" y1="140" x2="548" y2="140" marker-end="url(#w2)"/>
+      <line class="lw" x1="720" y1="140" x2="738" y2="140" marker-end="url(#w2)"/>
+      <path class="ln" d="M445 164V190H800V166" marker-end="url(#a2)"/>
+      <text class="s" x="622" y="184" text-anchor="middle">Luckfox hôm nay đi thẳng</text>
+
+      <line class="ln" x1="850" y1="164" x2="850" y2="224" marker-end="url(#a2)"/>
+      <rect class="bl" x="740" y="226" width="170" height="48" rx="6"/>
+      <text class="t" x="825" y="246" text-anchor="middle">Linux khởi động</text>
+      <text class="s tw" x="825" y="264" text-anchor="middle">thiếu reserved-memory</text>
+
+      <path class="lw" d="M635 164V304" marker-end="url(#w2)"/>
+      <text class="s tw" x="643" y="254">nhả reset</text>
+      <text class="s" x="255" y="334" text-anchor="middle" font-style="italic">MCU đứng yên (giữ reset)</text>
+      <rect class="bm" x="550" y="306" width="170" height="48" rx="6"/>
+      <text class="t" x="635" y="326" text-anchor="middle">RT-Thread chạy</text>
+      <text class="m" x="635" y="344" text-anchor="middle">c.j → 0x40200</text>
+      <rect class="bm" x="740" y="306" width="170" height="48" rx="6"/>
+      <text class="t" x="825" y="326" text-anchor="middle">thread hello</text>
+      <text class="s" x="825" y="344" text-anchor="middle">1 dòng log mỗi giây</text>
+      <line class="ln" x1="720" y1="330" x2="738" y2="330" marker-end="url(#a2)"/>
+    </svg>
+    </div>
+    <figcaption>Luckfox hiện chạy đường liền: loader → U-Boot → kernel, MCU không bao giờ được nhả reset. Hai bước đứt đỏ có sẵn trong SDK (<code>RV1106MINIALL_SPI_NAND_TB.ini</code> và <code>u-boot/…/rv1106/rv1106.c:552–559</code>) nhưng thuộc luồng thunder-boot của Rockchip.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>3. Khi chạy: log đi từ MCU sang Linux qua RAM</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 310" role="img" aria-label="rt_kprintf trên MCU được hook sang write_log_to_ram, ghi vào vòng đệm ở 0x7C000; Linux đọc lại qua node ramoops mcu-log, node này chưa có trong DTS Luckfox. Đường ra UART bị tắt.">
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+        <marker id="w3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
+        <marker id="g3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ag"/></marker>
+      </defs>
+      <text class="cap tm" x="40" y="28">HPMCU</text>
+      <text class="cap" x="360" y="28">DDR</text>
+      <text class="cap tl" x="700" y="28">LINUX</text>
+
+      <rect class="bm" x="40" y="44" width="240" height="56" rx="6"/>
+      <text class="t" x="160" y="67" text-anchor="middle">thread hello</text>
+      <text class="m" x="160" y="86" text-anchor="middle">rt_kprintf("…alive %u")</text>
+
+      <line class="ln" x1="160" y1="100" x2="160" y2="138" marker-end="url(#a3)"/>
+      <text class="s" x="168" y="124">output hook</text>
+      <rect class="bm" x="40" y="140" width="240" height="56" rx="6"/>
+      <text class="t" x="160" y="163" text-anchor="middle">write_log_to_ram()</text>
+      <text class="m" x="160" y="182" text-anchor="middle">drv_pstore.c</text>
+
+      <path class="lg" d="M40 72H24V254H38" marker-end="url(#g3)"/>
+      <rect class="b" x="40" y="228" width="240" height="56" rx="6" style="opacity:.8"/>
+      <text class="t" x="160" y="251" text-anchor="middle" style="text-decoration:line-through">UART2</text>
+      <text class="s" x="160" y="270" text-anchor="middle">RT_USING_UART tắt, hàm rỗng</text>
+
+      <line class="ln" x1="280" y1="168" x2="358" y2="168" marker-end="url(#a3)"/>
+      <text class="s" x="319" y="160" text-anchor="middle">ghi vòng</text>
+      <rect class="bm" x="360" y="100" width="260" height="120" rx="6" style="fill-opacity:.55"/>
+      <text class="t" x="490" y="124" text-anchor="middle">vòng đệm 0x7C000</text>
+      <rect class="b" x="376" y="140" width="48" height="34"/>
+      <rect class="b" x="424" y="140" width="48" height="34"/>
+      <rect class="b" x="472" y="140" width="48" height="34"/>
+      <rect class="b" x="520" y="140" width="84" height="34"/>
+      <text class="m" x="400" y="161" text-anchor="middle">sig</text>
+      <text class="m" x="448" y="161" text-anchor="middle">start</text>
+      <text class="m" x="496" y="161" text-anchor="middle">size</text>
+      <text class="m" x="562" y="161" text-anchor="middle">data…</text>
+      <text class="s" x="490" y="196" text-anchor="middle">sig = "DBGC", data 12 KB − 12 B</text>
+      <text class="s" x="490" y="212" text-anchor="middle">\n được đổi thành \r\n</text>
+
+      <line class="lw" x1="620" y1="140" x2="698" y2="140" marker-end="url(#w3)"/>
+      <text class="s tw" x="659" y="132" text-anchor="middle">đọc</text>
+      <rect class="bx" x="700" y="112" width="220" height="56" rx="6"/>
+      <text class="t" x="810" y="135" text-anchor="middle">ramoops "mcu-log"</text>
+      <text class="s" x="810" y="154" text-anchor="middle">có ở rv1106-thunder-boot.dtsi</text>
+      <line class="lw" x1="810" y1="168" x2="810" y2="206" marker-end="url(#w3)"/>
+      <rect class="bx" x="700" y="208" width="220" height="56" rx="6"/>
+      <text class="t" x="810" y="231" text-anchor="middle">xem log MCU từ shell</text>
+      <text class="s tw" x="810" y="250" text-anchor="middle">chưa có trên Luckfox</text>
+    </svg>
+    </div>
+    <figcaption>MCU chỉ ghi log vào RAM. Muốn đọc được từ Linux cần thêm node ramoops trỏ vào 0x7C000 trong DTS Luckfox. Mailbox (sơ đồ 1) sẽ là kênh cho lệnh hai chiều ở bước sau.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Ba việc trước khi chạy MCU trên board</h2>
+  <ul class="todo">
+    <li><b>Chừa RAM</b>Thêm <code>reserved-memory</code> cho 0x40000–0x7EFFF vào DTS Luckfox, nếu không MCU ghi đè bộ nhớ Linux.</li>
+    <li><b>Không tranh ngắt GPIO</b>Bỏ đoạn unmask GPIO0–4 trong <code>rt_hw_gpio_init</code> của firmware MCU.</li>
+    <li><b>Có đường nạp</b>Nạp <code>rtthread.bin</code> vào 0x40000 rồi ghi BOOT_ADDR và nhả reset, từ U-Boot hoặc từ Linux.</li>
+  </ul>
+</section>
+</div>
