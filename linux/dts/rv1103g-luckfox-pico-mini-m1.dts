@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Luckfox Pico Mini + HPMCU chay dong thoi (Milestone 1).
+ *
+ * Giu nguyen DTS goc cua Luckfox, chi them:
+ *  - reserved-memory cho firmware, log va vung benchmark cua MCU (shared/ipc/mcu_layout.h)
+ *
+ * Dia chi 0x01800000 la DE XUAT, chua kiem chung tren board (xem mcu_layout.h).
+ * Node rockchip-amp (rv1106-amp.dtsi) da giu clock cua MCU bat, khong can sua.
+ */
+
+#include "rv1103g-luckfox-pico-mini.dts"
+
+/ {
+	reserved-memory {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		mcu_region: mcu@1800000 {
+			reg = <0x01800000 0x40000>;
+			no-map;
+		};
+	};
+};
