@@ -230,9 +230,8 @@ sig=$(cat .BoardConfig.mk "$K/arch/arm/configs/$RK_KERNEL_DEFCONFIG" "$K/arch/ar
 	"$U/configs/$RK_UBOOT_DEFCONFIG" 2>/dev/null | md5sum | cut -d' ' -f1)
 have_images=1
 for f in uboot.img idblock.img download.bin boot.img; do [ -f "output/image/$f" ] || have_images=0; done
+# Khong co chu ky thi khong biet anh cu build theo cau hinh nao: build lai U-Boot + kernel
 old=$(cat output/.run_sig 2>/dev/null || true)
-# Anh da build truoc khi co co che nay: coi nhu khop cau hinh hien tai
-[ -z "$old" ] && [ "$have_images" = 1 ] && old="$sig"
 if [ "$sig" != "$old" ] || [ "$have_images" = 0 ]; then
 	stage uboot
 	stage kernel
