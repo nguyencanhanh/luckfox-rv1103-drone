@@ -67,10 +67,12 @@ def classify_nets():
     for net, sh in sheets_of.items():
         if net in design.POWER_NETS:
             kind[net] = "power"
-        elif len(sh) > 1:
-            kind[net] = "global"
         else:
-            kind[net] = "local"
+            # every signal net is a global label, sheet-local ones included:
+            # KiCad scopes a local label to its sheet ("/Power.../SW5"), and
+            # the board, the net classes and the routing scripts all name
+            # nets bare - one name per net everywhere keeps parity exact
+            kind[net] = "global"
     return kind
 
 
@@ -252,6 +254,13 @@ def emit_label(net, x, y, direction, kind, key):
     return out
 
 
+def not_in_bom(c):
+    """Bare copper - solder pads, test pads, mounting holes - is nothing to
+    buy; their footprints say so and the symbol has to agree."""
+    return any(k in c["fp"] for k in ("SolderPad", "TestPad", "TestPoint",
+                                      "MountingHole"))
+
+
 def emit_power(net, x, y, sheet_uuid, key, index):
     lib_id = design.POWER_NETS[net]
     ang = 0
@@ -294,7 +303,8 @@ def emit_symbol(p, sheet_uuid):
            f'\t\t(lib_id {esc(c["lib_id"])})',
            f'\t\t(at {x:g} {y:g} 0)',
            f'\t\t(unit {c["unit"]})',
-           '\t\t(exclude_from_sim no) (in_bom yes) (on_board yes)',
+           '\t\t(exclude_from_sim no) (in_bom %s) (on_board yes)'
+           % ("no" if not_in_bom(c) else "yes"),
            f'\t\t(dnp {"yes" if c["dnf"] else "no"})',
            f'\t\t(uuid {esc(uid("sym", ref, c["unit"]))})',
            f'\t\t(property "Reference" {esc(ref)}',
@@ -548,12 +558,12 @@ PROJECT_JSON = """{
     "netclass_assignments": null,
     "netclass_patterns": [
       { "netclass": "Power", "pattern": "GND" },
-      { "netclass": "Power", "pattern": "VBAT" },
-      { "netclass": "Power", "pattern": "VBAT_F" },
+      { "netclass": "PowerHi", "pattern": "VBAT" },
+      { "netclass": "PowerHi", "pattern": "VBAT_F" },
       { "netclass": "Power", "pattern": "VSYS" },
       { "netclass": "Power", "pattern": "+3V3S" },
       { "netclass": "PowerHi", "pattern": "+5V" },
-      { "netclass": "Power", "pattern": "SW5" },
+      { "netclass": "PowerHi", "pattern": "SW5" },
       { "netclass": "Sense", "pattern": "FB5" },
       { "netclass": "Sense", "pattern": "COMP5" },
       { "netclass": "Sense", "pattern": "COMP5_C" },

@@ -6,12 +6,13 @@ Route pcb/LFX_FC_R1.kicad_pcb:
   1. export a Specctra .dsn
   2. run freerouting head-less
   3. import the .ses session back
-  4. pour the copper zones (GND on In1, PWR on In2, GND/GND_ISO on the outers)
+  4. pour the copper zones (GND on F.Cu / In1 / B.Cu, VSYS on In2)
 
 Run with KiCad's python; freerouting is located through FREEROUTING_JAR.
 """
 
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -24,13 +25,13 @@ import pcbnew                                          # noqa: E402
 
 PCB = os.path.join(ROOT, "LFX_FC_R1.kicad_pcb")
 DSN = os.path.join(ROOT, "pcb", "LFX_FC_R1.dsn")
-INNER_LAYERS = ("GND",)     # In1 stays a solid reference; In2 may carry signal
+INNER_LAYERS = ("GND", "PWR")   # In1 GND and In2 VSYS/+3V3S are planes, not routing space
 SES = os.path.join(ROOT, "pcb", "LFX_FC_R1.ses")
 JAR = os.environ.get("FREEROUTING_JAR", "")
 
-BOARD_W, BOARD_H = 140.0, 90.0
-SLOT_X, SLOT_W = 92.0, 2.5
-SLOT_Y0, SLOT_Y1 = 12.0, 78.0
+import gen_pcb                                         # noqa: E402
+
+BOARD_W, BOARD_H = gen_pcb.BOARD_W, gen_pcb.BOARD_H
 
 
 def mm(v):
@@ -79,6 +80,24 @@ def add_zone(board, netname, layers, pts, priority=0, name="", solid=False):
     return z
 
 
+CLEAR_MARGIN_UM = 5
+
+
+def pad_clearances():
+    """Ask freerouting for 5 um more than every clearance the board wants.
+
+    Its diagonal segments are snapped to a 10 um grid, and now and then one
+    lands 1 um inside the rule (0.1493 mm against 0.15 at J3).  The margin is
+    invisible in the layout and keeps KiCad's DRC the one that decides.
+    """
+    text = open(DSN).read()
+    new = re.sub(r"\(clearance ([\d.]+)",
+                 lambda m: "(clearance %g" % (float(m.group(1))
+                                              + CLEAR_MARGIN_UM), text)
+    with open(DSN, "w") as fh:
+        fh.write(new)
+
+
 def reserve_planes():
     """Tell the autorouter the two inner layers are planes, not routing space.
 
@@ -111,6 +130,7 @@ def export_dsn(board):
     if not ok or not os.path.exists(DSN):
         raise SystemExit("DSN export failed")
     reserved = reserve_planes()
+    pad_clearances()
     print("dsn  ->", DSN, "%.1f kB" % (os.path.getsize(DSN) / 1024.0))
     print("     planes reserved (not routable):", ", ".join(reserved) or "none")
 
@@ -122,10 +142,8 @@ def run_freerouting():
     if not JAR or not os.path.exists(JAR):
         print("!! FREEROUTING_JAR not set, skipping the auto-route step")
         return False
-    # Greedy, single-thread optimisation.  The hybrid strategy churns for
-    # hours on this board because the isolation slot is a long wall the router
-    # has to work around; greedy converges in minutes and the critical nets are
-    # hand-routed and locked anyway.
+    # Greedy, single-thread optimisation; the critical nets are hand-routed
+    # and locked beforehand, so the router only fills in the logic.
     java = os.environ.get("JAVA_BIN", "java")
     cmd = [java, "-jar", JAR, "-de", DSN, "-do", SES,
            "-mp", str(os.environ.get("FR_PASSES", "20")),
@@ -177,21 +195,19 @@ def import_ses(board):
 
 
 def add_zones(board):
-    m = 0.6                       # inset from the board edge
-    lv = [(m, m), (SLOT_X - 0.8, m), (SLOT_X - 0.8, BOARD_H - m),
-          (m, BOARD_H - m)]
-    iso = [(SLOT_X + SLOT_W + 0.8, m), (BOARD_W - m, m),
-           (BOARD_W - m, BOARD_H - m), (SLOT_X + SLOT_W + 0.8, BOARD_H - m)]
+    m = 0.4                       # inset from the board edge
+    full = [(m, m), (BOARD_W - m, m), (BOARD_W - m, BOARD_H - m),
+            (m, BOARD_H - m)]
 
-    add_zone(board, "GND", [pcbnew.F_Cu], lv, 10, "GND top LV", True)
-    add_zone(board, "GND", [pcbnew.B_Cu], lv, 10, "GND bottom LV", True)
-    add_zone(board, "GND", [pcbnew.In1_Cu], lv, 10, "GND plane LV")
-    add_zone(board, "+3V3", [pcbnew.In2_Cu], lv, 10, "3V3 plane LV")
-
-    add_zone(board, "GND_ISO", [pcbnew.F_Cu], iso, 10, "GND_ISO top", True)
-    add_zone(board, "GND_ISO", [pcbnew.B_Cu], iso, 10, "GND_ISO bottom", True)
-    add_zone(board, "GND_ISO", [pcbnew.In1_Cu], iso, 10, "GND_ISO plane")
-    add_zone(board, "VRLY", [pcbnew.In2_Cu], iso, 10, "VRLY plane")
+    add_zone(board, "GND", [pcbnew.F_Cu], full, 10, "GND top", True)
+    add_zone(board, "GND", [pcbnew.B_Cu], full, 10, "GND bottom", True)
+    add_zone(board, "GND", [pcbnew.In1_Cu], full, 10, "GND plane")
+    # In2 is one VSYS plane.  +5V runs as 0.8 mm track instead of an island:
+    # the buck (bottom, lower half) is 20 mm from the LM66100 (top, by header
+    # pin 1), and an island joining them would cut the VSYS plane in two.
+    add_zone(board, "VSYS", [pcbnew.In2_Cu], full, 5, "VSYS plane")
+    add_zone(board, "+3V3S", [pcbnew.In2_Cu], gen_pcb.P3V3S_ISLAND, 10,
+             "+3V3S island")
 
     zones = list(board.Zones())
     filler = pcbnew.ZONE_FILLER(board)
@@ -206,7 +222,10 @@ def main():
     if routed:
         board = pcbnew.LoadBoard(PCB)
         import_ses(board)
-    add_zones(board)
+    if [z for z in board.Zones() if not z.GetIsRuleArea()]:
+        pcbnew.ZONE_FILLER(board).Fill(board.Zones())   # laid by route_critical
+    else:
+        add_zones(board)
     board.Save(PCB)
     print("saved", PCB)
 

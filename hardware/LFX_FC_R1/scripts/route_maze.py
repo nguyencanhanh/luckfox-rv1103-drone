@@ -41,11 +41,13 @@ import pcbnew                                          # noqa: E402
 PCB = os.path.join(ROOT, "LFX_FC_R1.kicad_pcb")
 CLI = "/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli"
 
-GRID = 0.25                    # mm, routing grid
-VIA_D, VIA_DRILL = 0.6, 0.3
+GRID = 0.125                   # mm, routing grid (0.5 mm pitch LGA parts)
+VIA_D, VIA_DRILL = 0.5, 0.25        # Default net class via, JLC 4-layer
 VIA_COST = 12.0                # in grid steps - discourages layer changes
-EDGE_CLEAR = 0.5               # board setup: copper to board edge
-MASK_WEB = 0.30                # narrowest solder-mask web worth leaving
+EDGE_CLEAR = 0.30              # board setup 0.25, plus a grid cell's slack
+HOLE_TO_HOLE = 0.25            # board setup: drill wall to drill wall
+MASK_WEB = 0.10               # solder-mask web, JLCPCB 4-layer minimum: the
+                              # ICM-42688-P LGA has only 0.15 mm between pads
 RF_VIA_CLEAR = 0.7             # Quectel 4.4, 2 x W with W = 0.35 mm
 BRIDGE_MAX = 1.5               # a gap this small is closed, not searched
 INNER = "inner"                # a plane layer - this router does not route on one
@@ -53,6 +55,9 @@ MARGINS = (0.05, 0.15, 0.30, 0.50)   # grid margins tried, in order
 DIAG = math.sqrt(2.0)
 
 LAYERS = (pcbnew.F_Cu, pcbnew.B_Cu)
+# Optional restriction of the routing layers, set by the caller: the buck's
+# switch node and input loop must never climb onto the signal side.
+ALLOWED = None
 LAYER_NAME = {pcbnew.F_Cu: "F.Cu", pcbnew.B_Cu: "B.Cu"}
 
 
@@ -277,6 +282,12 @@ def build_grid(board, netname, width, clearance, safe):
     for t in board.GetTracks():
         tn = t.GetNetname()
         if tn == netname:
+            # our own via is no obstacle to copper, but a second drill beside
+            # it still has to keep the board's hole-to-hole distance
+            if t.Type() == pcbnew.PCB_VIA_T:
+                vx, vy = tomm(t.GetPosition().x), tomm(t.GetPosition().y)
+                r = VIA_DRILL + HOLE_TO_HOLE
+                g.mark_via(vx - r, vy - r, vx + r, vy + r)
             continue
         c = pair_clearance(board, netname, cls, tn, clearance, safe)
         la = t.GetLayer()
@@ -352,6 +363,11 @@ NB = [(1, 0, 1.0), (-1, 0, 1.0), (0, 1, 1.0), (0, -1, 1.0),
 
 def astar(g, netname, starts, goals):
     """3D A* over (i, j, layer).  Nodes in, node path out."""
+    if ALLOWED is not None:
+        starts = [n for n in starts if n[2] in ALLOWED]
+        goals = [n for n in goals if n[2] in ALLOWED]
+        if not starts or not goals:
+            return None
     goalset = set(goals)
     if not goalset or not starts:
         return None
@@ -395,6 +411,8 @@ def astar(g, netname, starts, goals):
                 heapq.heappush(openq, (ng + h((ni, nj)), m))
         # layer change
         other = LAYERS[1] if la == LAYERS[0] else LAYERS[0]
+        if ALLOWED is not None and other not in ALLOWED:
+            continue
         if (g.free(other, i, j) or (i, j, other) in goalset) \
                 and g.via_free(i, j):
             m = (i, j, other)
@@ -877,11 +895,20 @@ def main():
     bb = board.GetBoardEdgesBoundingBox()
     print("board %.0f x %.0f mm, grid %.2f mm"
           % (tomm(bb.GetWidth()), tomm(bb.GetHeight()), GRID))
+    route_open(board)
+    return 0
 
+
+def route_open(board, only=None, fanout_zones=True, lock=False):
+    """Close every connection the DRC reports as open, or only those on the
+    nets named in `only`.  Returns the number of connections still open."""
     total_t, total_v, done = 0, 0, 0
     failed, zone_gaps, reasons_out = [], [], {}
     for _attempt in range(12):
         gaps, zone_gaps = drc_gaps(board)
+        if only is not None:
+            gaps = [g for g in gaps if g[0][3] in only]
+            zone_gaps = [g for g in zone_gaps if g[0][3] in only]
         if not gaps:
             break
         # easiest first, so a short hop is not walled in by a long one
@@ -979,7 +1006,7 @@ def main():
     for n, d in sorted(set(failed)):
         print("  unrouted  %-12s %.1f mm apart  (%s)"
               % (n, d, reasons_out.get((n, round(d, 1)), "no path")))
-    for a, b in zone_gaps:
+    for a, b in (zone_gaps if fanout_zones else []):
         item = a if a[2] != "Zone" else b
         width, clearance = net_rules(board, item[3])
         nt, nv = fanout(board, item[3], item[0], item[1], item[4],
@@ -990,8 +1017,11 @@ def main():
         else:
             print("  zone gap  %-12s at (%.2f, %.2f) - no room for a via"
                   % (item[3], item[0], item[1]))
+    if lock:
+        for t in board.GetTracks():
+            t.SetLocked(True)
     board.Save(PCB)
-    return 0
+    return len(failed)
 
 
 if __name__ == "__main__":

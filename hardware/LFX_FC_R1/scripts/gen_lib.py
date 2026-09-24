@@ -343,13 +343,18 @@ def luckfox_footprint():
     L.append('\t(fp_text user "CAM FPC" (at 0 %g 0) (layer "F.Fab") '
              '(effects (font (size 0.8 0.8) (thickness 0.12))))' % (LF_Y1 - 2.0))
     # silk: header strips and the module corners
+    # The USB-C end of the module is flush with the board edge, so nothing is
+    # drawn along it: the strips are open-topped and only the far corners get
+    # ticks.
     for sx in (-1, 1):
         x0, x1 = sx * LF_ROW - 1.4, sx * LF_ROW + 1.4
-        L.append(rect(x0, LF_PIN1_Y - 1.4, x1, -LF_PIN1_Y + 1.4, "F.SilkS", 0.12))
+        yt, yb = LF_PIN1_Y - 1.0, -LF_PIN1_Y + 1.4
+        L.append(line(x0, yt, x0, yb, "F.SilkS", 0.12))
+        L.append(line(x1, yt, x1, yb, "F.SilkS", 0.12))
+        L.append(line(x0, yb, x1, yb, "F.SilkS", 0.12))
         L.append(rect(x0 - 0.1, LF_PIN1_Y - 1.5, x1 + 0.1, -LF_PIN1_Y + 1.5,
                       "F.CrtYd", 0.05))
-    for x, y, dx, dy in ((LF_X0, LF_Y0, 1, 1), (LF_X1, LF_Y0, -1, 1),
-                         (LF_X0, LF_Y1, 1, -1), (LF_X1, LF_Y1, -1, -1)):
+    for x, y, dx, dy in ((LF_X0, LF_Y1, 1, -1), (LF_X1, LF_Y1, -1, -1)):
         L.append(line(x, y, x + dx * 1.5, y, "F.SilkS", 0.12))
         L.append(line(x, y, x, y + dy * 1.5, "F.SilkS", 0.12))
     # pin-1 arrow outside the left strip
@@ -396,6 +401,39 @@ def solderpad_footprint():
         \t\t(size 2.5 4)
         \t\t(layers "F.Cu" "F.Mask")
         \t\t(roundrect_rratio 0.15)
+        \t)
+        \t(embedded_fonts no)
+        )
+        ''')
+
+
+def motorpad_footprint():
+    return textwrap.dedent(f'''\
+        (footprint "SolderPad_1.5x2.5mm"
+        \t(version {FP_VERSION})
+        \t(generator "lfx_gen_lib")
+        \t(generator_version "10.0")
+        \t(layer "F.Cu")
+        \t(descr "1.5 x 2.5 mm SMD solder pad for an ESC signal / ground wire")
+        \t(tags "solder pad wire esc")
+        \t(attr smd exclude_from_bom)
+        \t(property "Reference" "J**"
+        \t\t(at 0 -2.0 0)
+        \t\t(layer "F.Fab")
+        \t\t(effects (font (size 0.8 0.8) (thickness 0.12)))
+        \t)
+        \t(property "Value" "SolderPad"
+        \t\t(at 0 2.0 0)
+        \t\t(layer "F.Fab")
+        \t\t(effects (font (size 0.8 0.8) (thickness 0.12)))
+        \t)
+        \t(fp_rect (start -1.0 -1.5) (end 1.0 1.5)
+        \t\t(stroke (width 0.05) (type solid)) (fill no) (layer "F.CrtYd"))
+        \t(pad "1" smd roundrect
+        \t\t(at 0 0)
+        \t\t(size 1.5 2.5)
+        \t\t(layers "F.Cu" "F.Mask")
+        \t\t(roundrect_rratio 0.2)
         \t)
         \t(embedded_fonts no)
         )
@@ -455,6 +493,7 @@ def main():
     for name, text in (("Bosch_BMP390_LGA-10_2x2mm_P0.5mm", bmp390_footprint()),
                        ("Luckfox_Pico_Mini_Socket", luckfox_footprint()),
                        ("SolderPad_2.5x4mm", solderpad_footprint()),
+                       ("SolderPad_1.5x2.5mm", motorpad_footprint()),
                        ("TestPad_1.0mm", testpad_footprint())):
         p = os.path.join(FP_DIR, name + ".kicad_mod")
         with open(p, "w") as fh:
