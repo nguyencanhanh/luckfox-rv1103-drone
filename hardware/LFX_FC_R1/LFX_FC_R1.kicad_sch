@@ -1,0 +1,133 @@
+(kicad_sch
+	(version 20250114)
+	(generator "lfx_gen_sch")
+	(generator_version "10.0")
+	(uuid "45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10")
+	(paper "A3")
+	(title_block
+		(title "LFX FC R1 - Luckfox RV1103 flight controller")
+		(date "2026-09-24")
+		(rev "R1")
+		(company "")
+		(comment 1 "Root - system block diagram")
+		(comment 2 "Generated from scripts/design.py")
+	)
+	(lib_symbols)
+	(text "LFX FC R1  -  Luckfox Pico Mini B (RV1103) flight controller carrier, 36 x 36 mm, 30.5 mm stack"
+		(at 20 24 0)
+		(effects (font (size 3.2 3.2) (bold yes)) (justify left bottom))
+		(uuid "6a80afde-ef6a-a27b-5baf-eec4b52c2cab")
+	)
+	(text "Rails : VBAT 2S-6S (ESC JST-SH 8) -> TPS54360 buck -> +5V -> LM66100 ideal diode -> VSYS (Luckfox VBUS)"
+		(at 20 32 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "d778eec5-e2b9-b96a-deca-b5a71efae7ad")
+	)
+	(text "        VSYS -> TLV75533 -> +3V3S (IMU + barometer only)    +1V8 from the module, ADC clamps only"
+		(at 20 37 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "0f0bc908-c007-da1d-230f-2c5eb599e02e")
+	)
+	(text "SPI0  : ICM-42688-P (CS0, pin 6) + BMP390 (CS1, pin 14), MCU-owned per docs/architecture.html"
+		(at 20 42 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "830b04ec-3392-59a0-cd88-d74e086d71c7")
+	)
+	(text "ESC   : PWM8-11_M1 on module pins 10, 11, 16, 17 -> 47R -> JST-SH 8 pins 5-8"
+		(at 20 47 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "779294a8-607d-1b7f-caae-77c631b502c0")
+	)
+	(text "UART  : UART2 debug (pins 4/5) and UART3 GPS (pins 12/13) on JST-SH, ESD by TPD4E05U06"
+		(at 20 52 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "bdf9d6c5-2fa2-5a92-97db-c33fc3572edc")
+	)
+	(sheet
+		(at 25 70)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "6488e6f9-5482-b993-aaf7-8f2e5c19857b")
+		(property "Sheetname" "Power: ESC input, 5 V buck, ideal diode, sensor LDO"
+			(at 25 68.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/02_power.kicad_sch"
+			(at 25 99.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10" (page "2"))
+			)
+		)
+	)
+	(sheet
+		(at 199 70)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "cc2da1be-4875-9c97-002a-54558758a378")
+		(property "Sheetname" "Luckfox Pico Mini B socket and debug UART"
+			(at 199 68.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/03_module.kicad_sch"
+			(at 199 99.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10" (page "3"))
+			)
+		)
+	)
+	(sheet
+		(at 25 108)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "c37decc8-0ce7-ea51-96bc-a4c53a1e5931")
+		(property "Sheetname" "IMU ICM-42688-P and barometer BMP390 on SPI0"
+			(at 25 106.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/04_sensors.kicad_sch"
+			(at 25 137.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10" (page "4"))
+			)
+		)
+	)
+	(sheet
+		(at 199 108)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "baed7e30-381c-fce3-035d-c85ae370376a")
+		(property "Sheetname" "ESC signals, GPS, buzzer, battery sense"
+			(at 199 106.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/05_io.kicad_sch"
+			(at 199 137.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10" (page "5"))
+			)
+		)
+	)
+	(sheet_instances
+		(path "/" (page "1"))
+	)
+)

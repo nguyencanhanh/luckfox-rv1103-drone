@@ -1,0 +1,4 @@
+# vendor CAD is large and re-downloadable: tools/fetch_vendor.sh
+vendor/*.zip
+vendor/*.step
+vendor/*.DWG
