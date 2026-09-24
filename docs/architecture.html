@@ -1,64 +1,81 @@
-<title>RV1103 Linux và HPMCU</title>
+<title>RV1103 Drone Architecture</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 :root{
   --bg:#F3F6F6; --panel:#FFFFFF; --soc:#E8EFEF; --ink:#17252A; --muted:#56676C; --line:#B3C1C3;
   --linux:#2B6CB0; --linux-bg:#E3EDF8; --mcu:#B45309; --mcu-bg:#FBEEDC; --warn:#C0392B; --warn-bg:#FBE9E7;
+  --ok:#2F7D4F; --ok-bg:#E3F3E8; --ext:#6B5B95; --ext-bg:#EFEBF7;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
     --bg:#0F1618; --panel:#172226; --soc:#131D20; --ink:#DDE6E7; --muted:#93A4A8; --line:#3C4D51;
     --linux:#7DB3E8; --linux-bg:#18293A; --mcu:#F0A45A; --mcu-bg:#33250F; --warn:#F07366; --warn-bg:#3A1C19;
+    --ok:#6FCF97; --ok-bg:#15301F; --ext:#B7A6E8; --ext-bg:#241E36;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#0F1618; --panel:#172226; --soc:#131D20; --ink:#DDE6E7; --muted:#93A4A8; --line:#3C4D51;
   --linux:#7DB3E8; --linux-bg:#18293A; --mcu:#F0A45A; --mcu-bg:#33250F; --warn:#F07366; --warn-bg:#3A1C19;
+  --ok:#6FCF97; --ok-bg:#15301F; --ext:#B7A6E8; --ext-bg:#241E36;
 }
 body{background:var(--bg);color:var(--ink);font:15px/1.6 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif}
-.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:40px 64px;display:flex;flex-direction:column;gap:40px}
-header{display:flex;flex-direction:column;gap:10px;max-width:68ch}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:40px 72px;display:flex;flex-direction:column;gap:44px}
+header{display:flex;flex-direction:column;gap:12px}
 .eyebrow{font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h1{font-size:30px;line-height:1.2;margin:0;text-wrap:balance}
-h2{font-size:20px;line-height:1.3;margin:0;text-wrap:balance}
-p{margin:0}
-code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.88em}
+h2{font-size:21px;line-height:1.3;margin:0;text-wrap:balance}
+h3{font-size:16px;margin:0}
+p{margin:0;max-width:72ch}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.86em}
+section{display:flex;flex-direction:column;gap:14px}
+.lead{color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.kpi b{font:600 22px/1.2 "JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:8px}
-.sw{width:28px;height:0;border-top:2px solid var(--ink)}
-.sw.w{border-top:2px dashed var(--warn)}
-.sw.g{border-top:2px dashed var(--muted)}
-.chip{width:14px;height:14px;border-radius:3px;border:1.5px solid}
+.chip{width:14px;height:14px;border-radius:3px;border:1.5px solid;display:inline-block}
 .chip.l{background:var(--linux-bg);border-color:var(--linux)}
 .chip.m{background:var(--mcu-bg);border-color:var(--mcu)}
-section{display:flex;flex-direction:column;gap:14px}
+.chip.e{background:var(--ext-bg);border-color:var(--ext)}
+.sw{width:28px;height:0;border-top:2px solid var(--ink);display:inline-block}
+.sw.w{border-top:2px dashed var(--warn)}
 figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .scroll{overflow-x:auto}
-svg{display:block;width:100%;height:auto;min-width:760px}
-figcaption{font-size:14px;color:var(--muted);max-width:75ch}
-.stale{background:var(--warn-bg);border:1px solid var(--warn);border-radius:8px;padding:12px 14px;font-size:14px}
-.todo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0;padding:0;list-style:none}
-.todo li{background:var(--warn-bg);border:1px solid var(--warn);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;font-size:14px}
-.todo b{color:var(--warn)}
+svg{display:block;width:100%;height:auto;min-width:780px}
+figcaption{font-size:14px;color:var(--muted);max-width:80ch}
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--soc)}
+tr:last-child td{border-bottom:none}
+.st{display:inline-block;font:600 11px/1 "JetBrains Mono",monospace;padding:4px 7px;border-radius:4px;white-space:nowrap}
+.st.v{background:var(--ok-bg);color:var(--ok)}
+.st.p{background:var(--soc);color:var(--muted);border:1px solid var(--line)}
+.st.u{background:var(--warn-bg);color:var(--warn)}
+.own-l{color:var(--linux);font-weight:600}
+.own-m{color:var(--mcu);font-weight:600}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
 /* SVG */
-.soc{fill:var(--soc);stroke:var(--line)}
+.brd{fill:var(--soc);stroke:var(--line)}
 .b{fill:var(--panel);stroke:var(--line);stroke-width:1.2}
 .bl{fill:var(--linux-bg);stroke:var(--linux);stroke-width:1.5}
 .bm{fill:var(--mcu-bg);stroke:var(--mcu);stroke-width:1.5}
+.be{fill:var(--ext-bg);stroke:var(--ext);stroke-width:1.5}
 .bx{fill:var(--panel);stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
-.zone{fill:none;stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
-.lane{fill:var(--soc)}
 .t{font:600 13px "Be Vietnam Pro",sans-serif;fill:var(--ink)}
 .s{font:11.5px "Be Vietnam Pro",sans-serif;fill:var(--muted)}
 .m{font:11px "JetBrains Mono",monospace;fill:var(--muted)}
 .cap{font:600 11px "JetBrains Mono",monospace;letter-spacing:.06em;fill:var(--muted)}
-.tw{fill:var(--warn)}
-.tl{fill:var(--linux)}
-.tm{fill:var(--mcu)}
+.tw{fill:var(--warn)} .tl{fill:var(--linux)} .tm{fill:var(--mcu)} .te{fill:var(--ext)}
 .ln{fill:none;stroke:var(--ink);stroke-width:1.4}
+.lp{fill:none;stroke:var(--warn);stroke-width:2.2}
 .lw{fill:none;stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
 .lg{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:4 4}
 .ah{fill:var(--ink)} .aw{fill:var(--warn)} .ag{fill:var(--muted)}
@@ -66,243 +83,383 @@ figcaption{font-size:14px;color:var(--muted);max-width:75ch}
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">Luckfox Pico Mini · RV1103</div>
-  <h1>Linux trên Cortex-A7 và RT-Thread trên HPMCU</h1>
-  <p>Ba sơ đồ: phần cứng dùng chung, thứ tự khởi động, và đường đi của log từ MCU sang Linux. Mọi địa chỉ đều lấy từ source SDK hoặc đo trên board (chi tiết trong <code>docs/MEMORY_MAP.md</code>).</p>
-  <p class="stale"><b>Cập nhật 2026-09-24:</b> các sơ đồ dưới đây vẽ bố cục mặc định của SDK. Vùng MCU <code>0x40000</code> nằm trong kernel Linux (<code>0x8000–0x78C364</code>), nên repo chuyển MCU sang <code>0x01800000</code> và nạp MCU từ Linux bằng <code>mcu-tool</code>. SPL build sẵn của Luckfox cũng có mã nạp MCU qua FIT. Xem <code>docs/MEMORY_MAP.md</code> và <code>docs/RV1103_MCU.md</code>.</p>
-  <div class="legend">
-    <span><i class="chip l"></i>Linux (Cortex-A7)</span>
-    <span><i class="chip m"></i>HPMCU (RISC-V)</span>
-    <span><i class="sw"></i>đang chạy trên Luckfox</span>
-    <span><i class="sw w"></i>chưa có trên Luckfox / rủi ro</span>
-    <span><i class="sw g"></i>có phần cứng, chưa dùng</span>
-  </div>
+  <div class="eyebrow">Luckfox Pico Mini B · RV1103 · nhánh rv1103-ai-drone</div>
+  <h1>Kiến trúc phần cứng và phần mềm cho AI quadcopter trên RV1103</h1>
+  <p class="lead">Báo cáo sau Milestone 1 (2026-09-24). Kiến trúc chính là một chip: Linux trên Cortex-A7 lo camera, AI và mạng; HPMCU chạy RT-Thread lo vòng điều khiển bay. Mỗi mục có nhãn: <span class="st v">ĐÃ KIỂM CHỨNG</span> là đã thấy trong source hoặc đo trên board, <span class="st p">ĐỀ XUẤT</span> là thiết kế chưa thử, <span class="st u">UNKNOWN</span> là chưa có bằng chứng.</p>
 </header>
 
 <section>
-  <h2>1. Phần cứng: hai nhân dùng chung DDR</h2>
+  <h2>Kết quả đã đo trên board</h2>
+  <div class="kpis">
+    <div class="kpi"><b>0 / 2 000 000</b><span>chu kỳ bị lỡ trong 2 lần chạy 1 kHz, mỗi lần 1 000 000 vòng</span></div>
+    <div class="kpi"><b>18,2 µs</b><span>jitter max khi Linux idle</span></div>
+    <div class="kpi"><b>116,7 µs</b><span>jitter max khi camera + ISP + encoder chạy, gấp khoảng 6,4 lần</span></div>
+    <div class="kpi"><b>297,000 MHz</b><span>clock MCU, đo bằng <code>mcycle</code> theo đồng hồ Linux</span></div>
+  </div>
+  <p>Kiến trúc một chip: <b>chưa đủ bằng chứng (NOT YET DEMONSTRATED)</b>. MCU chạy ổn định song song với Linux, nhưng tải media làm jitter tăng rõ, và SPI của MCU chưa có driver. Hai điều này quyết định ở Milestone 2.</p>
+</section>
+
+<section>
+  <h2>1. Phần cứng</h2>
+  <div class="legend">
+    <span><i class="chip l"></i>do Linux quản lý</span>
+    <span><i class="chip m"></i>do MCU quản lý</span>
+    <span><i class="chip e"></i>module ngoài</span>
+    <span><i class="sw" style="border-top-color:var(--warn);border-top-width:3px"></i>nguồn pin</span>
+  </div>
   <figure>
     <div class="scroll">
-    <svg viewBox="0 0 960 560" role="img" aria-label="Cortex-A7 chạy Linux và HPMCU chạy RT-Thread nằm chung trong RV1103, nối qua mailbox, thanh ghi boot và INT_MUX, dùng chung DDR 64 MB; vùng 0x40000 đến 0x7EFFF của MCU chưa được Linux chừa ra.">
+    <svg viewBox="0 0 960 610" role="img" aria-label="Sơ đồ phần cứng: pin LiPo cấp cho ESC và BEC 5 V; BEC cấp chân VBUS của board. Linux quản lý UART3 nối GPS, MIPI CSI nối camera, USB host nối Wi-Fi, SARADC đo pin. MCU quản lý SPI0 nối IMU và barometer, PWM2 nối 4 ESC. Hai nhân dùng chung DDR, trong đó có vùng riêng cho MCU ở 0x01800000.">
       <defs>
-        <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
-        <marker id="w1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
-        <marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ag"/></marker>
+        <marker id="h1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+        <marker id="h1w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
       </defs>
-      <rect class="soc" x="16" y="16" width="928" height="364" rx="10"/>
-      <text class="cap" x="32" y="40">RV1103 SOC (HỌ RV1106)</text>
+      <!-- external left -->
+      <rect class="be" x="20" y="36" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="55" text-anchor="middle">Pin LiPo</text>
+      <text class="s" x="105" y="71" text-anchor="middle">số cell: chưa chọn</text>
+      <rect class="be" x="20" y="104" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="123" text-anchor="middle">Mạch nguồn + đo dòng</text>
+      <text class="s" x="105" y="139" text-anchor="middle">VBAT, shunt dòng</text>
+      <rect class="be" x="20" y="172" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="191" text-anchor="middle">BEC 5 V</text>
+      <text class="s" x="105" y="207" text-anchor="middle">cấp board + cảm biến</text>
+      <line class="lp" x1="105" y1="80" x2="105" y2="102" marker-end="url(#h1w)"/>
+      <line class="lp" x1="105" y1="148" x2="105" y2="170" marker-end="url(#h1w)"/>
+      <path class="lp" d="M20 126H8V592H855V562" marker-end="url(#h1w)"/>
+      <text class="s tw" x="440" y="586" text-anchor="middle">VBAT → 4 ESC (không đi qua board)</text>
+      <line class="lp" x1="190" y1="194" x2="228" y2="194" marker-end="url(#h1w)"/>
+      <text class="m" x="194" y="186">5 V → chân 1</text>
 
-      <rect class="bl" x="40" y="60" width="280" height="164" rx="8"/>
-      <text class="t tl" x="56" y="88">Cortex-A7 · Linux</text>
-      <text class="s" x="56" y="112">ARMv7, 1 nhân, 1104 MHz</text>
-      <text class="s" x="56" y="132">Buildroot, console trên UART2</text>
-      <text class="s" x="56" y="152">ngắt qua GIC</text>
-      <text class="s" x="56" y="172">RAM dùng được: 32 MB + CMA 24 MB</text>
+      <rect class="be" x="20" y="312" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="331" text-anchor="middle">GPS/GNSS</text>
+      <text class="s" x="105" y="347" text-anchor="middle">UART, NMEA/UBX</text>
+      <rect class="be" x="20" y="372" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="391" text-anchor="middle">Camera SC3336</text>
+      <text class="s" x="105" y="407" text-anchor="middle">MIPI CSI (cáp FPC)</text>
+      <rect class="be" x="20" y="432" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="451" text-anchor="middle">Wi-Fi USB</text>
+      <text class="s" x="105" y="467" text-anchor="middle">chipset: chưa chọn</text>
+      <rect class="be" x="20" y="492" width="170" height="44" rx="6"/>
+      <text class="t" x="105" y="511" text-anchor="middle">Cầu chia áp VBAT</text>
+      <text class="s" x="105" y="527" text-anchor="middle">+ tín hiệu dòng</text>
 
-      <rect class="bm" x="640" y="60" width="280" height="164" rx="8"/>
-      <text class="t tm" x="656" y="88">HPMCU · RT-Thread 3.1.3</text>
-      <text class="s" x="656" y="112">RISC-V SCR1, rv32imc, 297 MHz</text>
-      <text class="s" x="656" y="132">ngắt qua IPIC + INT_MUX</text>
-      <text class="m" x="656" y="152">tick: mtime 0xFF1E0000</text>
-      <text class="s" x="656" y="172">không có UART riêng</text>
+      <!-- board -->
+      <rect class="brd" x="230" y="24" width="500" height="530" rx="10"/>
+      <text class="cap" x="246" y="44">LUCKFOX PICO MINI B · RV1103</text>
+      <rect class="bl" x="250" y="60" width="170" height="110" rx="8"/>
+      <text class="t tl" x="266" y="84">Cortex-A7 · Linux</text>
+      <text class="s" x="266" y="104">1 nhân, 1104 MHz</text>
+      <text class="s" x="266" y="122">RAM ≈ 32 MB + CMA 24 MB</text>
+      <text class="s" x="266" y="140">ISP, NPU, encoder</text>
+      <rect class="bm" x="540" y="60" width="170" height="110" rx="8"/>
+      <text class="t tm" x="556" y="84">HPMCU · RT-Thread</text>
+      <text class="s" x="556" y="104">RISC-V SCR1, 297 MHz</text>
+      <text class="s" x="556" y="122">code chạy từ DDR</text>
+      <text class="s" x="556" y="140">tick 1 kHz</text>
+      <rect class="b" x="432" y="60" width="96" height="110" rx="6"/>
+      <text class="t" x="480" y="82" text-anchor="middle">DDR 64 MB</text>
+      <text class="s" x="480" y="102" text-anchor="middle">vùng MCU</text>
+      <text class="m" x="480" y="118" text-anchor="middle">0x01800000</text>
+      <text class="s" x="480" y="138" text-anchor="middle">code, log,</text>
+      <text class="s" x="480" y="154" text-anchor="middle">IPC</text>
+      <line class="ln" x1="420" y1="115" x2="430" y2="115"/>
+      <line class="ln" x1="528" y1="115" x2="540" y2="115"/>
 
-      <rect class="b" x="380" y="60" width="200" height="44" rx="6"/>
-      <text class="t" x="480" y="78" text-anchor="middle">Mailbox</text>
-      <text class="m" x="480" y="95" text-anchor="middle">0xFF5C0000</text>
-      <line class="lg" x1="322" y1="82" x2="378" y2="82" marker-start="url(#g1)" marker-end="url(#g1)"/>
-      <line class="lg" x1="582" y1="82" x2="638" y2="82" marker-start="url(#g1)" marker-end="url(#g1)"/>
-      <text class="m" x="350" y="74" text-anchor="middle">SPI 1</text>
+      <!-- linux bus -->
+      <path class="ln" d="M400 170V190H430V522"/>
+      <rect class="bl" x="250" y="316" width="170" height="44" rx="6"/>
+      <text class="t" x="335" y="335" text-anchor="middle">UART3_M1</text>
+      <text class="m" x="335" y="351" text-anchor="middle">chân 12 TX · 13 RX</text>
+      <rect class="bl" x="250" y="376" width="170" height="44" rx="6"/>
+      <text class="t" x="335" y="395" text-anchor="middle">MIPI CSI + ISP</text>
+      <text class="m" x="335" y="411" text-anchor="middle">cổng FPC</text>
+      <rect class="bl" x="250" y="436" width="170" height="44" rx="6"/>
+      <text class="t" x="335" y="455" text-anchor="middle">USB-C (dwc3)</text>
+      <text class="m" x="335" y="471" text-anchor="middle">dev ↔ host</text>
+      <rect class="bl" x="250" y="496" width="170" height="44" rx="6"/>
+      <text class="t" x="335" y="515" text-anchor="middle">SARADC</text>
+      <text class="m" x="335" y="531" text-anchor="middle">chân 19 IN0 · 20 IN1</text>
+      <line class="ln" x1="420" y1="338" x2="430" y2="338"/>
+      <line class="ln" x1="420" y1="398" x2="430" y2="398"/>
+      <line class="ln" x1="420" y1="458" x2="430" y2="458"/>
+      <line class="ln" x1="420" y1="518" x2="430" y2="518"/>
+      <line class="ln" x1="190" y1="334" x2="248" y2="334" marker-start="url(#h1)" marker-end="url(#h1)"/>
+      <line class="ln" x1="190" y1="394" x2="248" y2="394" marker-end="url(#h1)"/>
+      <line class="ln" x1="190" y1="454" x2="248" y2="454" marker-start="url(#h1)" marker-end="url(#h1)"/>
+      <line class="ln" x1="190" y1="514" x2="248" y2="514" marker-end="url(#h1)"/>
 
-      <rect class="b" x="380" y="122" width="200" height="44" rx="6"/>
-      <text class="t" x="480" y="140" text-anchor="middle">Boot addr + reset</text>
-      <text class="m" x="480" y="157" text-anchor="middle">SGRF 0xFF076044 · CRU</text>
-      <line class="ln" x1="320" y1="144" x2="378" y2="144" marker-end="url(#a1)"/>
-      <text class="s" x="349" y="136" text-anchor="middle">U-Boot ghi</text>
-      <line class="ln" x1="580" y1="144" x2="638" y2="144" marker-end="url(#a1)"/>
-      <text class="s" x="609" y="136" text-anchor="middle">entry</text>
+      <!-- mcu bus -->
+      <path class="ln" d="M560 170V190H530V450"/>
+      <rect class="bm" x="540" y="316" width="170" height="64" rx="6"/>
+      <text class="t" x="625" y="336" text-anchor="middle">SPI0_M0</text>
+      <text class="m" x="625" y="352" text-anchor="middle">chân 7 CLK · 8 MOSI · 9 MISO</text>
+      <text class="m" x="625" y="368" text-anchor="middle">CS0 chân 6 · CS1 chân 14</text>
+      <rect class="bm" x="540" y="406" width="170" height="64" rx="6"/>
+      <text class="t" x="625" y="426" text-anchor="middle">PWM2 (kênh 8–11)</text>
+      <text class="m" x="625" y="442" text-anchor="middle">chân 10 · 11 · 16 · 17</text>
+      <text class="s" x="625" y="458" text-anchor="middle">1 bộ PWM cho cả 4 ESC</text>
+      <line class="ln" x1="530" y1="348" x2="540" y2="348"/>
+      <line class="ln" x1="530" y1="438" x2="540" y2="438"/>
 
-      <rect class="b" x="380" y="184" width="200" height="44" rx="6"/>
-      <text class="t" x="480" y="202" text-anchor="middle">INT_MUX</text>
-      <text class="m" x="480" y="219" text-anchor="middle">0xFF5D0000</text>
-      <line class="ln" x1="580" y1="206" x2="638" y2="206" marker-end="url(#a1)"/>
-      <text class="s" x="609" y="198" text-anchor="middle">ngắt</text>
+      <!-- external right -->
+      <rect class="be" x="770" y="296" width="170" height="44" rx="6"/>
+      <text class="t" x="855" y="315" text-anchor="middle">IMU ICM-42688-P</text>
+      <text class="s" x="855" y="331" text-anchor="middle">SPI, đọc 1 kHz</text>
+      <rect class="be" x="770" y="356" width="170" height="44" rx="6"/>
+      <text class="t" x="855" y="375" text-anchor="middle">Barometer BMP388/390</text>
+      <text class="s" x="855" y="391" text-anchor="middle">SPI, 100 Hz</text>
+      <path class="ln" d="M710 338H740V318H768" marker-start="url(#h1)" marker-end="url(#h1)"/>
+      <path class="ln" d="M740 338V378H768" marker-end="url(#h1)"/>
+      <rect class="be" x="770" y="420" width="170" height="54" rx="6"/>
+      <text class="t" x="855" y="442" text-anchor="middle">ESC x4</text>
+      <text class="s" x="855" y="460" text-anchor="middle">PWM → DShot sau</text>
+      <line class="ln" x1="710" y1="438" x2="768" y2="446" marker-end="url(#h1)"/>
+      <rect class="be" x="770" y="500" width="170" height="44" rx="6"/>
+      <text class="t" x="855" y="519" text-anchor="middle">Motor x4</text>
+      <text class="s" x="855" y="535" text-anchor="middle">không gắn cánh khi bench</text>
+      <line class="ln" x1="855" y1="474" x2="855" y2="498" marker-end="url(#h1)"/>
 
-      <!-- Linux bus to peripherals -->
-      <path class="ln" d="M180 224V272M140 272H600M140 272V290M370 272V290M600 272V290"/>
-      <text class="s tl" x="196" y="264">Linux sở hữu pinmux và driver</text>
-      <!-- MCU unmasks GPIO IRQ -->
-      <path class="lw" d="M700 224V250H420V288" marker-end="url(#w1)"/>
-      <text class="s tw" x="560" y="244" text-anchor="middle">⚠ drv_gpio unmask IRQ GPIO0–4</text>
-      <!-- MCU to sram -->
-      <line class="lg" x1="830" y1="224" x2="830" y2="288" marker-end="url(#g1)"/>
-      <text class="s" x="838" y="262">chưa kiểm chứng</text>
-
-      <rect class="b" x="40" y="290" width="200" height="60" rx="6"/>
-      <text class="t" x="140" y="314" text-anchor="middle">UART2</text>
-      <text class="s" x="140" y="334" text-anchor="middle">console Linux</text>
-      <rect class="b" x="270" y="290" width="200" height="60" rx="6"/>
-      <text class="t" x="370" y="314" text-anchor="middle">GPIO0–4</text>
-      <text class="s" x="370" y="334" text-anchor="middle">ngắt do Linux xử lý</text>
-      <rect class="b" x="500" y="290" width="200" height="60" rx="6"/>
-      <text class="t" x="600" y="314" text-anchor="middle">I2C4 · MIPI refclk</text>
-      <text class="s" x="600" y="334" text-anchor="middle">camera, Linux sở hữu</text>
-      <rect class="b" x="730" y="290" width="200" height="60" rx="6"/>
-      <text class="t" x="830" y="314" text-anchor="middle">hpmcu_sram 8 KB</text>
-      <text class="m" x="830" y="334" text-anchor="middle">0xFF6FE000</text>
-
-      <!-- DDR -->
-      <line class="ln" x1="120" y1="380" x2="120" y2="428" marker-start="url(#a1)" marker-end="url(#a1)"/>
-      <text class="s" x="128" y="408">A7 đọc/ghi</text>
-      <line class="ln" x1="400" y1="380" x2="400" y2="428" marker-start="url(#a1)" marker-end="url(#a1)"/>
-      <text class="s" x="408" y="408">MCU chạy code, ghi log</text>
-      <rect class="bl" x="40" y="430" width="160" height="56"/>
-      <text class="t" x="120" y="454" text-anchor="middle">Linux</text>
-      <text class="m" x="120" y="472" text-anchor="middle">0x0–0x3FFFF</text>
-      <rect class="bm" x="200" y="430" width="240" height="56"/>
-      <text class="t" x="320" y="454" text-anchor="middle">code + heap MCU</text>
-      <text class="m" x="320" y="472" text-anchor="middle">0x40000 · 240 KB</text>
-      <rect class="bm" x="440" y="430" width="160" height="56" style="fill-opacity:.55"/>
-      <text class="t" x="520" y="454" text-anchor="middle">log MCU</text>
-      <text class="m" x="520" y="472" text-anchor="middle">0x7C000 · 12 KB</text>
-      <rect class="bl" x="600" y="430" width="320" height="56"/>
-      <text class="t" x="760" y="454" text-anchor="middle">Linux + CMA</text>
-      <text class="m" x="760" y="472" text-anchor="middle">0x7F000–0x3FFFFFF</text>
-      <rect class="zone" x="196" y="426" width="408" height="64" rx="4"/>
-      <text class="s tw" x="400" y="510" text-anchor="middle">⚠ DTS Luckfox chưa có reserved-memory: Linux vẫn cấp phát vùng 0x40000–0x7EFFF</text>
-      <text class="cap" x="40" y="540">DDR 64 MB · KHÔNG THEO TỈ LỆ</text>
+      <!-- debug -->
+      <rect class="b" x="540" y="496" width="170" height="44" rx="6"/>
+      <text class="t" x="625" y="515" text-anchor="middle">UART2 debug</text>
+      <text class="m" x="625" y="531" text-anchor="middle">chân 4 TX · 5 RX · 115200</text>
     </svg>
     </div>
-    <figcaption>Hai nhân không có RAM riêng đủ lớn: code của MCU nằm trong DDR mà Linux đang dùng. Mailbox là kênh trao đổi sẵn có trong phần cứng nhưng firmware hello world chưa dùng tới.</figcaption>
+    <figcaption>Nguồn motor đi thẳng từ pin sang ESC; board chỉ nhận 5 V. Mọi đường điều khiển motor (SPI đọc IMU, PWM ra ESC) nằm trong miền MCU, nên Linux treo không kéo theo vòng điều khiển. UART2 chỉ dùng khi debug, bay thật thì bỏ.</figcaption>
+  </figure>
+
+  <h3>Phân chân header</h3>
+  <div class="tbl"><table>
+    <tr><th>Chân</th><th>GPIO</th><th>Dùng cho</th><th>Chủ</th><th>Bằng chứng</th><th>Trạng thái</th></tr>
+    <tr><td>1</td><td>VBUS</td><td>5 V từ BEC</td><td></td><td>ảnh sơ đồ chân Luckfox</td><td><span class="st u">UNKNOWN</span> cấp nguồn ngược qua chân 1 có an toàn không</td></tr>
+    <tr><td>2, 21</td><td>GND</td><td>đất chung</td><td></td><td>ảnh sơ đồ chân</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span></td></tr>
+    <tr><td>4, 5</td><td>GPIO1_B2/B3</td><td>UART2 console (debug)</td><td class="own-l">Linux</td><td><code>rv1106.dtsi:1010</code>, <code>pinctrl:994-999</code>; đọc được trên board</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span></td></tr>
+    <tr><td>6</td><td>GPIO1_C0</td><td>SPI0 CS0 → IMU</td><td class="own-m">MCU</td><td><code>pinctrl:845-848</code></td><td><span class="st p">ĐỀ XUẤT</span></td></tr>
+    <tr><td>7, 8, 9</td><td>GPIO1_C1/C2/C3</td><td>SPI0 CLK / MOSI / MISO</td><td class="own-m">MCU</td><td><code>pinctrl:834-841</code></td><td><span class="st p">ĐỀ XUẤT</span></td></tr>
+    <tr><td>14</td><td>GPIO1_D2</td><td>SPI0 CS1 → barometer</td><td class="own-m">MCU</td><td><code>pinctrl:852-855</code> (<code>spi0_cs1n_m0</code> = GPIO1_D2). Ảnh ghi CS1 ở chân 15, <b>lệch với DTS</b></td><td><span class="st p">ĐỀ XUẤT</span> đo lại</td></tr>
+    <tr><td>10, 11, 16, 17</td><td>GPIO1_C4/C5/C6/C7</td><td>PWM8/9/10/11_M1 → ESC 1–4</td><td class="own-m">MCU</td><td><code>pinctrl:625,641,654,677</code>; HAL MCU <code>g_pwm2Dev</code> @ 0xFF490000 (<code>hal_bsp.c:99-105</code>)</td><td><span class="st p">ĐỀ XUẤT</span></td></tr>
+    <tr><td>12, 13</td><td>GPIO1_D0/D1</td><td>UART3 → GPS</td><td class="own-l">Linux</td><td><code>pinctrl:1014-1019</code>; đang <code>disabled</code> trong DTS Mini</td><td><span class="st p">ĐỀ XUẤT</span></td></tr>
+    <tr><td>15</td><td>GPIO1_D3</td><td>dự phòng: ngắt data-ready của IMU</td><td class="own-m">MCU</td><td>ngắt GPIO chia theo bank, Linux cũng giữ bank GPIO1</td><td><span class="st u">UNKNOWN</span> nên bắt đầu bằng polling</td></tr>
+    <tr><td>18</td><td>GPIO0_A4</td><td>đèn/buzzer trạng thái</td><td class="own-m">MCU</td><td><code>pinctrl:454-457</code></td><td><span class="st p">ĐỀ XUẤT</span></td></tr>
+    <tr><td>19, 20</td><td>GPIO4_C0/C1</td><td>SARADC IN0 điện áp pin, IN1 dòng</td><td class="own-l">Linux</td><td>SARADC <code>okay</code> trong DTS (<code>ipc.dtsi:92</code>)</td><td><span class="st p">ĐỀ XUẤT</span></td></tr>
+    <tr><td>USB-C</td><td></td><td>dev: ADB/SSH. Bay: host cho Wi-Fi</td><td class="own-l">Linux</td><td>DTS Mini <code>dr_mode = "peripheral"</code></td><td><span class="st u">UNKNOWN</span> chuyển sang host</td></tr>
+  </table></div>
+  <p>Hệ quả: UART4 và I2C3 không dùng được vì chân đã dành cho PWM và SPI. Không còn UART trống cho bộ thu RC; điều khiển tay sẽ phải qua Wi-Fi, xem phần rủi ro.</p>
+</section>
+
+<section>
+  <h2>2. Phần mềm</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 560" role="img" aria-label="Kiến trúc phần mềm: các tiến trình Linux (vision, flight-manager, telemetry và web, blackbox-writer, mcu-loader) trao đổi với các task RT-Thread trên MCU qua ba vòng đệm trong RAM chung: setpoint từ Linux sang MCU, telemetry và blackbox từ MCU sang Linux.">
+      <defs>
+        <marker id="h2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+      </defs>
+      <text class="cap tl" x="20" y="24">LINUX · CORTEX-A7 (C/C++)</text>
+      <text class="cap" x="380" y="24">RAM CHUNG · 0x01800000</text>
+      <text class="cap tm" x="600" y="24">RT-THREAD · HPMCU (C)</text>
+
+      <rect class="bl" x="20" y="40" width="340" height="56" rx="6"/>
+      <text class="t" x="36" y="62">vision</text>
+      <text class="s" x="36" y="82">camera → ISP → VPSS → encoder H.264 + NPU phát hiện</text>
+      <line class="ln" x1="190" y1="96" x2="190" y2="148" marker-end="url(#h2)"/>
+      <text class="s" x="198" y="126">mục tiêu (class, bbox), socket nội bộ</text>
+      <rect class="bl" x="20" y="150" width="340" height="100" rx="6"/>
+      <text class="t" x="36" y="172">flight-manager</text>
+      <text class="s" x="36" y="192">mission, navigation 20–50 Hz, GPS (UART3)</text>
+      <text class="s" x="36" y="210">pin (SARADC), heartbeat, lệnh arm/disarm</text>
+      <text class="s" x="36" y="228">không chạy PID mức thấp</text>
+      <line class="ln" x1="190" y1="250" x2="190" y2="268" marker-end="url(#h2)"/>
+      <rect class="bl" x="20" y="270" width="340" height="56" rx="6"/>
+      <text class="t" x="36" y="292">telemetry + web</text>
+      <text class="s" x="36" y="312">dashboard nhẹ, UDP telemetry, SSH qua Wi-Fi</text>
+      <rect class="bl" x="20" y="420" width="340" height="50" rx="6"/>
+      <text class="t" x="36" y="441">blackbox-writer</text>
+      <text class="s" x="36" y="459">xả vòng đệm ra /userdata, 10 Hz</text>
+      <rect class="bl" x="20" y="490" width="340" height="50" rx="6"/>
+      <text class="t" x="36" y="511">mcu-loader (init)</text>
+      <text class="s" x="36" y="529">nạp rtthread.bin lúc boot (mcu-tool, đã chạy)</text>
+
+      <rect class="b" x="380" y="150" width="200" height="40" rx="4"/>
+      <text class="t" x="480" y="168" text-anchor="middle">setpoint ring</text>
+      <text class="m" x="480" y="182" text-anchor="middle">Linux → MCU · 4 KB</text>
+      <rect class="b" x="380" y="206" width="200" height="40" rx="4"/>
+      <text class="t" x="480" y="224" text-anchor="middle">telemetry ring</text>
+      <text class="m" x="480" y="238" text-anchor="middle">MCU → Linux · 16 KB</text>
+      <rect class="b" x="380" y="300" width="200" height="60" rx="4"/>
+      <text class="t" x="480" y="320" text-anchor="middle">log + bench</text>
+      <text class="m" x="480" y="336" text-anchor="middle">0x0183C000 · 16 KB</text>
+      <text class="s" x="480" y="352" text-anchor="middle">đang chạy</text>
+      <rect class="b" x="380" y="420" width="200" height="50" rx="4"/>
+      <text class="t" x="480" y="440" text-anchor="middle">blackbox ring</text>
+      <text class="m" x="480" y="456" text-anchor="middle">MCU → Linux · 224 KB</text>
+
+      <line class="ln" x1="360" y1="170" x2="378" y2="170" marker-end="url(#h2)"/>
+      <line class="ln" x1="580" y1="170" x2="598" y2="190" marker-end="url(#h2)"/>
+      <line class="ln" x1="600" y1="222" x2="582" y2="226" marker-end="url(#h2)"/>
+      <line class="ln" x1="378" y1="226" x2="362" y2="226" marker-end="url(#h2)"/>
+      <line class="ln" x1="598" y1="446" x2="582" y2="446" marker-end="url(#h2)"/>
+      <line class="ln" x1="378" y1="446" x2="362" y2="446" marker-end="url(#h2)"/>
+
+      <rect class="bm" x="600" y="40" width="340" height="44" rx="6"/>
+      <text class="t" x="616" y="60">ngắt tick 1 kHz</text>
+      <text class="s" x="616" y="76">mtime; sửa lỗi chậm 0,1% và lỗi tràn timer.c:128</text>
+      <line class="ln" x1="770" y1="84" x2="770" y2="98" marker-end="url(#h2)"/>
+      <rect class="bm" x="600" y="100" width="340" height="56" rx="6"/>
+      <text class="t" x="616" y="120">ctrl_rate · ưu tiên 1 · 1 kHz</text>
+      <text class="s" x="616" y="140">IMU (SPI) → lọc → estimator → PID rate → mixer → PWM</text>
+      <rect class="bm" x="600" y="172" width="340" height="56" rx="6"/>
+      <text class="t" x="616" y="192">comms · ưu tiên 10 · 100 Hz</text>
+      <text class="s" x="616" y="212">nhận setpoint (seq, CRC), gửi telemetry</text>
+      <line class="ln" x1="900" y1="172" x2="900" y2="158" marker-end="url(#h2)"/>
+      <rect class="bm" x="600" y="244" width="340" height="44" rx="6"/>
+      <text class="t" x="616" y="264">ctrl_att · ưu tiên 2 · 250 Hz</text>
+      <text class="s" x="616" y="280">PID góc → setpoint cho ctrl_rate</text>
+      <rect class="bm" x="600" y="302" width="340" height="44" rx="6"/>
+      <text class="t" x="616" y="322">ctrl_alt · ưu tiên 3 · 100 Hz</text>
+      <text class="s" x="616" y="338">barometer (SPI CS1) → độ cao</text>
+      <rect class="bm" x="600" y="360" width="340" height="44" rx="6"/>
+      <text class="t" x="616" y="380">safety · ưu tiên 4 · 100 Hz</text>
+      <text class="s" x="616" y="396">state machine, timeout IMU/IPC/heartbeat</text>
+      <rect class="bm" x="600" y="420" width="340" height="50" rx="6"/>
+      <text class="t" x="616" y="441">blackbox · ưu tiên 20</text>
+      <text class="s" x="616" y="459">bản ghi nhị phân, không in text trong vòng lặp</text>
+      <rect class="b" x="600" y="490" width="340" height="50" rx="6"/>
+      <text class="t" x="616" y="511">hello + bench (Milestone 1)</text>
+      <text class="s" x="616" y="529">giữ lại để so sánh jitter về sau</text>
+    </svg>
+    </div>
+    <figcaption>Hai miền chỉ nói chuyện qua RAM chung, bằng polling, vì kernel không có driver mailbox cho RV1106 (<code>rockchip-mailbox.c:163</code> chỉ khớp rk3368) và không có RPMsg (<code>rockchip_rpmsg.c:402-404</code>). MCU đọc setpoint mỗi vòng 1 ms; Linux đọc telemetry 100 Hz. Vùng IPC 256 KB nằm ở <code>0x01840000</code> <span class="st p">ĐỀ XUẤT</span>: phải mở rộng <code>reserved-memory</code> lên 512 KB.</figcaption>
+  </figure>
+
+  <div class="two">
+    <div class="card">
+      <h3>Gói tin IPC <span class="st p">ĐỀ XUẤT</span></h3>
+      <ul>
+        <li><b>Linux → MCU</b>: timestamp, seq, mode, roll/pitch/yaw target, throttle, velocity/position target, CRC32</li>
+        <li><b>MCU → Linux</b>: timestamp, seq, attitude, gyro, accel, altitude, pin, flight_state, failsafe_flags, CRC32</li>
+        <li>Vòng đệm SPSC, mỗi phía chỉ ghi chỉ số của mình; đọc bằng seq như <code>mcu_bench_shared</code> hiện tại</li>
+        <li>Ngưỡng timeout heartbeat: <span class="st u">UNKNOWN</span>, chốt sau khi đo độ trễ IPC</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Ngân sách tài nguyên</h3>
+      <ul>
+        <li>MCU: 240 KB cho code + dữ liệu; bản Milestone 1 dùng 22 KB code, 88 KB histogram, heap trống ≈ 124 KB</li>
+        <li>Chu kỳ 1 ms; jitter đo được 18 µs (idle) đến 117 µs (camera chạy)</li>
+        <li>Linux: MemAvailable chỉ ≈ 4,8 MB khi <code>rkipc</code> chạy. Phải thay <code>rkipc</code> bằng app camera riêng, gọn hơn</li>
+        <li>Thời gian tính toán của vòng điều khiển: <span class="st u">UNKNOWN</span>, đo ở Milestone 2</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>3. Trạng thái bay và failsafe</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 960 230" role="img" aria-label="Máy trạng thái: BOOT, INIT, CALIBRATING, DISARMED, ARMED, FLYING. Từ ARMED hoặc FLYING có thể vào FAILSAFE, rồi LANDING, rồi về DISARMED. BOOT, INIT, CALIBRATING, DISARMED luôn tắt PWM.">
+      <defs>
+        <marker id="h3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
+        <marker id="h3w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
+      </defs>
+      <rect class="b" x="20" y="30" width="130" height="50" rx="6"/><text class="t" x="85" y="52" text-anchor="middle">BOOT</text><text class="s" x="85" y="70" text-anchor="middle">PWM tắt</text>
+      <rect class="b" x="172" y="30" width="130" height="50" rx="6"/><text class="t" x="237" y="52" text-anchor="middle">INIT</text><text class="s" x="237" y="70" text-anchor="middle">PWM tắt</text>
+      <rect class="b" x="324" y="30" width="130" height="50" rx="6"/><text class="t" x="389" y="52" text-anchor="middle">CALIBRATING</text><text class="s" x="389" y="70" text-anchor="middle">PWM tắt</text>
+      <rect class="b" x="476" y="30" width="130" height="50" rx="6"/><text class="t" x="541" y="52" text-anchor="middle">DISARMED</text><text class="s" x="541" y="70" text-anchor="middle">PWM tắt · mặc định</text>
+      <rect class="bm" x="628" y="30" width="130" height="50" rx="6"/><text class="t" x="693" y="52" text-anchor="middle">ARMED</text><text class="s" x="693" y="70" text-anchor="middle">motor idle</text>
+      <rect class="bm" x="780" y="30" width="130" height="50" rx="6"/><text class="t" x="845" y="52" text-anchor="middle">FLYING</text><text class="s" x="845" y="70" text-anchor="middle">điều khiển đầy đủ</text>
+      <line class="ln" x1="150" y1="55" x2="170" y2="55" marker-end="url(#h3)"/>
+      <line class="ln" x1="302" y1="55" x2="322" y2="55" marker-end="url(#h3)"/>
+      <line class="ln" x1="454" y1="55" x2="474" y2="55" marker-end="url(#h3)"/>
+      <line class="ln" x1="606" y1="55" x2="626" y2="55" marker-end="url(#h3)"/>
+      <text class="s" x="616" y="24" text-anchor="middle">lệnh arm</text>
+      <line class="ln" x1="758" y1="55" x2="778" y2="55" marker-end="url(#h3)"/>
+      <rect class="bx" x="628" y="150" width="130" height="50" rx="6"/><text class="t tw" x="693" y="172" text-anchor="middle">FAILSAFE</text><text class="s" x="693" y="190" text-anchor="middle">mất IMU / IPC / pin</text>
+      <rect class="bx" x="476" y="150" width="130" height="50" rx="6"/><text class="t tw" x="541" y="172" text-anchor="middle">LANDING</text><text class="s" x="541" y="190" text-anchor="middle">hạ ga có kiểm soát</text>
+      <line class="lw" x1="693" y1="80" x2="693" y2="148" marker-end="url(#h3w)"/>
+      <path class="lw" d="M845 80V175H760" marker-end="url(#h3w)"/>
+      <line class="lw" x1="628" y1="175" x2="608" y2="175" marker-end="url(#h3w)"/>
+      <line class="lw" x1="541" y1="150" x2="541" y2="82" marker-end="url(#h3w)"/>
+      <text class="s" x="549" y="120">chạm đất</text>
+    </svg>
+    </div>
+    <figcaption>Máy trạng thái chạy trên MCU, nên MCU tự vào failsafe khi Linux treo. Sau khi boot luôn ở DISARMED, không bao giờ tự arm. Cách hạ cánh khi không còn Linux (chỉ còn IMU và barometer) cần thiết kế riêng.</figcaption>
   </figure>
 </section>
 
 <section>
-  <h2>2. Khởi động: ai nạp và ai nhả MCU</h2>
+  <h2>4. Bộ nhớ DDR</h2>
+  <div class="tbl"><table>
+    <tr><th>Vùng</th><th>Địa chỉ</th><th>Dùng cho</th><th>Trạng thái</th></tr>
+    <tr><td>Kernel code + data</td><td class="mono">0x00008000 – 0x0078C363</td><td>Linux</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span> <code>/proc/iomem</code>; chứa vùng 0x40000 mặc định của SDK</td></tr>
+    <tr><td>MCU code + data + heap</td><td class="mono">0x01800000 – 0x0183BFFF</td><td>rtthread.bin</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span> đang chạy</td></tr>
+    <tr><td>MCU log</td><td class="mono">0x0183C000 – 0x0183EFFF</td><td>drv_pstore</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span></td></tr>
+    <tr><td>Benchmark</td><td class="mono">0x0183F000 – 0x0183FFFF</td><td>mcu_bench_shared</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span></td></tr>
+    <tr><td>IPC + blackbox</td><td class="mono">0x01840000 – 0x0187FFFF</td><td>setpoint, telemetry, blackbox</td><td><span class="st p">ĐỀ XUẤT</span> đang là RAM Linux, phải chừa thêm</td></tr>
+    <tr><td>U-Boot sau relocate</td><td class="mono">≈ 0x02DF9F58 – 0x03FFFFFF</td><td>chỉ lúc boot</td><td><span class="st v">ĐÃ KIỂM CHỨNG</span> log UART</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>5. Rủi ro và điều kiện chọn kiến trúc</h2>
+  <div class="tbl"><table>
+    <tr><th>Rủi ro</th><th>Bằng chứng</th><th>Cách kiểm tra / giảm</th></tr>
+    <tr><td>Camera trên Linux làm jitter MCU tăng 6,4 lần</td><td>18,2 → 116,7 µs</td><td>chạy vòng lặp từ <code>hpmcu_sram</code> 8 KB; kiểm tra D-cache MCU; đo khi có NPU và Wi-Fi</td></tr>
+    <tr><td>HAL MCU không có mô tả thiết bị SPI</td><td><code>hal_bsp.c</code> chỉ có I2C0–4, PWM0–2, UART0/2</td><td>tự viết <code>g_spi0Dev</code> + kiểm clock SPI0; loopback 1/5/10 MHz</td></tr>
+    <tr><td>Không có DMA trong bảng ngắt MCU</td><td><code>soc.h:53-94</code></td><td>DShot bằng PWM không DMA; có thể chỉ làm được PWM/Oneshot</td></tr>
+    <tr><td>Không có kênh RC độc lập, không có kill switch phần cứng</td><td>hết UART trống</td><td>công tắc cắt nguồn ESC bằng tay; failsafe trên MCU khi mất Wi-Fi</td></tr>
+    <tr><td>USB-C phải chuyển sang host để dùng Wi-Fi</td><td><code>dr_mode = "peripheral"</code></td><td>thử host + nguồn qua chân 1; mất ADB khi bay</td></tr>
+    <tr><td>RAM Linux rất ít</td><td>MemAvailable ≈ 4,8 MB với rkipc</td><td>app camera riêng, model NPU nhỏ</td></tr>
+    <tr><td>Lỗi tick trong SDK</td><td>chậm 0,1%; <code>timer.c:128</code> có thể hỏng sau ≈ 4 h</td><td>sửa trong BSP của repo, test 6 h/24 h</td></tr>
+  </table></div>
+
   <figure>
     <div class="scroll">
-    <svg viewBox="0 0 960 384" role="img" aria-label="Luồng khởi động: loader nạp U-Boot, U-Boot boot kernel. Các bước nạp rtthread.bin vào 0x40000 và nhả reset MCU chỉ có trong luồng thunder-boot, chưa có trên Luckfox.">
-      <defs>
-        <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
-        <marker id="w2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
-      </defs>
-      <rect class="lane" x="16" y="24" width="928" height="72" rx="6"/>
-      <rect class="lane" x="16" y="104" width="928" height="102" rx="6"/>
-      <rect class="lane" x="16" y="214" width="928" height="72" rx="6"/>
-      <rect class="lane" x="16" y="294" width="928" height="72" rx="6"/>
-      <text class="cap" x="28" y="64">LOADER</text>
-      <text class="cap" x="28" y="160">U-BOOT</text>
-      <text class="cap tl" x="28" y="254">LINUX</text>
-      <text class="cap tm" x="28" y="334">HPMCU</text>
-
-      <rect class="b" x="170" y="36" width="170" height="48" rx="6"/>
-      <text class="t" x="255" y="56" text-anchor="middle">Loader SPL</text>
-      <text class="s" x="255" y="74" text-anchor="middle">nạp U-Boot từ NAND</text>
-      <rect class="bx" x="360" y="36" width="170" height="48" rx="6"/>
-      <text class="t" x="445" y="56" text-anchor="middle">nạp rtthread.bin</text>
-      <text class="m" x="445" y="74" text-anchor="middle">→ DDR 0x40000</text>
-      <line class="lw" x1="340" y1="60" x2="358" y2="60" marker-end="url(#w2)"/>
-
-      <path class="ln" d="M255 84V140H358" marker-end="url(#a2)"/>
-      <rect class="b" x="360" y="116" width="170" height="48" rx="6"/>
-      <text class="t" x="445" y="136" text-anchor="middle">U-Boot khởi động</text>
-      <text class="s" x="445" y="154" text-anchor="middle">đọc DTB, env</text>
-      <rect class="bx" x="550" y="116" width="170" height="48" rx="6"/>
-      <text class="t" x="635" y="136" text-anchor="middle">ghi BOOT_ADDR</text>
-      <text class="s" x="635" y="154" text-anchor="middle">reset rồi nhả reset MCU</text>
-      <rect class="b" x="740" y="116" width="170" height="48" rx="6"/>
-      <text class="t" x="825" y="136" text-anchor="middle">nạp kernel + DTB</text>
-      <text class="s" x="825" y="154" text-anchor="middle">nhảy vào kernel</text>
-      <line class="lw" x1="530" y1="140" x2="548" y2="140" marker-end="url(#w2)"/>
-      <line class="lw" x1="720" y1="140" x2="738" y2="140" marker-end="url(#w2)"/>
-      <path class="ln" d="M445 164V190H800V166" marker-end="url(#a2)"/>
-      <text class="s" x="622" y="184" text-anchor="middle">Luckfox hôm nay đi thẳng</text>
-
-      <line class="ln" x1="850" y1="164" x2="850" y2="224" marker-end="url(#a2)"/>
-      <rect class="bl" x="740" y="226" width="170" height="48" rx="6"/>
-      <text class="t" x="825" y="246" text-anchor="middle">Linux khởi động</text>
-      <text class="s tw" x="825" y="264" text-anchor="middle">thiếu reserved-memory</text>
-
-      <path class="lw" d="M635 164V304" marker-end="url(#w2)"/>
-      <text class="s tw" x="643" y="254">nhả reset</text>
-      <text class="s" x="255" y="334" text-anchor="middle" font-style="italic">MCU đứng yên (giữ reset)</text>
-      <rect class="bm" x="550" y="306" width="170" height="48" rx="6"/>
-      <text class="t" x="635" y="326" text-anchor="middle">RT-Thread chạy</text>
-      <text class="m" x="635" y="344" text-anchor="middle">c.j → 0x40200</text>
-      <rect class="bm" x="740" y="306" width="170" height="48" rx="6"/>
-      <text class="t" x="825" y="326" text-anchor="middle">thread hello</text>
-      <text class="s" x="825" y="344" text-anchor="middle">1 dòng log mỗi giây</text>
-      <line class="ln" x1="720" y1="330" x2="738" y2="330" marker-end="url(#a2)"/>
+    <svg viewBox="0 0 960 150" role="img" aria-label="Phương án dự phòng: RV1103 chỉ chạy Linux cho camera, AI và mạng, nối UART với một MCU điều khiển bay riêng. MCU riêng lo IMU, ESC DShot, bộ thu RC và kill switch.">
+      <defs><marker id="h4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah"/></marker></defs>
+      <text class="cap" x="20" y="20">PHƯƠNG ÁN DỰ PHÒNG B</text>
+      <rect class="bl" x="20" y="36" width="280" height="90" rx="8"/>
+      <text class="t" x="36" y="60">RV1103 · chỉ Linux</text>
+      <text class="s" x="36" y="80">camera, NPU, video, Wi-Fi, mission</text>
+      <text class="s" x="36" y="98">HPMCU không dùng hoặc làm việc phụ</text>
+      <line class="ln" x1="300" y1="81" x2="458" y2="81" marker-start="url(#h4)" marker-end="url(#h4)"/>
+      <text class="s" x="379" y="72" text-anchor="middle">UART3 (chân 12/13)</text>
+      <text class="s" x="379" y="98" text-anchor="middle">setpoint ↔ telemetry</text>
+      <rect class="bm" x="460" y="36" width="280" height="90" rx="8"/>
+      <text class="t" x="476" y="60">MCU điều khiển bay riêng</text>
+      <text class="s" x="476" y="80">IMU SPI + DMA, ESC DShot, bộ thu RC</text>
+      <text class="s" x="476" y="98">kill switch; loại chip: chưa chọn</text>
+      <line class="ln" x1="740" y1="81" x2="818" y2="81" marker-end="url(#h4)"/>
+      <rect class="be" x="820" y="56" width="120" height="50" rx="6"/>
+      <text class="t" x="880" y="86" text-anchor="middle">ESC x4</text>
     </svg>
     </div>
-    <figcaption>Luckfox hiện chạy đường liền: loader → U-Boot → kernel, MCU không bao giờ được nhả reset. Hai bước đứt đỏ có sẵn trong SDK (<code>RV1106MINIALL_SPI_NAND_TB.ini</code> và <code>u-boot/…/rv1106/rv1106.c:552–559</code>) nhưng thuộc luồng thunder-boot của Rockchip.</figcaption>
+    <figcaption>Chuyển sang B nếu Milestone 2 cho thấy: MCU không điều khiển được SPI một cách ổn định, hoặc jitter khi có camera + NPU làm vòng rate 1 kHz lỡ chu kỳ, hoặc không tạo được tín hiệu ESC đủ chính xác. Phần mềm Linux và định dạng IPC giữ nguyên; chỉ đổi đường truyền từ RAM chung sang UART.</figcaption>
   </figure>
 </section>
 
 <section>
-  <h2>3. Khi chạy: log đi từ MCU sang Linux qua RAM</h2>
-  <figure>
-    <div class="scroll">
-    <svg viewBox="0 0 960 310" role="img" aria-label="rt_kprintf trên MCU được hook sang write_log_to_ram, ghi vào vòng đệm ở 0x7C000; Linux đọc lại qua node ramoops mcu-log, node này chưa có trong DTS Luckfox. Đường ra UART bị tắt.">
-      <defs>
-        <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ah"/></marker>
-        <marker id="w3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="aw"/></marker>
-        <marker id="g3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ag"/></marker>
-      </defs>
-      <text class="cap tm" x="40" y="28">HPMCU</text>
-      <text class="cap" x="360" y="28">DDR</text>
-      <text class="cap tl" x="700" y="28">LINUX</text>
-
-      <rect class="bm" x="40" y="44" width="240" height="56" rx="6"/>
-      <text class="t" x="160" y="67" text-anchor="middle">thread hello</text>
-      <text class="m" x="160" y="86" text-anchor="middle">rt_kprintf("…alive %u")</text>
-
-      <line class="ln" x1="160" y1="100" x2="160" y2="138" marker-end="url(#a3)"/>
-      <text class="s" x="168" y="124">output hook</text>
-      <rect class="bm" x="40" y="140" width="240" height="56" rx="6"/>
-      <text class="t" x="160" y="163" text-anchor="middle">write_log_to_ram()</text>
-      <text class="m" x="160" y="182" text-anchor="middle">drv_pstore.c</text>
-
-      <path class="lg" d="M40 72H24V254H38" marker-end="url(#g3)"/>
-      <rect class="b" x="40" y="228" width="240" height="56" rx="6" style="opacity:.8"/>
-      <text class="t" x="160" y="251" text-anchor="middle" style="text-decoration:line-through">UART2</text>
-      <text class="s" x="160" y="270" text-anchor="middle">RT_USING_UART tắt, hàm rỗng</text>
-
-      <line class="ln" x1="280" y1="168" x2="358" y2="168" marker-end="url(#a3)"/>
-      <text class="s" x="319" y="160" text-anchor="middle">ghi vòng</text>
-      <rect class="bm" x="360" y="100" width="260" height="120" rx="6" style="fill-opacity:.55"/>
-      <text class="t" x="490" y="124" text-anchor="middle">vòng đệm 0x7C000</text>
-      <rect class="b" x="376" y="140" width="48" height="34"/>
-      <rect class="b" x="424" y="140" width="48" height="34"/>
-      <rect class="b" x="472" y="140" width="48" height="34"/>
-      <rect class="b" x="520" y="140" width="84" height="34"/>
-      <text class="m" x="400" y="161" text-anchor="middle">sig</text>
-      <text class="m" x="448" y="161" text-anchor="middle">start</text>
-      <text class="m" x="496" y="161" text-anchor="middle">size</text>
-      <text class="m" x="562" y="161" text-anchor="middle">data…</text>
-      <text class="s" x="490" y="196" text-anchor="middle">sig = "DBGC", data 12 KB − 12 B</text>
-      <text class="s" x="490" y="212" text-anchor="middle">\n được đổi thành \r\n</text>
-
-      <line class="lw" x1="620" y1="140" x2="698" y2="140" marker-end="url(#w3)"/>
-      <text class="s tw" x="659" y="132" text-anchor="middle">đọc</text>
-      <rect class="bx" x="700" y="112" width="220" height="56" rx="6"/>
-      <text class="t" x="810" y="135" text-anchor="middle">ramoops "mcu-log"</text>
-      <text class="s" x="810" y="154" text-anchor="middle">có ở rv1106-thunder-boot.dtsi</text>
-      <line class="lw" x1="810" y1="168" x2="810" y2="206" marker-end="url(#w3)"/>
-      <rect class="bx" x="700" y="208" width="220" height="56" rx="6"/>
-      <text class="t" x="810" y="231" text-anchor="middle">xem log MCU từ shell</text>
-      <text class="s tw" x="810" y="250" text-anchor="middle">chưa có trên Luckfox</text>
-    </svg>
+  <h2>6. Bước tiếp theo: Milestone 2 (chờ bạn duyệt)</h2>
+  <div class="two">
+    <div class="card">
+      <h3>Phần cứng cần có</h3>
+      <ul>
+        <li>Module ICM-42688-P (SPI, 3,3 V)</li>
+        <li>Máy hiện sóng hoặc logic analyzer cho SPI loopback và PWM</li>
+        <li>Dây nối MOSI–MISO (chân 8–9) để test loopback</li>
+      </ul>
     </div>
-    <figcaption>MCU chỉ ghi log vào RAM. Muốn đọc được từ Linux cần thêm node ramoops trỏ vào 0x7C000 trong DTS Luckfox. Mailbox (sơ đồ 1) sẽ là kênh cho lệnh hai chiều ở bước sau.</figcaption>
-  </figure>
-</section>
-
-<section>
-  <h2>Ba việc trước khi chạy MCU trên board</h2>
-  <ul class="todo">
-    <li><b>Chừa RAM</b>Thêm <code>reserved-memory</code> cho 0x40000–0x7EFFF vào DTS Luckfox, nếu không MCU ghi đè bộ nhớ Linux.</li>
-    <li><b>Không tranh ngắt GPIO</b>Bỏ đoạn unmask GPIO0–4 trong <code>rt_hw_gpio_init</code> của firmware MCU.</li>
-    <li><b>Có đường nạp</b>Nạp <code>rtthread.bin</code> vào 0x40000 rồi ghi BOOT_ADDR và nhả reset, từ U-Boot hoặc từ Linux.</li>
-  </ul>
+    <div class="card">
+      <h3>Thứ tự làm</h3>
+      <ul>
+        <li>Mô tả thiết bị SPI0 cho HAL MCU, giữ clock SPI0 trong node <code>rockchip,amp</code></li>
+        <li>Loopback 1 / 5 / 10 MHz, rồi đọc WHO_AM_I của IMU</li>
+        <li>Đọc IMU 1 kHz → estimator → PID → mixer ảo; đo thời gian tính mỗi vòng</li>
+        <li>Chạy thử vòng lặp từ <code>hpmcu_sram</code> để so jitter</li>
+      </ul>
+    </div>
+  </div>
 </section>
 </div>

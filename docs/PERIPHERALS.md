@@ -47,8 +47,14 @@ Nguồn: ảnh sơ đồ chân của Luckfox (`Luckfox-Pico-Mini-details-inter.j
 
 Hướng TX/RX của UART4_M1: **UNKNOWN — NEED VERIFICATION** (ảnh và DTS nói ngược nhau). Đo bằng máy hiện sóng trước khi dùng.
 
-**PWM cho ESC x4:** header có 6 kênh PWM trên chân 6–11, nhưng chân 6–9 trùng với SPI0 (dự kiến cho IMU).
-Nếu IMU dùng SPI0 thì chỉ còn PWM8_M1, PWM9_M1 (chân 10, 11) và PWM1_M0 (chân 18) = 3 kênh, **thiếu 1 kênh**. Cần xem lại ở Milestone 4.
+Các chân PWM khác mà ảnh không ghi, tra từ `rv1106-pinctrl.dtsi`:
+chân 12 PWM3_M2 (`:514`), 13 PWM10_M2 (`:661`), 14 PWM0_M1 (`:445`), 15 PWM11_M2 (`:684`),
+16 PWM10_M1 (`:654`), 17 PWM11_M1 (`:677`), 20 PWM1_M1 (`:461`).
+
+`spi0_cs1n_m0` là GPIO1_D2 = **chân 14** (`:852-855`); ảnh ghi CS1 ở chân 15. **Lệch giữa ảnh và DTS**, theo DTS.
+
+**PWM cho ESC x4 (đề xuất):** PWM8/9/10/11_M1 ở chân 10, 11, 16, 17. Cả 4 kênh thuộc cùng bộ PWM @ 0xFF490000,
+chính là `g_pwm2Dev` trong HAL MCU (`hal_bsp.c:99-105`, `rv1106.h:790`). Không trùng chân SPI0 (6–9).
 
 ## Điều kiện để MCU dùng một khối
 
@@ -57,7 +63,7 @@ Nếu IMU dùng SPI0 thì chỉ còn PWM8_M1, PWM9_M1 (chân 10, 11) và PWM1_M0
    Phải thêm clock của khối đó vào node `rockchip,amp` (`DTS/rv1106-amp.dtsi`). Driver `rockchip_amp.c` bật và giữ mọi clock trong danh sách.
 3. **MCU có ngắt**: có trong bảng `HAL_MCU_CORE` (`soc.h:53-94`).
 4. **HAL có mô tả thiết bị + mã clock cho RV1106**: UART thì **không** (`hal_bsp.c:120` chỉ có UART2; không có `CLK_UART*` nào cho RV1106).
-   SPI, PWM, DMA: chưa kiểm tra, **UNKNOWN**.
+   PWM0–2 và I2C0–4 **có** (`hal_bsp.c:28-107`). **SPI không có** mô tả thiết bị. DMA: **UNKNOWN**.
 
 ## UART debug cho MCU
 

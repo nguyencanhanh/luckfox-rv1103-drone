@@ -45,17 +45,27 @@ SDK không có firmware hay luồng build nào cho nó. **Chưa xác minh**, kh�
 
 ## Hướng kiến trúc
 
-Mục tiêu: một chip RV1103, Linux trên Cortex-A7 lo camera, AI, mạng; HPMCU chạy vòng điều khiển bay.
-Trạng thái: **NOT YET DEMONSTRATED**. Chưa có lần nào MCU chạy cùng Linux trên board ([MILESTONE1.md](MILESTONE1.md)).
+Tài liệu đầy đủ có sơ đồ: [architecture.html](architecture.html) (phần cứng, phân chân, phần mềm, IPC, failsafe, bộ nhớ, rủi ro, phương án B).
 
-Những điểm đã thấy có thể buộc phải dùng MCU điều khiển bay rời (phương án dự phòng):
+Mục tiêu: một chip RV1103, Linux trên Cortex-A7 lo camera, AI, mạng; HPMCU chạy vòng điều khiển bay.
+Trạng thái: **NOT YET DEMONSTRATED**. Milestone 1 PASS: MCU chạy 1 kHz cùng Linux, 0 lỡ chu kỳ trên 2 000 000 vòng,
+jitter 18,2 µs khi idle và 116,7 µs khi camera chạy ([REALTIME.md](REALTIME.md)).
+
+| Miền | Phần cứng (đề xuất) | Phần mềm (đề xuất) |
+|---|---|---|
+| MCU | SPI0 (chân 6–9, CS1 chân 14): IMU ICM-42688-P + barometer; PWM2 kênh 8–11 (chân 10, 11, 16, 17): 4 ESC | RT-Thread: ctrl_rate 1 kHz, ctrl_att 250 Hz, ctrl_alt 100 Hz, safety 100 Hz, comms 100 Hz, blackbox |
+| Linux | CSI camera; UART3 (chân 12/13): GPS; SARADC (chân 19/20): pin; USB host: Wi-Fi | vision, flight-manager, telemetry + web, blackbox-writer, mcu-loader |
+| Chung | DDR: MCU 0x01800000 (256 KB, đã chạy) + IPC 0x01840000 (256 KB, đề xuất) | vòng đệm SPSC + polling (không có mailbox driver, không có RPMsg cho RV1106) |
+
+Những điểm có thể buộc phải dùng MCU điều khiển bay rời (phương án B):
 
 | Vấn đề | Bằng chứng | Ảnh hưởng |
 |---|---|---|
-| MCU không có UART trong HAL RV1106 | [PERIPHERALS.md](PERIPHERALS.md) | debug, GPS/ESC telemetry trên MCU phải tự viết driver |
-| Không thấy ngắt DMA trong bảng ngắt của MCU | `soc.h:53-94` | DShot bằng Timer+DMA có thể không làm được từ MCU |
-| PWM trên header trùng chân SPI0: dùng SPI0 cho IMU thì còn 3 kênh | [PERIPHERALS.md](PERIPHERALS.md) | ESC x4 cần 4 kênh |
-| Không có RPMsg cho RV1106 | [IPC.md](IPC.md) | IPC phải tự làm |
-| Lỗi tràn timer trong SDK | `timer.c:128` | phải sửa trước khi chạy dài |
+| HAL MCU không có SPI, không có UART | `hal_bsp.c` chỉ có I2C0–4, PWM0–2, UART0/2 | phải tự viết mô tả thiết bị + kiểm clock |
+| Không thấy ngắt DMA trong bảng ngắt của MCU | `soc.h:53-94` | DShot bằng Timer+DMA có thể không làm được |
+| Tải camera làm jitter MCU tăng 6,4 lần | [REALTIME.md](REALTIME.md) | phải đo thêm với NPU + Wi-Fi |
+| Không có UART trống cho bộ thu RC | [PERIPHERALS.md](PERIPHERALS.md) | điều khiển tay chỉ qua Wi-Fi |
+| Không có RPMsg/mailbox driver cho RV1106 | [IPC.md](IPC.md) | IPC tự làm |
+| Lỗi tick trong SDK | `timer.c:128`, chậm 0,1% | phải sửa trước khi chạy dài |
 
-Quyết định giữ hay bỏ kiến trúc một chip chỉ đưa ra sau khi có số liệu của Milestone 1 và 2.
+Quyết định giữ hay bỏ kiến trúc một chip chỉ đưa ra sau khi có số liệu của Milestone 2.
