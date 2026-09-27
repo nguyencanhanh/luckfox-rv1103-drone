@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="13" role="img" aria-label="Sơ đồ khối hệ thống drone RV1103: tay điều khiển ELRS và laptop ở mặt đất; trên drone, Linux trên Cortex-A7 lo bộ thu RC, camera, AI, GPS, Wi-Fi; MCU RISC-V chạy vòng điều khiển 1 kHz đọc IMU và barometer qua SPI0 và xuất PWM cho ESC; hai bên trao đổi qua DDR chung; nguồn từ pin LiPo qua buck 5 V.">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#3a4a52"/>
+    </marker>
+    <style>
+      .t { fill: #1f2a30; }
+      .d { fill: #5f7078; font-size: 11.5px; }
+      .h { font-weight: 600; }
+      .sec { fill: #5f7078; font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+      .ok { fill: #e3f5ea; stroke: #1f9d55; stroke-width: 1.5; }
+      .sim { fill: #e4edfb; stroke: #2f6fd1; stroke-width: 1.5; }
+      .todo { fill: #f6f7f8; stroke: #8a979d; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .pcb { fill: #fff6e5; stroke: #c98a12; stroke-width: 1.3; }
+      .ln { stroke: #3a4a52; stroke-width: 1.5; fill: none; }
+      .pw { stroke: #c0392b; stroke-width: 2; fill: none; }
+      .lbl { fill: #3a4a52; font-size: 11px; }
+    </style>
+  </defs>
+  <rect width="1200" height="860" fill="#ffffff"/>
+  <text x="20" y="32" class="t h" font-size="19">Drone AI RV1103 · sơ đồ khối hệ thống</text>
+  <text x="20" y="52" class="d">Luckfox Pico Mini B trên mạch bay LFX_FC_R1 (46 × 46 mm). Chú thích màu ở góc dưới phải.</text>
+
+  <!-- boundary of the craft -->
+  <rect x="196" y="72" width="990" height="530" rx="10" fill="none" stroke="#b9c4c9" stroke-dasharray="3 5"/>
+  <text x="212" y="92" class="sec">TRÊN DRONE</text>
+
+  <!-- ground -->
+  <text x="20" y="92" class="sec">MẶT ĐẤT</text>
+  <rect x="20" y="112" width="150" height="64" rx="6" class="pcb" style="fill:#fff;stroke:#5f7078"/>
+  <text x="32" y="136" class="t h">Tay điều khiển</text>
+  <text x="32" y="154" class="d">ELRS 2,4 GHz</text>
+  <text x="32" y="168" class="d">ARM, chế độ, 4 cần</text>
+  <rect x="20" y="228" width="150" height="64" rx="6" style="fill:#fff;stroke:#5f7078;stroke-width:1.3"/>
+  <text x="32" y="252" class="t h">Laptop / điện thoại</text>
+  <text x="32" y="270" class="d">video, telemetry,</text>
+  <text x="32" y="284" class="d">giao nhiệm vụ</text>
+
+  <!-- Linux-side peripherals -->
+  <text x="212" y="114" class="sec">NGOẠI VI · LINUX</text>
+  <rect x="212" y="124" width="178" height="52" rx="6" class="pcb"/>
+  <text x="222" y="145" class="t h">Bộ thu ELRS · J4</text>
+  <text x="222" y="163" class="d">CRSF 420 kbaud, 5 V</text>
+  <rect x="212" y="190" width="178" height="52" rx="6" class="todo"/>
+  <text x="222" y="211" class="t h">Wi-Fi USB</text>
+  <text x="222" y="229" class="d">USB-C chuyển sang host</text>
+  <rect x="212" y="256" width="178" height="52" rx="6" class="ok"/>
+  <text x="222" y="277" class="t h">Camera SC3336</text>
+  <text x="222" y="295" class="d">MIPI CSI → ISP</text>
+  <rect x="212" y="322" width="178" height="52" rx="6" class="pcb"/>
+  <text x="222" y="343" class="t h">GPS · J5</text>
+  <text x="222" y="361" class="d">UART3, chống ESD tại cổng</text>
+  <rect x="212" y="388" width="178" height="52" rx="6" class="pcb"/>
+  <text x="222" y="409" class="t h">Đo pin + dòng ESC</text>
+  <text x="222" y="427" class="d">cầu chia → SARADC 0–1,8 V</text>
+
+  <!-- module -->
+  <rect x="424" y="104" width="514" height="480" rx="10" fill="#fbfcfc" stroke="#3a4a52" stroke-width="1.6"/>
+  <text x="440" y="126" class="t h" font-size="14">Luckfox Pico Mini B · SoC RV1103</text>
+
+  <!-- Linux -->
+  <rect x="440" y="140" width="226" height="330" rx="8" class="ok"/>
+  <text x="454" y="162" class="t h">Cortex-A7 1,1 GHz · Linux</text>
+  <text x="454" y="178" class="d">không có vòng điều khiển bay</text>
+  <rect x="454" y="190" width="198" height="40" rx="5" class="sim"/>
+  <text x="464" y="208" class="t">Đọc CRSF → lệnh lái</text>
+  <text x="464" y="222" class="d">shared/rc (đã chạy trong sim)</text>
+  <rect x="454" y="238" width="198" height="40" rx="5" class="todo"/>
+  <text x="464" y="256" class="t">Camera → NPU → nhận dạng</text>
+  <text x="464" y="270" class="d">Milestone 3</text>
+  <rect x="454" y="286" width="198" height="40" rx="5" class="todo"/>
+  <text x="464" y="304" class="t">Điều hướng · GPS</text>
+  <text x="464" y="318" class="d">flight-manager, 20–50 Hz</text>
+  <rect x="454" y="334" width="198" height="40" rx="5" class="todo"/>
+  <text x="464" y="352" class="t">Telemetry + web qua Wi-Fi</text>
+  <text x="464" y="366" class="d">video, trạng thái, lệnh</text>
+  <rect x="454" y="382" width="198" height="40" rx="5" class="ok"/>
+  <text x="464" y="400" class="t">mcu-tool: nạp + đọc log MCU</text>
+  <text x="464" y="414" class="d">đã chạy (Milestone 1)</text>
+  <text x="454" y="448" class="d">sở hữu: UART2/3, CSI, USB,</text>
+  <text x="454" y="462" class="d">SARADC, CRU (clock)</text>
+
+  <!-- MCU -->
+  <rect x="696" y="140" width="226" height="330" rx="8" class="ok"/>
+  <text x="710" y="162" class="t h">HPMCU RISC-V 297 MHz</text>
+  <text x="710" y="178" class="d">RT-Thread · vòng 1 kHz đã đo</text>
+  <g font-size="12">
+    <rect x="710" y="190" width="198" height="26" rx="4" class="sim"/><text x="720" y="207" class="t">Hiệu chuẩn gyro / accel</text>
+    <rect x="710" y="224" width="198" height="26" rx="4" class="sim"/><text x="720" y="241" class="t">Lọc · Mahony · độ cao</text>
+    <rect x="710" y="258" width="198" height="26" rx="4" class="sim"/><text x="720" y="275" class="t">PID góc 250 Hz · độ cao 100 Hz</text>
+    <rect x="710" y="292" width="198" height="26" rx="4" class="sim"/><text x="720" y="309" class="t">PID tốc độ quay 1 kHz</text>
+    <rect x="710" y="326" width="198" height="26" rx="4" class="sim"/><text x="720" y="343" class="t">Trộn quad-X → 4 motor</text>
+    <rect x="710" y="360" width="198" height="26" rx="4" class="sim"/><text x="720" y="377" class="t">ARM · failsafe · phát hiện rơi</text>
+  </g>
+  <path d="M809 216 v8 M809 250 v8 M809 284 v8 M809 318 v8 M809 352 v8" class="ln" marker-end="url(#a)"/>
+  <rect x="710" y="398" width="96" height="30" rx="4" class="todo"/><text x="718" y="417" class="t" font-size="12">Driver SPI</text>
+  <rect x="812" y="398" width="96" height="30" rx="4" class="todo"/><text x="820" y="417" class="t" font-size="12">PWM / DShot</text>
+  <text x="710" y="448" class="d">sở hữu: SPI0, PWM2 (0xFF490000)</text>
+  <text x="710" y="462" class="d">không có FPU: soft-float</text>
+
+  <!-- shared DDR -->
+  <rect x="440" y="488" width="482" height="80" rx="8" class="todo"/>
+  <text x="454" y="510" class="t h">DDR chung 64 MB</text>
+  <text x="454" y="528" class="d">MCU chạy ở 0x01800000 (256 KB, đã kiểm chứng) · log MCU ở 0x0183C000</text>
+  <text x="454" y="544" class="d">IPC đề xuất ở 0x01840000: vòng đệm SPSC, seq + CRC, heartbeat</text>
+  <text x="454" y="560" class="d">Linux → MCU: lệnh lái, setpoint · MCU → Linux: trạng thái, telemetry</text>
+  <path d="M553 470 V486" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+  <path d="M809 470 V486" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+
+  <!-- MCU-side peripherals -->
+  <text x="972" y="114" class="sec">NGOẠI VI · MCU</text>
+  <rect x="972" y="124" width="196" height="52" rx="6" class="pcb"/>
+  <text x="982" y="145" class="t h">IMU ICM-42688-P</text>
+  <text x="982" y="163" class="d">SPI0 CS0, gyro + accel 1 kHz</text>
+  <rect x="972" y="190" width="196" height="52" rx="6" class="pcb"/>
+  <text x="982" y="211" class="t h">Barometer BMP390</text>
+  <text x="982" y="229" class="d">SPI0 CS1, 50 Hz</text>
+  <rect x="972" y="290" width="196" height="52" rx="6" class="todo"/>
+  <text x="982" y="311" class="t h">ESC 4-in-1 · J1</text>
+  <text x="982" y="329" class="d">hoặc 4 ESC rời (pad góc)</text>
+  <rect x="972" y="370" width="196" height="52" rx="6" class="todo"/>
+  <text x="982" y="391" class="t h">4 motor + cánh</text>
+  <text x="982" y="409" class="d">chưa chọn, chưa đụng tới</text>
+  <rect x="972" y="450" width="196" height="46" rx="6" class="pcb"/>
+  <text x="982" y="470" class="t h">Còi báo · J6</text>
+  <text x="982" y="486" class="d">MOSFET, chân 18</text>
+
+  <!-- signal arrows -->
+  <path d="M170 144 H210" class="ln" marker-end="url(#a)"/>
+  <text x="172" y="164" class="lbl">2,4 GHz</text>
+  <path d="M390 150 C418 150 426 210 452 210" class="ln" marker-end="url(#a)"/>
+  <text x="398" y="196" class="lbl">UART2</text>
+  <path d="M170 260 C188 260 190 216 210 216" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+  <path d="M390 216 C420 216 420 354 452 354" class="ln" marker-end="url(#a)" marker-start="url(#a)"/>
+  <path d="M390 282 C420 282 426 258 452 258" class="ln" marker-end="url(#a)"/>
+  <path d="M390 348 C420 348 426 306 452 306" class="ln" marker-end="url(#a)"/>
+  <path d="M390 414 H438" class="ln" marker-end="url(#a)"/>
+  <path d="M970 150 C940 150 940 200 910 203" class="ln" marker-end="url(#a)"/>
+  <path d="M970 216 C944 216 944 206 910 206" class="ln" marker-end="url(#a)"/>
+  <text x="930" y="256" class="lbl">SPI0</text>
+  <path d="M908 339 C940 339 944 316 970 316" class="ln" marker-end="url(#a)"/>
+  <text x="916" y="358" class="lbl">PWM ×4</text>
+  <path d="M1070 342 V368" class="ln" marker-end="url(#a)"/>
+  <path d="M908 377 C944 377 944 473 970 473" class="ln" marker-end="url(#a)"/>
+
+  <!-- power -->
+  <text x="196" y="642" class="sec">NGUỒN (mặt dưới LFX_FC_R1)</text>
+  <rect x="20" y="650" width="130" height="58" rx="6" style="fill:#fff;stroke:#c0392b;stroke-width:1.5"/>
+  <text x="32" y="674" class="t h">Pin LiPo</text>
+  <text x="32" y="692" class="d">2S–6S, 6,4–25,2 V</text>
+  <rect x="190" y="650" width="160" height="58" rx="6" class="pcb"/>
+  <text x="200" y="674" class="t h">TVS SMAJ33A + FB1</text>
+  <text x="200" y="692" class="d">chặn xung, lọc nhiễu ESC</text>
+  <rect x="390" y="650" width="180" height="58" rx="6" class="pcb"/>
+  <text x="400" y="674" class="t h">Buck TPS54360 → 5 V</text>
+  <text x="400" y="692" class="d">UVLO 6,44 V · 8,2 µH · 600 kHz</text>
+  <rect x="610" y="650" width="170" height="58" rx="6" class="pcb"/>
+  <text x="620" y="674" class="t h">Diode lý tưởng LM66100</text>
+  <text x="620" y="692" class="d">5 V → VSYS, chặn USB-C</text>
+  <rect x="820" y="650" width="160" height="58" rx="6" class="pcb"/>
+  <text x="830" y="674" class="t h">VSYS → module</text>
+  <text x="830" y="692" class="d">chân 1 Luckfox</text>
+  <rect x="820" y="730" width="160" height="58" rx="6" class="pcb"/>
+  <text x="830" y="754" class="t h">LDO TLV75533</text>
+  <text x="830" y="772" class="d">3,3 V riêng cho cảm biến</text>
+  <rect x="390" y="730" width="180" height="58" rx="6" class="pcb"/>
+  <text x="400" y="754" class="t h">5 V ra GPS, bộ thu, còi</text>
+  <text x="400" y="772" class="d">J4, J5, J6</text>
+  <path d="M150 679 H188" class="pw" marker-end="url(#a)"/>
+  <path d="M350 679 H388" class="pw" marker-end="url(#a)"/>
+  <path d="M570 679 H608" class="pw" marker-end="url(#a)"/>
+  <path d="M780 679 H818" class="pw" marker-end="url(#a)"/>
+  <path d="M480 708 V728" class="pw" marker-end="url(#a)"/>
+  <path d="M900 708 V728" class="pw" marker-end="url(#a)"/>
+  <path d="M85 650 V620 H1184 V316 H1170" class="pw" marker-end="url(#a)"/>
+  <text x="620" y="614" class="lbl">nguồn motor đi thẳng từ pin sang ESC (qua J1 / pad)</text>
+
+  <!-- legend -->
+  <g transform="translate(1010 640)">
+    <text x="0" y="0" class="sec">CHÚ THÍCH</text>
+    <rect x="0" y="12" width="26" height="16" rx="3" class="ok"/><text x="34" y="25" class="t" font-size="12">chạy trên phần cứng</text>
+    <rect x="0" y="38" width="26" height="16" rx="3" class="sim"/><text x="34" y="51" class="t" font-size="12">chạy trong mô phỏng</text>
+    <rect x="0" y="64" width="26" height="16" rx="3" class="pcb"/><text x="34" y="77" class="t" font-size="12">trên PCB đã thiết kế</text>
+    <rect x="0" y="90" width="26" height="16" rx="3" class="todo"/><text x="34" y="103" class="t" font-size="12">chưa làm</text>
+    <line x1="0" y1="124" x2="26" y2="124" class="pw"/><text x="34" y="128" class="t" font-size="12">nguồn</text>
+  </g>
+</svg>

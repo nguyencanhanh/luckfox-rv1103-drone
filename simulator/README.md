@@ -13,6 +13,11 @@ tay điều khiển / bàn phím ─► khung CRSF (như bộ thu ELRS gửi) �
                              mô hình quad 6 bậc tự do (4 kHz) ─► hiển thị 3D
 ```
 
+![ALT HOLD trong 3D](../docs/img/sim/02_alt_hold_chase.jpg)
+
+Thêm ảnh và biểu đồ: [README gốc](../README.md#mô-phỏng). Tạo lại ảnh: `tools/sim_screenshots.sh`,
+biểu đồ: `python3 tools/plot_sim.py`.
+
 ## Chạy
 
 ```sh
