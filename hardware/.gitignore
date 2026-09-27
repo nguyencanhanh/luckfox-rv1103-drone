@@ -2,3 +2,8 @@
 vendor/*.zip
 vendor/*.step
 vendor/*.DWG
+# datasheets and the Luckfox schematic are the vendors' copyright: download
+# them with hardware/fetch_vendor.sh (sources in datasheets/README.md)
+datasheets/*.pdf
+datasheets/*.txt
+vendor/*.pdf

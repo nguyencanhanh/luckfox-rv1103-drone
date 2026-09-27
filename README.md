@@ -25,6 +25,7 @@ Mục tiêu dự án là trả lời bằng số liệu đo được: **kiến t
 - [An toàn](#an-toàn)
 - [Tài liệu](#tài-liệu)
 - [Nguồn tham khảo](#nguồn-tham-khảo)
+- [License](#license)
 
 ## Trạng thái theo mốc
 
@@ -190,6 +191,7 @@ tools/run_fc_mcu.sh 60                    # nạp lên board, chạy 60 s, lưu 
 **Mạch bay** (KiCad 10; `KP` = python đi kèm KiCad):
 
 ```sh
+hardware/fetch_vendor.sh            # STEP + sơ đồ Luckfox + datasheet (không lưu trong repo)
 cd hardware/LFX_FC_R1
 KP=/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3.9
 export FREEROUTING_JAR=$HOME/freerouting-1.9.0.jar
@@ -208,7 +210,7 @@ Nguồn gốc duy nhất của mạch là `scripts/design.py`. Không sửa tay 
 ```
 docs/                 kiến trúc, bằng chứng phần cứng, bản đồ bộ nhớ, kết quả đo, ảnh
 hardware/LFX_FC_R1/   mạch bay: scripts/ (design.py → sơ đồ → PCB → file sản xuất), lib/, sch/
-hardware/datasheets/  datasheet dùng làm nguồn số liệu (ICM-42688-P, BMP390, TPS54360, ...)
+hardware/datasheets/  danh sách datasheet và link chính thức (PDF tải bằng hardware/fetch_vendor.sh)
 mcu/
   common/             toán vector / quaternion (float)
   sensors/            giao diện cảm biến, bộ lọc, hiệu chuẩn gyro
@@ -267,7 +269,23 @@ Quy tắc làm việc:
 ## Nguồn tham khảo
 
 - SDK Luckfox: [LuckfoxTECH/luckfox-pico](https://github.com/LuckfoxTECH/luckfox-pico) @ `824b817f`
-- Datasheet trong `hardware/datasheets/`: ICM-42688-P DS-000347 v1.7, BMP390, TPS54360 (SLVSBB4G), LM66100, TLV755P
+- Datasheet (không lưu trong repo, tải bằng `hardware/fetch_vendor.sh`, nguồn ở [hardware/datasheets/README.md](hardware/datasheets/README.md)): ICM-42688-P DS-000347 v1.7, BMP390, TPS54360 (SLVSBB4G), LM66100, TLV755P
 - CRSF: [tbs-fpv/tbs-crsf-spec](https://github.com/tbs-fpv/tbs-crsf-spec/blob/main/crsf.md) · ExpressLRS: [Receiver Wiring](https://www.expresslrs.org/quick-start/receivers/wiring-up/) · [betaflight#12398](https://github.com/betaflight/betaflight/issues/12398)
 - Mahony, Hamel, Pflimlin, *Nonlinear Complementary Filters on the Special Orthogonal Group*, IEEE TAC 2008 · [ahrs docs](https://ahrs.readthedocs.io/en/latest/filters/mahony.html)
 - Động học quadcopter: [Gibiansky](https://andrew.gibiansky.com/blog/physics/quadcopter-dynamics/) · [PX4 SITL motor model](https://github.com/PX4/sitl_gazebo/issues/110) · Faessler, Franchi, Scaramuzza, *Differential Flatness of Quadrotor Dynamics Subject to Rotor Drag*, RA-L 2018
+
+## License
+
+| Phần | License |
+|---|---|
+| Phần mềm: `mcu/`, `shared/`, `simulator/`, `linux/`, `tools/`, `run.sh`, tài liệu | [MIT](LICENSE) |
+| Thiết kế phần cứng: `hardware/` (sơ đồ, PCB, thư viện LFX, script sinh mạch) | [CERN-OHL-P v2](hardware/LICENSE) |
+
+Ngoại lệ: file mang header bản quyền riêng giữ nguyên license của chúng.
+- `mcu/bsp/*/board.h`, `iomux.h`: Rockchip, Apache-2.0.
+- `linux/dts/*.dts`: dựa trên DTS của Luckfox, GPL-2.0+ OR MIT.
+
+SDK Luckfox / Rockchip, datasheet và tài liệu của Luckfox **không** nằm trong repo; tải từ nguồn chính thức.
+
+Dự án thử nghiệm, **không có bảo đảm**. Drone có cánh quay là thiết bị nguy hiểm: làm theo đúng thứ tự ở mục [An toàn](#an-toàn).
+
