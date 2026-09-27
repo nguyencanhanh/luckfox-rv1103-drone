@@ -9,7 +9,7 @@ only paces it against the wall clock (50 steps of 20 ms per second, each
 step = 20 loop ticks at 1 kHz) and moves numbers between it and the browser:
 
     GET  /           the page (web/index.html)
-    GET  /events     server-sent events, the state at ~30 Hz
+    GET  /events     server-sent events, one state per sim step (50 Hz)
     POST /input      sticks, switches and fault buttons as JSON
 
 Standard library only, bound to 127.0.0.1.
@@ -50,6 +50,11 @@ class Sim:
         self.mem = ctypes.create_string_buffer(self.size)
         self.vib = vib
         self.lock = threading.Lock()
+        # every sim step publishes one snapshot; /events sends each one exactly
+        # once, so the page gets evenly spaced states (sim time +20 ms each)
+        self.cv = threading.Condition()
+        self.version = 0
+        self.snapshot = b"{}"
         self.inp = {}
         self.reset()
 
@@ -81,6 +86,17 @@ class Sim:
                 L.sim_request_level_calibration(self.mem)
                 self.calibrate_pending = False
             L.sim_step(self.mem, ticks)
+            n = L.sim_get_state(self.mem, self.buf, len(self.buf))
+            snap = json.dumps({self.names[k]: round(self.buf[k], 5) for k in range(n)}).encode()
+        with self.cv:
+            self.snapshot = snap
+            self.version += 1
+            self.cv.notify_all()
+
+    def wait_snapshot(self, seen, timeout=0.5):
+        with self.cv:
+            self.cv.wait_for(lambda: self.version != seen, timeout)
+            return self.version, self.snapshot
 
     def state(self):
         with self.lock:
@@ -108,10 +124,11 @@ def make_handler(sim):
                 self.send_header("Cache-Control", "no-cache")
                 self.end_headers()
                 try:
+                    seen = -1
                     while True:
-                        self.wfile.write(b"data: " + json.dumps(sim.state()).encode() + b"\n\n")
+                        seen, snap = sim.wait_snapshot(seen)
+                        self.wfile.write(b"data: " + snap + b"\n\n")
                         self.wfile.flush()
-                        time.sleep(1 / 30)
                 except (BrokenPipeError, ConnectionResetError):
                     pass
             else:

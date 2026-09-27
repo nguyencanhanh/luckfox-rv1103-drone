@@ -358,7 +358,11 @@ setInterval(() => send(), 20);
 let S = null;
 function connect() {
   const es = new EventSource("/events");
-  es.onmessage = (ev) => { S = JSON.parse(ev.data); $("conn").style.display = "none"; };
+  es.onmessage = (ev) => {
+    S = JSON.parse(ev.data); $("conn").style.display = "none";
+    pushSnapshot(S, performance.now());
+    if (DBG) DBG.msg(performance.now(), S.t);
+  };
   es.onerror = () => { $("conn").style.display = "block"; };
 }
 connect();
@@ -427,14 +431,78 @@ function updateHud() {
 // ---------- render loop ----------
 let last = performance.now();
 const camPos = new THREE.Vector3(0, 0.35, 0.9);
+// ?debug: measure smoothness - render rate, state arrival, frames where a moving
+// drone did not move on screen, camera jumps
+const DBG = new URLSearchParams(location.search).has("debug") ? (() => {
+  const el = document.createElement("div");
+  el.className = "panel mono"; el.id = "dbg";
+  el.style.cssText = "top:auto;bottom:70px;left:12px;font-size:12px;white-space:pre;z-index:5";
+  document.body.appendChild(el);
+  const d = { ft: [], mi: [], dt: [], lastMsg: 0, lastT: 0, lastPos: null, frozen: 0, frames: 0, snaps: 0, t0: performance.now() };
+  const stat = (a) => { if (!a.length) return "-"; const s = [...a].sort((x, y) => x - y);
+    const avg = a.reduce((x, y) => x + y, 0) / a.length;
+    return `avg ${avg.toFixed(1)}  p95 ${s[Math.floor(s.length * 0.95)].toFixed(1)}  max ${s[s.length - 1].toFixed(1)}`; };
+  d.msg = (now, t) => { if (d.lastMsg) { d.mi.push(now - d.lastMsg); d.dt.push((t - d.lastT) * 1000); } d.lastMsg = now; d.lastT = t;
+    if (d.mi.length > 300) { d.mi.shift(); d.dt.shift(); } };
+  let lastF = 0;
+  d.frame = (now, pos, st) => {
+    if (lastF) { d.ft.push(now - lastF); if (d.ft.length > 300) d.ft.shift(); }
+    lastF = now; d.frames++;
+    const moving = st && Math.hypot(st.vx, st.vy, st.vz) > 0.5;
+    if (moving && d.lastPos && pos.distanceTo(d.lastPos) < 1e-6) d.frozen++;
+    d.lastPos = pos.clone();
+    if (d.frames % 15 === 0) el.textContent =
+      `khung hình (ms)      ${stat(d.ft)}\n` +
+      `trạng thái đến (ms)  ${stat(d.mi)}\n` +
+      `thời gian sim/gói    ${stat(d.dt)}\n` +
+      `khung đứng hình khi bay: ${d.frozen} / ${d.frames}   camera nhảy: ${d.snaps}`;
+  };
+  return d;
+})() : null;
+
+// ---------- smooth motion: snapshot interpolation ----------
+// States arrive at 50 Hz with network/thread jitter; the screen runs at 60+ Hz.
+// Drawing the newest state as-is makes the craft stop and jump.  Instead render
+// RENDER_DELAY behind the simulator clock and interpolate between the two
+// states around that instant (the usual method in networked games).
+const RENDER_DELAY = 0.08;              // s: covers the arrival jitter measured with ?debug
+const snaps = [];
+let clockOff = null;                    // sim time - wall time, smoothed
+function pushSnapshot(st, nowMs) {
+  const last = snaps[snaps.length - 1];
+  if (last && st.t < last.t - 1e-3) { snaps.length = 0; clockOff = null; trailCount = 0; }   // reset
+  snaps.push({ t: st.t, p: ned2three(st.x, st.y, st.z), q: quat2three(st.qw, st.qx, st.qy, st.qz) });
+  if (snaps.length > 40) snaps.shift();
+  const off = st.t - nowMs / 1000;
+  clockOff = clockOff === null ? off : clockOff + 0.02 * (off - clockOff);
+  if (off < clockOff - 0.25 || off > clockOff + 0.25) clockOff = off;   // stall or burst: resync
+}
+const _p = new THREE.Vector3(), _q = new THREE.Quaternion();
+function sampleAt(nowMs) {
+  if (!snaps.length) return null;
+  const t = nowMs / 1000 + clockOff - RENDER_DELAY;
+  if (t <= snaps[0].t) return { p: snaps[0].p, q: snaps[0].q };
+  for (let i = snaps.length - 1; i > 0; i--) {
+    const a = snaps[i - 1], b = snaps[i];
+    if (t >= a.t) {
+      if (t > b.t) return { p: b.p, q: b.q };           // starved: hold the newest
+      const k = (t - a.t) / Math.max(1e-6, b.t - a.t);
+      return { p: _p.copy(a.p).lerp(b.p, k), q: _q.copy(a.q).slerp(b.q, k) };
+    }
+  }
+  return { p: snaps[0].p, q: snaps[0].q };
+}
+let camYaw = null;
+
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000); last = now;
   if (!readGamepad()) readKeyboard(dt);
   if (S) {
-    const p = ned2three(S.x, S.y, S.z);
+    const smp = sampleAt(now) || { p: ned2three(S.x, S.y, S.z), q: quat2three(S.qw, S.qx, S.qy, S.qz) };
+    const p = smp.p.clone();
     quad.visible = camMode !== 2;        // FPV: the camera sits inside the model
     quad.position.copy(p).add(new THREE.Vector3(0, 0.03, 0));
-    quad.quaternion.copy(quat2three(S.qw, S.qx, S.qy, S.qz));
+    quad.quaternion.copy(smp.q);
     props.forEach((pr, i) => {
       const m = S["m" + (i + 1)];
       pr.blade.rotation.y += pr.dir * m * 60 * dt;
@@ -450,12 +518,15 @@ function frame(now) {
       trailGeo.setDrawRange(0, trailCount); trailGeo.attributes.position.needsUpdate = true;
     }
     sun.position.set(p.x + 30, 60, p.z + 20); sun.target.position.copy(p);
-    const yaw = S.yaw;
-    if (camMode === 0) {             // chase: behind and above, follows heading
-      // nose points along (sin yaw, 0, -cos yaw) in three; sit 0.9 m behind it
-      const want = p.clone().add(new THREE.Vector3(-Math.sin(yaw) * 0.9, 0.35, Math.cos(yaw) * 0.9));
-      if (camPos.distanceTo(want) > 1.5) camPos.copy(want);  // first frame, reset, slow frames
-      else camPos.lerp(want, 1 - Math.pow(0.001, dt));
+    // heading from the interpolated attitude: nose = (0, 0, -1) in the model
+    const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(quad.quaternion);
+    const heading = Math.atan2(fwd.x, -fwd.z);
+    if (camYaw === null) camYaw = heading;
+    camYaw += Math.atan2(Math.sin(heading - camYaw), Math.cos(heading - camYaw)) * (1 - Math.exp(-4 * dt));
+    if (camMode === 0) {             // chase: rigidly behind the craft, only the heading is smoothed
+      const want = p.clone().add(new THREE.Vector3(-Math.sin(camYaw) * 0.9, 0.35, Math.cos(camYaw) * 0.9));
+      if (DBG && camPos.distanceTo(want) > 1.5) DBG.snaps++;
+      camPos.copy(want);
       camera.position.copy(camPos); camera.up.set(0, 1, 0); camera.lookAt(p.x, p.y + 0.08, p.z);
       camera.fov = 65;
     } else if (camMode === 1) {      // pilot standing behind the pad, line of sight
@@ -470,6 +541,7 @@ function frame(now) {
   }
   updateHud();
   renderer.render(scene, camera);
+  if (DBG) DBG.frame(now, quad.position, S);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

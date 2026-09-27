@@ -71,6 +71,12 @@ chỉ xem.
 
 `build/sim_cli --csv log.csv hover` ghi log 100 Hz; `--vib` thêm rung khung (giả định).
 
+**Độ mượt:** mở trang với `?debug` để xem bảng đo: thời gian khung hình, nhịp trạng thái đến, số khung
+drone đứng hình khi đang bay. Server gửi đúng một trạng thái mỗi bước mô phỏng (50 Hz), trang vẽ lùi
+80 ms và nội suy giữa hai trạng thái, nên màn hình 60 Hz vẫn mượt. Đo trên Apple M4: trước khi sửa
+54 % khung hình drone đứng yên rồi nhảy cóc, sau khi sửa 0,6 % (chỉ lúc mới mở trang).
+`node simulator/probe_debug.mjs "http://127.0.0.1:8777/?watch&debug" 10 /tmp/p.png gpu` đọc bảng đó qua Chrome.
+
 ## Nguồn số liệu
 
 | Thứ | Giá trị | Nguồn |
