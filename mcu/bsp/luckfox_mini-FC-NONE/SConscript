@@ -1,0 +1,17 @@
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+# tools/build_mcu.sh copies the flight core into tree/ with the repository's own
+# layout (tree/mcu, tree/shared/rc, tree/simulator), so the sources' relative
+# #includes work unchanged.  Nothing here is a copy kept in git.
+cwd = GetCurrentDir()
+src = Glob('*.c')
+src += Glob('tree/mcu/*/*.c')
+src += Glob('tree/shared/rc/*.c')
+src += ['tree/simulator/quad_model.c', 'tree/simulator/sim_sensors.c']
+CPPPATH = [cwd]
+
+group = DefineGroup('BoardConfig', src, depend = [], CPPPATH = CPPPATH, LIBS = ['m'])
+
+Return('group')

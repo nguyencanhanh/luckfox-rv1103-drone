@@ -54,13 +54,24 @@ fi
 say "Build MCU: $BOARD"
 set +e
 docker run --rm --platform linux/amd64 -v "$VOLUME":/work -v "$ROOT/mcu":/src:ro \
-	-v "$ROOT/shared":/shared:ro -v "$ROOT/out/mcu/$BOARD":/out -w /work/luckfox-pico "$MCU_IMAGE" bash -c '
+	-v "$ROOT/shared":/shared:ro -v "$ROOT/simulator":/sim:ro \
+	-v "$ROOT/out/mcu/$BOARD":/out -w /work/luckfox-pico "$MCU_IMAGE" bash -c '
 	set -e
 	BOARD="$1"; BSP="$2"; ORIGIN="$3"
 	if [ -d "/src/bsp/$BOARD" ]; then
 		rm -rf "$BSP/board/$BOARD"
 		cp -r "/src/bsp/$BOARD" "$BSP/board/$BOARD"
 		cp /shared/ipc/*.h "$BSP/board/$BOARD/"
+		# boards that run the flight core get it as tree/, in the repository layout
+		if [ -f "/src/bsp/$BOARD/FLIGHT_CORE" ]; then
+			T="$BSP/board/$BOARD/tree"
+			mkdir -p "$T/mcu" "$T/shared" "$T/simulator"
+			for d in common sensors estimator control mixer failsafe fc; do
+				cp -r "/src/$d" "$T/mcu/"
+			done
+			cp -r /shared/rc "$T/shared/"
+			cp /sim/quad_model.[ch] /sim/sim_sensors.[ch] "$T/simulator/"
+		fi
 	fi
 	[ -d "$BSP/board/$BOARD" ] || { echo "Khong co board $BOARD"; exit 1; }
 

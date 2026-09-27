@@ -4,6 +4,8 @@ Yêu cầu: đã chạy `./run.sh build` ít nhất một lần (tạo image `lu
 
 ```sh
 tools/build_mcu.sh luckfox_mini-M1-NONE      # Milestone 1: hello + vòng lặp 1 kHz, chạy ở 0x01800000
+tools/build_mcu.sh luckfox_mini-FC-NONE      # code bay (mcu/) + SIM_SENSOR + mô hình quad chạy trên MCU, đo chu kỳ CPU
+tools/run_fc_mcu.sh 60                       # nạp lên board qua SSH/ADB, chạy 60 s, lưu log vào logs/
 tools/build_mcu.sh luckfox_mini-HELLO-NONE   # hello world ở vị trí mặc định 0x40000 (không chạy song song Linux được)
 tools/build_mcu.sh rv1106_evb-SC3338-ADC     # board mẫu của Rockchip, nguyên bản
 ```
@@ -15,6 +17,11 @@ Script làm:
    rồi tạm đổi `ORIGIN` trong `BSP/link.lds`. Bản gốc lưu ở `link.lds.sdk` và được trả lại khi build xong, kể cả khi lỗi.
 4. Chạy đúng lệnh SDK: `./build.sh mcu <board>` (`project/build.sh:876-919`).
 5. Chép `rtthread.{bin,elf,map}` ra `out/mcu/<board>/`, log vào `logs/mcu_<board>.log`.
+
+Board có file `FLIGHT_CORE` (luckfox_mini-FC-NONE) được chép thêm code bay vào `tree/` theo đúng
+cấu trúc repo (`tree/mcu/*`, `tree/shared/rc`, `tree/simulator/{quad_model,sim_sensors}`), nên
+`#include` tương đối trong code bay không phải sửa. Bản build 2026-09-27: text 53 132 B, chỉ có
+soft-float đơn (`__mulsf3`, `__addsf3`, …), không có `__*df3` (không lọt phép double nào).
 
 Tên board phải có dạng `Board-Sensor-LightSensor` (3 phần ngăn bởi `-`), nếu không `mcu/build.sh lunch` báo "Not found".
 
