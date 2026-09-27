@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LFX Flight Sim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --panel: rgba(14, 20, 24, 0.82);
+    --line: rgba(160, 190, 200, 0.18);
+    --ink: #e4ecef;
+    --dim: #8fa3ab;
+    --accent: #3fd0b0;
+    --warn: #f0b429;
+    --bad: #ff5d5d;
+    --ok: #46d17a;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; margin: 0; background: #0b1013; color: var(--ink);
+    font: 13px/1.4 "IBM Plex Sans", system-ui, sans-serif; overflow: hidden; }
+  #view { position: fixed; inset: 0; }
+  .panel { position: fixed; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px; padding: 10px 12px; backdrop-filter: blur(6px); }
+  .mono, .num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  h2 { margin: 0 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--dim); }
+  #status { top: 12px; left: 12px; width: 300px; }
+  #badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font: 600 14px "IBM Plex Mono", monospace;
+    letter-spacing: .05em; background: #2a3238; color: var(--ink); }
+  #badge.armed { background: var(--ok); color: #06140b; }
+  #badge.fs { background: var(--warn); color: #1c1400; }
+  #badge.crash { background: var(--bad); color: #1c0000; }
+  #mode { margin-left: 8px; font: 600 13px "IBM Plex Mono", monospace; color: var(--accent); }
+  #why { margin-top: 6px; min-height: 18px; color: var(--warn); font-size: 12px; }
+  table.kv { border-collapse: collapse; width: 100%; margin-top: 6px; }
+  table.kv td { padding: 1px 0; }
+  table.kv td:first-child { color: var(--dim); }
+  table.kv td:last-child { text-align: right; }
+  #motors { top: 12px; right: 12px; width: 230px; }
+  .bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: end; height: 90px; }
+  .bar { position: relative; height: 100%; background: #1b2429; border-radius: 3px; overflow: hidden; }
+  .bar i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--accent); }
+  .bar b { position: absolute; left: 0; right: 0; top: 2px; text-align: center; font: 600 10px "IBM Plex Mono", monospace; color: var(--dim); }
+  .bar span { position: absolute; left: 0; right: 0; bottom: 2px; text-align: center; font: 10px "IBM Plex Mono", monospace; color: #0b1013; mix-blend-mode: normal; }
+  .sticks { display: flex; gap: 10px; margin-top: 10px; justify-content: space-between; }
+  .stick { width: 96px; height: 96px; border: 1px solid var(--line); border-radius: 6px; position: relative; background: #111a1e; }
+  .stick::before, .stick::after { content: ""; position: absolute; background: var(--line); }
+  .stick::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+  .stick::after { top: 50%; left: 0; right: 0; height: 1px; }
+  .stick i { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--accent); }
+  .stick label { position: absolute; bottom: -17px; left: 0; right: 0; text-align: center; font-size: 10px; color: var(--dim); }
+  #controls { left: 12px; right: 12px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button { font: 600 12px "IBM Plex Sans", sans-serif; color: var(--ink); background: #1e282d; border: 1px solid var(--line);
+    border-radius: 5px; padding: 6px 10px; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  button.on { background: var(--accent); color: #06140f; border-color: var(--accent); }
+  button.danger.on { background: var(--bad); border-color: var(--bad); color: #1c0000; }
+  button.on kbd { color: #06140f; border-color: rgba(0, 0, 0, 0.35); }
+  kbd { font: 11px "IBM Plex Mono", monospace; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; padding: 0 4px; color: var(--dim); }
+  #help { color: var(--dim); font-size: 12px; margin-left: auto; }
+  #gp { top: 250px; right: 12px; width: 230px; display: none; }
+  #gp select { background: #111a1e; color: var(--ink); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; }
+  #gp .row { display: grid; grid-template-columns: 52px 1fr 48px; gap: 4px; align-items: center; margin: 2px 0; font-size: 11px; }
+  #conn { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; }
+  @media (max-width: 700px) { #motors, #gp { display: none !important; } #status { width: auto; right: 12px; } #help { display: none; } }
+</style>
+</head>
+<body>
+<div id="view"></div>
+
+<div id="status" class="panel">
+  <div><span id="badge">DISARMED</span><span id="mode">ANGLE</span></div>
+  <div id="why"></div>
+  <table class="kv num">
+    <tr><td>Độ cao</td><td id="h">0.00 m</td></tr>
+    <tr><td>Tốc độ lên</td><td id="vz">0.00 m/s</td></tr>
+    <tr><td>Tốc độ ngang</td><td id="vh">0.0 m/s</td></tr>
+    <tr><td>Nghiêng thật</td><td id="att">0.0 / 0.0°</td></tr>
+    <tr><td>Nghiêng ước lượng</td><td id="est">0.0 / 0.0°</td></tr>
+    <tr><td>Hướng mũi</td><td id="yaw">0°</td></tr>
+    <tr><td>RC CRSF</td><td id="link">—</td></tr>
+    <tr><td>Thời gian</td><td id="t">0.0 s</td></tr>
+  </table>
+</div>
+
+<div id="motors" class="panel">
+  <h2>Motor (0–1, ảo)</h2>
+  <div class="bars">
+    <div class="bar"><b>M4 FL</b><i id="m4"></i></div>
+    <div class="bar"><b>M2 FR</b><i id="m2"></i></div>
+    <div class="bar"><b>M3 RL</b><i id="m3"></i></div>
+    <div class="bar"><b>M1 RR</b><i id="m1"></i></div>
+  </div>
+  <div class="sticks">
+    <div class="stick"><i id="sl"></i><label>ga / yaw</label></div>
+    <div class="stick"><i id="sr"></i><label>pitch / roll</label></div>
+  </div>
+</div>
+
+<div id="gp" class="panel">
+  <h2 id="gpname">Tay điều khiển USB</h2>
+  <div id="gprows"></div>
+</div>
+
+<div id="controls" class="panel">
+  <button id="bArm">ARM <kbd>Space</kbd></button>
+  <button id="bM0" class="on">ANGLE <kbd>1</kbd></button>
+  <button id="bM1">ALT HOLD <kbd>2</kbd></button>
+  <button id="bM2">ACRO <kbd>3</kbd></button>
+  <button id="bLink" class="danger">Mất sóng RC <kbd>L</kbd></button>
+  <button id="bImu" class="danger">Hỏng IMU <kbd>I</kbd></button>
+  <button id="bWind">Gió 0 m/s <kbd>G</kbd></button>
+  <button id="bCal">Cân bằng <kbd>C</kbd></button>
+  <button id="bCam">Camera: đuổi <kbd>V</kbd></button>
+  <button id="bReset">Reset <kbd>R</kbd></button>
+  <span id="help">Ga <kbd>W</kbd>/<kbd>S</kbd> · yaw <kbd>A</kbd>/<kbd>D</kbd> · pitch <kbd>↑</kbd>/<kbd>↓</kbd> · roll <kbd>←</kbd>/<kbd>→</kbd> · ga giữa <kbd>H</kbd></span>
+</div>
+
+<div id="conn" class="panel">Mất kết nối với server.py — chạy <span class="mono">make -C simulator run</span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+// ---------- constants shared with the C side ----------
+const STATE = ["DISARMED", "ARMED", "FAILSAFE HOLD", "FAILSAFE LAND"];
+const MODE = ["ACRO", "ANGLE", "ALT HOLD"];          // flight_mode values
+const MODE_POS = ["ANGLE", "ALT HOLD", "ACRO"];      // switch position -> label
+const BLOCKS = [[1, "gạt công tắc ARM xuống rồi lên lại"], [2, "hạ ga về 0"], [4, "không có sóng RC"],
+  [8, "IMU không trả dữ liệu"], [16, "đang hiệu chuẩn gyro/accel (để yên)"], [32, "drone đang nghiêng"]];
+const DISARM = ["", "tắt bằng công tắc", "mất IMU", "phát hiện rơi / lật", "failsafe: đã hạ cánh", "failsafe: hết thời gian"];
+
+// ---------- scene ----------
+const view = document.getElementById("view");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+view.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x9fc3d6);
+scene.fog = new THREE.Fog(0x9fc3d6, 60, 260);
+const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.02, 800);
+scene.add(new THREE.HemisphereLight(0xdfefff, 0x51613a, 0.85));
+const sun = new THREE.DirectionalLight(0xffffff, 0.8);
+sun.position.set(30, 60, 20);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 200 });
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.02;
+scene.add(sun, sun.target);
+
+function groundTexture() {
+  const c = document.createElement("canvas"); c.width = c.height = 512;
+  const g = c.getContext("2d");
+  g.fillStyle = "#6f8a4e"; g.fillRect(0, 0, 512, 512);
+  for (let i = 0; i < 2500; i++) {             // grass speckle
+    g.fillStyle = `rgba(${40 + Math.random() * 40},${70 + Math.random() * 50},30,0.25)`;
+    g.fillRect(Math.random() * 512, Math.random() * 512, 3, 3);
+  }
+  g.strokeStyle = "rgba(255,255,255,0.18)"; g.lineWidth = 2;
+  for (let i = 0; i <= 512; i += 51.2) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 512); g.moveTo(0, i); g.lineTo(512, i); g.stroke(); }
+  g.strokeStyle = "rgba(255,255,255,0.45)"; g.lineWidth = 4; g.strokeRect(0, 0, 512, 512);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(60, 60);   // 10 m tiles, 1 m lines
+  t.anisotropy = 8;
+  return t;
+}
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshLambertMaterial({ map: groundTexture() }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
+scene.add(ground);
+
+// landing pad and landmarks, so speed and height can be judged
+(function landmarks() {
+  const c = document.createElement("canvas"); c.width = c.height = 256;
+  const g = c.getContext("2d");
+  g.fillStyle = "#30383c"; g.beginPath(); g.arc(128, 128, 126, 0, 7); g.fill();
+  g.strokeStyle = "#f2f2f2"; g.lineWidth = 10; g.beginPath(); g.arc(128, 128, 100, 0, 7); g.stroke();
+  g.fillStyle = "#f2f2f2"; g.font = "bold 130px IBM Plex Sans, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillText("H", 128, 136);
+  const pad = new THREE.Mesh(new THREE.CircleGeometry(0.6, 48), new THREE.MeshLambertMaterial({ map: new THREE.CanvasTexture(c), polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
+  pad.rotation.x = -Math.PI / 2; pad.position.y = 0.002; pad.receiveShadow = true; scene.add(pad);
+  const poleMat = new THREE.MeshLambertMaterial({ color: 0xe8e2d0 });
+  const topMat = new THREE.MeshLambertMaterial({ color: 0xd9542c });
+  for (let i = 0; i < 40; i++) {
+    const a = i * 2.4, r = 8 + (i % 8) * 9;
+    const h = 2 + (i % 5) * 1.5;
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, h, 8), poleMat);
+    p.position.set(Math.cos(a) * r, h / 2, Math.sin(a) * r); p.castShadow = true; scene.add(p);
+    const tip = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), topMat);
+    tip.position.set(p.position.x, h, p.position.z); tip.castShadow = true; scene.add(tip);
+  }
+  const treeMat = new THREE.MeshLambertMaterial({ color: 0x3c6b35 });
+  for (let i = 0; i < 60; i++) {
+    const a = i * 1.7 + 0.5, r = 45 + (i * 13) % 80;
+    const t = new THREE.Mesh(new THREE.ConeGeometry(2.2, 7 + (i % 4) * 2, 8), treeMat);
+    t.position.set(Math.cos(a) * r, 3.5 + (i % 4), Math.sin(a) * r); t.castShadow = true; scene.add(t);
+  }
+})();
+
+// ---------- the quad (0.225 m motor to motor, nose along -Z) ----------
+const quad = new THREE.Group();
+const props = [];
+(function build() {
+  const dark = new THREE.MeshStandardMaterial({ color: 0x22282c, roughness: 0.6 });
+  const pcb = new THREE.MeshStandardMaterial({ color: 0x2e4a2a, roughness: 0.5 });
+  const armMat = [new THREE.MeshStandardMaterial({ color: 0x1b1f22 }), new THREE.MeshStandardMaterial({ color: 0xd9542c })];
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.03, 0.10), dark); body.castShadow = true; quad.add(body);
+  const board = new THREE.Mesh(new THREE.BoxGeometry(0.046, 0.004, 0.046), pcb); board.position.y = 0.018; quad.add(board);
+  const cam = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.02, 0.02), dark); cam.position.set(0, 0.005, -0.06); quad.add(cam);
+  // motor order M1 RR, M2 FR, M3 RL, M4 FL; three: +X right, -Z front
+  const L = 0.1125 * Math.SQRT1_2;
+  const pos = [[L, L], [L, -L], [-L, L], [-L, -L]];   // [x right, z back]
+  const spinCW = [1, 0, 0, 1];
+  pos.forEach(([x, z], i) => {
+    const front = z < 0;
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.006, 0.16), armMat[front ? 1 : 0]);
+    arm.position.set(x / 2, 0, z / 2); arm.lookAt(x, 0, z); arm.castShadow = true; quad.add(arm);
+    const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.018, 16), dark);
+    motor.position.set(x, 0.01, z); motor.castShadow = true; quad.add(motor);
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(0.063, 32),
+      new THREE.MeshBasicMaterial({ color: front ? 0xff8a5c : 0xcfd8dc, transparent: true, opacity: 0.18, side: THREE.DoubleSide }));
+    disc.rotation.x = -Math.PI / 2; disc.position.set(x, 0.021, z); quad.add(disc);
+    const blade = new THREE.Mesh(new THREE.BoxGeometry(0.125, 0.002, 0.012),
+      new THREE.MeshStandardMaterial({ color: front ? 0xff8a5c : 0xdfe6e9 }));
+    blade.position.set(x, 0.022, z); blade.castShadow = true; quad.add(blade);
+    props.push({ blade, disc, dir: spinCW[i] ? -1 : 1 });
+  });
+  const led = new THREE.Mesh(new THREE.SphereGeometry(0.008, 12, 8), new THREE.MeshBasicMaterial({ color: 0x777777 }));
+  led.position.set(0, 0.012, 0.05); quad.add(led); quad.userData.led = led;
+})();
+quad.scale.setScalar(1.0);
+scene.add(quad);
+
+const trailN = 900, trailPos = new Float32Array(trailN * 3);
+const trailGeo = new THREE.BufferGeometry();
+trailGeo.setAttribute("position", new THREE.BufferAttribute(trailPos, 3));
+const trail = new THREE.Line(trailGeo, new THREE.LineBasicMaterial({ color: 0x3fd0b0, transparent: true, opacity: 0.7 }));
+trail.frustumCulled = false; scene.add(trail);
+let trailCount = 0;
+
+// NED world / FRD body -> three (X east, Y up, Z south): v3 = (e, -d, -n)
+const ned2three = (n, e, d) => new THREE.Vector3(e, -d, -n);
+const quat2three = (w, x, y, z) => new THREE.Quaternion(y, -z, -x, w);
+
+// ---------- input ----------
+const inp = { roll: 0, pitch: 0, yaw: 0, throttle: 0, arm: 0, mode: 0, link_cut: 0, imu_fail: 0, wind: 0 };
+const keys = new Set();
+let camMode = 0; const CAMS = ["đuổi", "mặt đất", "FPV"];
+const WINDS = [0, 3, 6, 9];
+addEventListener("keydown", (e) => {
+  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) e.preventDefault();
+  if (e.repeat) return;
+  keys.add(e.key.toLowerCase());
+  switch (e.key.toLowerCase()) {
+    case " ": toggleArm(); break;
+    case "1": setMode(0); break;
+    case "2": setMode(1); break;
+    case "3": setMode(2); break;
+    case "l": inp.link_cut ^= 1; break;
+    case "i": inp.imu_fail ^= 1; break;
+    case "g": cycleWind(); break;
+    case "c": send({ calibrate: 1 }); break;
+    case "r": reset(); break;
+    case "v": camMode = (camMode + 1) % 3; break;
+    case "h": inp.throttle = 0.5; break;
+  }
+});
+addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+const $ = (id) => document.getElementById(id);
+function toggleArm() { inp.arm ^= 1; }
+function setMode(m) { inp.mode = m; }
+function cycleWind() { inp.wind = WINDS[(WINDS.indexOf(inp.wind) + 1) % WINDS.length]; }
+function reset() { Object.assign(inp, { roll: 0, pitch: 0, yaw: 0, throttle: 0, arm: 0, link_cut: 0, imu_fail: 0 }); trailCount = 0; send({ reset: 1 }); }
+$("bArm").onclick = toggleArm;
+[0, 1, 2].forEach((m) => ($("bM" + m).onclick = () => setMode(m)));
+$("bLink").onclick = () => (inp.link_cut ^= 1);
+$("bImu").onclick = () => (inp.imu_fail ^= 1);
+$("bWind").onclick = cycleWind;
+$("bCal").onclick = () => send({ calibrate: 1 });
+$("bCam").onclick = () => (camMode = (camMode + 1) % 3);
+$("bReset").onclick = reset;
+document.querySelectorAll("button").forEach((b) => b.addEventListener("keydown", (e) => e.preventDefault()));
+
+// gamepad: an EdgeTX / ELRS radio in USB joystick mode shows ch1..ch6 as axes 0..5 (AETR)
+const GP_FIELDS = ["roll", "pitch", "throttle", "yaw", "arm", "mode"];
+let gpMap = { roll: [0, 0], pitch: [1, 0], throttle: [2, 0], yaw: [3, 0], arm: [4, 0], mode: [5, 0] };
+try { gpMap = JSON.parse(localStorage.getItem("gpMap")) || gpMap; } catch (e) {}
+function saveMap() { try { localStorage.setItem("gpMap", JSON.stringify(gpMap)); } catch (e) {} }
+function buildGpRows(n) {
+  $("gprows").innerHTML = GP_FIELDS.map((f) =>
+    `<div class="row"><span>${f}</span><select data-f="${f}">${Array.from({ length: n }, (_, i) =>
+      `<option value="${i}" ${gpMap[f][0] === i ? "selected" : ""}>trục ${i}</option>`).join("")}</select>
+     <label><input type="checkbox" data-inv="${f}" ${gpMap[f][1] ? "checked" : ""}>đảo</label></div>`).join("");
+  $("gprows").querySelectorAll("select").forEach((s) => (s.onchange = () => { gpMap[s.dataset.f][0] = +s.value; saveMap(); }));
+  $("gprows").querySelectorAll("input").forEach((c) => (c.onchange = () => { gpMap[c.dataset.inv][1] = c.checked ? 1 : 0; saveMap(); }));
+}
+let gpAxes = 0;
+function readGamepad() {
+  const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+  const gp = [...pads].find((p) => p && p.axes.length >= 4);
+  $("gp").style.display = gp ? "block" : "none";
+  if (!gp) return false;
+  if (gp.axes.length !== gpAxes) { gpAxes = gp.axes.length; buildGpRows(gpAxes); $("gpname").textContent = gp.id.slice(0, 32); }
+  const ax = (f) => { const [i, inv] = gpMap[f]; const v = gp.axes[i] || 0; return inv ? -v : v; };
+  inp.roll = ax("roll"); inp.pitch = -ax("pitch"); inp.yaw = ax("yaw");
+  inp.throttle = (ax("throttle") + 1) / 2;
+  if (gp.axes.length > gpMap.arm[0]) inp.arm = ax("arm") > 0.4 ? 1 : 0;
+  if (gp.axes.length > gpMap.mode[0]) { const m = ax("mode"); inp.mode = m < -0.4 ? 0 : m > 0.4 ? 2 : 1; }
+  return true;
+}
+
+function approach(v, target, rate, dt) { const d = target - v; const s = rate * dt; return Math.abs(d) <= s ? target : v + Math.sign(d) * s; }
+function readKeyboard(dt) {
+  const k = (a) => keys.has(a);
+  inp.roll = approach(inp.roll, (k("arrowright") ? 0.6 : 0) - (k("arrowleft") ? 0.6 : 0), 4, dt);
+  inp.pitch = approach(inp.pitch, (k("arrowup") ? 0.6 : 0) - (k("arrowdown") ? 0.6 : 0), 4, dt);
+  inp.yaw = approach(inp.yaw, (k("d") ? 0.7 : 0) - (k("a") ? 0.7 : 0), 4, dt);
+  if (k("w")) inp.throttle = Math.min(1, inp.throttle + 0.45 * dt);
+  if (k("s")) inp.throttle = Math.max(0, inp.throttle - 0.45 * dt);
+}
+
+// ?watch: view only, never sends input (a second screen, or a screenshot)
+const WATCH = new URLSearchParams(location.search).has("watch");
+async function send(extra) {
+  if (WATCH) return;
+  try {
+    await fetch("/input", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({}, inp, extra || {})) });
+  } catch (e) {}
+}
+setInterval(() => send(), 20);
+
+// ---------- state from the simulator ----------
+let S = null;
+function connect() {
+  const es = new EventSource("/events");
+  es.onmessage = (ev) => { S = JSON.parse(ev.data); $("conn").style.display = "none"; };
+  es.onerror = () => { $("conn").style.display = "block"; };
+}
+connect();
+
+function fmt(v, d) { return (v >= 0 ? " " : "") + v.toFixed(d); }
+function updateHud() {
+  if (!S) return;
+  const st = S.state | 0;
+  const badge = $("badge");
+  badge.textContent = S.crashed ? "CRASHED" : STATE[st];
+  badge.className = S.crashed ? "crash" : st === 1 ? "armed" : st >= 2 ? "fs" : "";
+  $("mode").textContent = MODE[S.mode | 0] || "";
+  let why = "";
+  if (st === 0) {
+    const b = S.blocks | 0;
+    if (inp.arm && b) why = "Chưa ARM được: " + BLOCKS.filter(([m]) => b & m).map(([, t]) => t).join(", ");
+    else if (S.disarm_reason) why = "Đã disarm: " + DISARM[S.disarm_reason | 0];
+    if (!S.calib_done) why = "Đang hiệu chuẩn gyro — để drone yên";
+  } else if (st >= 2) why = st === 2 ? "Mất sóng RC — giữ thăng bằng 1 s" : "Mất sóng RC — tự hạ cánh";
+  $("why").textContent = why;
+  $("h").textContent = fmt(-S.z, 2) + " m";
+  $("vz").textContent = fmt(-S.vz, 2) + " m/s";
+  $("vh").textContent = Math.hypot(S.vx, S.vy).toFixed(1) + " m/s";
+  const d = 180 / Math.PI;
+  $("att").textContent = `${fmt(S.roll * d, 1)} / ${fmt(S.pitch * d, 1)}°`;
+  $("est").textContent = `${fmt(S.est_roll * d, 1)} / ${fmt(S.est_pitch * d, 1)}°`;
+  $("yaw").textContent = ((S.yaw * d + 360) % 360).toFixed(0) + "°";
+  $("link").textContent = S.link_cut ? "MẤT SÓNG" : `${S.frames_ok | 0} gói, ${S.crc_err | 0} lỗi CRC`;
+  $("t").textContent = S.t.toFixed(1) + " s";
+  [1, 2, 3, 4].forEach((i) => ($("m" + i).style.height = (S["m" + i] * 100).toFixed(0) + "%"));
+  // what the simulator actually received, so a second screen (?watch) shows the pilot
+  $("sl").style.left = (50 + 44 * S.stick_y) + "%"; $("sl").style.top = (94 - 88 * S.stick_t) + "%";
+  $("sr").style.left = (50 + 44 * S.stick_r) + "%"; $("sr").style.top = (50 - 44 * S.stick_p) + "%";
+  $("bArm").classList.toggle("on", !!S.arm_sw);
+  [0, 1, 2].forEach((m) => $("bM" + m).classList.toggle("on", (S.mode_pos | 0) === m));
+  $("bLink").classList.toggle("on", !!S.link_cut);
+  $("bImu").classList.toggle("on", !!S.imu_fail);
+  const wind = Math.round(Math.hypot(S.wind_n, S.wind_e));
+  $("bWind").textContent = `Gió ${wind} m/s`; $("bWind").classList.toggle("on", wind > 0);
+  $("bCam").textContent = "Camera: " + CAMS[camMode];
+}
+
+// ---------- render loop ----------
+let last = performance.now();
+const camPos = new THREE.Vector3(0, 0.35, 0.9);
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (!readGamepad()) readKeyboard(dt);
+  if (S) {
+    const p = ned2three(S.x, S.y, S.z);
+    quad.position.copy(p).add(new THREE.Vector3(0, 0.03, 0));
+    quad.quaternion.copy(quat2three(S.qw, S.qx, S.qy, S.qz));
+    props.forEach((pr, i) => {
+      const m = S["m" + (i + 1)];
+      pr.blade.rotation.y += pr.dir * m * 60 * dt;
+      pr.disc.material.opacity = 0.08 + 0.35 * m;
+    });
+    const st = S.state | 0;
+    quad.userData.led.material.color.set(S.crashed ? 0xff3333 : st === 1 ? 0x33ff77 : st >= 2 ? 0xffc400 : 0x555555);
+    if (trailCount === 0 || p.distanceTo(new THREE.Vector3().fromArray(trailPos, ((trailCount - 1) % trailN) * 3)) > 0.05) {
+      if (trailCount >= trailN) trailPos.copyWithin(0, 3);
+      const idx = Math.min(trailCount, trailN - 1);
+      trailPos[idx * 3] = p.x; trailPos[idx * 3 + 1] = p.y; trailPos[idx * 3 + 2] = p.z;
+      trailCount = Math.min(trailCount + 1, trailN);
+      trailGeo.setDrawRange(0, trailCount); trailGeo.attributes.position.needsUpdate = true;
+    }
+    sun.position.set(p.x + 30, 60, p.z + 20); sun.target.position.copy(p);
+    const yaw = S.yaw;
+    if (camMode === 0) {             // chase: behind and above, follows heading
+      // nose points along (sin yaw, 0, -cos yaw) in three; sit 0.9 m behind it
+      const want = p.clone().add(new THREE.Vector3(-Math.sin(yaw) * 0.9, 0.35, Math.cos(yaw) * 0.9));
+      if (camPos.distanceTo(want) > 4) camPos.copy(want);   // first frame / after a reset
+      else camPos.lerp(want, 1 - Math.pow(0.02, dt));
+      camera.position.copy(camPos); camera.up.set(0, 1, 0); camera.lookAt(p.x, p.y + 0.08, p.z);
+      camera.fov = 65;
+    } else if (camMode === 1) {      // pilot standing behind the pad, line of sight
+      camera.position.set(0, 1.7, 6); camera.up.set(0, 1, 0); camera.lookAt(p);
+      camera.fov = Math.max(20, Math.min(70, 70 - p.distanceTo(camera.position) * 0.8));
+    } else {                         // FPV: camera on the nose, 20 deg up-tilt
+      const q = quad.quaternion.clone().multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), 20 * Math.PI / 180));
+      camera.position.copy(p).add(new THREE.Vector3(0, 0.01, -0.07).applyQuaternion(quad.quaternion));
+      camera.quaternion.copy(q); camera.fov = 100;
+    }
+    camera.updateProjectionMatrix();
+  }
+  updateHud();
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+addEventListener("resize", () => { renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); });
+</script>
+</body>
+</html>
