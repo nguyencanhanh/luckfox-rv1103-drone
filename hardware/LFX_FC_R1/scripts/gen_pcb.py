@@ -11,7 +11,7 @@ pattern, 3.5 mm from each edge).  Two sides, split by job:
            socket leaves ~7 mm of air): IMU, barometer, ideal diode, sensor
            LDO, ADC dividers.  The two strips outside the header rows carry the
            side-entry JST-SH connectors, mouths facing the board edge:
-           debug UART on the left (next to module pins 4/5), GPS and buzzer
+           RC receiver on the left (next to module pins 4/5), GPS and buzzer
            on the right (next to pins 12/13 and 18).
            Four signal / ground solder-pad pairs sit at the corners for
            separate ESCs, one per quad-X arm.
@@ -101,7 +101,7 @@ BLOCK_ZONE = {
     "LM66100 ideal diode  +5V -> VSYS (blocks USB back-feed)": "under_module",
     "TLV75533 LDO  VSYS -> +3V3S (sensors only)": "under_module",
     "Luckfox Pico Mini B, 2x 1x11 female header": "under_module",
-    "Debug console UART2 (115200 8N1)": "left_strip",
+    "RC receiver UART2 (CRSF / ExpressLRS)": "left_strip",
     "ICM-42688-P 6-axis IMU, SPI 4-wire": "under_module",
     "BMP390 barometer, SPI 4-wire": "under_module",
     "4-in-1 ESC connector (JST-SH 8)": "under_module",
@@ -119,7 +119,7 @@ X = 5.0          # everything under the module moved right from the 36 mm draft
 ANCHORS = {
     "MOD1": (MOD_X, MOD_Y, 0, "F"),
     # --- connectors on the edges ------------------------------------------
-    "J4":  (3.55, 14.7, 270, "F"),        # debug UART, left edge
+    "J4":  (3.55, 14.7, 270, "F"),        # RC receiver, left edge
     "J6":  (42.45, 14.6, 90, "F"),        # buzzer, right edge
     "J5":  (42.45, 27.9, 90, "F"),        # GPS, right edge
     "J1":  (MOD_X, 42.65, 180, "B"),      # 4-in-1 ESC, bottom edge
@@ -158,7 +158,7 @@ ANCHORS = {
     "U6":  (36.6, 26.4, 180, "F"),
     "R20": (34.7, 28.6, 0, "F"),          # TX, pin 12
     "R21": (34.7, 24.25, 180, "F"),       # RX, pin 13
-    # --- left strip: debug ESD, series resistors, 5 V LED, probes ---------
+    # --- left strip: RC ESD, series resistors, 5 V LED, probes ------------
     "U7":  (2.6, 21.2, 90, "F"),
     "R8":  (6.2, 20.4, 90, "F"),
     "R9":  (7.6, 20.4, 90, "F"),
@@ -166,6 +166,9 @@ ANCHORS = {
     "D4":  (2.6, 28.6, 90, "F"),
     "TP1": (6.4, 25.4, 0, "F"),
     "TP2": (9.2, 25.4, 0, "F"),
+    "TP5": (6.4, 28.4, 0, "F"),           # UART2 console tap (RC_TX)
+    "TP6": (9.2, 28.4, 0, "F"),           # UART2 console tap (RC_RX)
+    "R24": (11.2, 9.4, 90, "F"),          # RC_RX pull-up by module pin 3
     # --- right strip: buzzer driver between its connector and the GPS one -
     "Q1":  (40.7, 19.9, 0, "F"),
     "D7":  (44.3, 19.9, 90, "F"),
@@ -814,7 +817,7 @@ def main():
 
     # ---- silkscreen: every label a person needs to plug the board in -------
     add_silk(board, "LFX FC R1", 23.0, 38.6, size=1.0)
-    add_silk(board, "DBG", 3.55, 10.4, size=0.8)
+    add_silk(board, "RC", 3.55, 10.4, size=0.8)
     add_silk(board, "BUZ", 42.45, 10.4, size=0.8)
     add_silk(board, "GPS", 42.45, 33.0, size=0.8)
     add_silk(board, "5V", 2.6, 31.0, size=0.8)
@@ -833,7 +836,7 @@ def main():
     add_silk(board, "GND", 13.4, 39.4, size=0.8, layer=pcbnew.B_SilkS)
     # per-pin letters for the side connectors, printed on the BOTTOM right
     # under each signal pad: they line up with the pins whatever the rotation
-    for ref, letters in (("J4", "TRG"), ("J5", "+GTR"), ("J6", "+-")):
+    for ref, letters in (("J4", "+GTR"), ("J5", "+GTR"), ("J6", "+-")):
         fp = placed[ref][0]
         for n, ch in enumerate(letters, start=1):
             x, y = pad_xy(fp, str(n))

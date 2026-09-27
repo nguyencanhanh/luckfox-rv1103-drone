@@ -71,7 +71,7 @@
 		(stroke (width 0.2) (type solid))
 		(fill (color 0 0 0 0.0))
 		(uuid "cc2da1be-4875-9c97-002a-54558758a378")
-		(property "Sheetname" "Luckfox Pico Mini B socket and debug UART"
+		(property "Sheetname" "Luckfox Pico Mini B socket and RC receiver port"
 			(at 199 68.5 0)
 			(effects (font (size 1.8 1.8)) (justify left bottom))
 		)

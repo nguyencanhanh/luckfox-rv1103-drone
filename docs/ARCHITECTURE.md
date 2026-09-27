@@ -64,7 +64,7 @@ Những điểm có thể buộc phải dùng MCU điều khiển bay rời (ph�
 | HAL MCU không có SPI, không có UART | `hal_bsp.c` chỉ có I2C0–4, PWM0–2, UART0/2 | phải tự viết mô tả thiết bị + kiểm clock |
 | Không thấy ngắt DMA trong bảng ngắt của MCU | `soc.h:53-94` | DShot bằng Timer+DMA có thể không làm được |
 | Tải camera làm jitter MCU tăng 6,4 lần | [REALTIME.md](REALTIME.md) | phải đo thêm với NPU + Wi-Fi |
-| Không có UART trống cho bộ thu RC | [PERIPHERALS.md](PERIPHERALS.md) | điều khiển tay chỉ qua Wi-Fi |
+| Bộ thu RC (ELRS/CRSF) dùng UART2, đường RC đi qua Linux | [PERIPHERALS.md](PERIPHERALS.md#bộ-thu-rc-trên-uart2) | Linux treo = mất RC; MCU phải failsafe theo timeout. MCU tự đọc UART2 cần viết mã clock (UNKNOWN) |
 | Không có RPMsg/mailbox driver cho RV1106 | [IPC.md](IPC.md) | IPC tự làm |
 | Lỗi tick trong SDK | `timer.c:128`, chậm 0,1% | phải sửa trước khi chạy dài |
 

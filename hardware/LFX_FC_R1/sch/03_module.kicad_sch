@@ -9,11 +9,134 @@
 		(date "2026-09-24")
 		(rev "R1")
 		(company "")
-		(comment 1 "Luckfox Pico Mini B socket and debug UART")
+		(comment 1 "Luckfox Pico Mini B socket and RC receiver port")
 		(comment 2 "Generated from scripts/design.py")
 	)
 	(lib_symbols
-		(symbol "Connector_Generic_MountingPin:Conn_01x03_MountingPin"
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector_Generic_MountingPin:Conn_01x04_MountingPin"
 			(pin_names
 				(offset 1.016)
 				(hide yes)
@@ -33,8 +156,8 @@
 					)
 				)
 			)
-			(property "Value" "Conn_01x03_MountingPin"
-				(at 1.27 -5.08 0)
+			(property "Value" "Conn_01x04_MountingPin"
+				(at 1.27 -7.62 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -66,7 +189,7 @@
 					)
 				)
 			)
-			(property "Description" "Generic connectable mounting pin connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Generic connectable mounting pin connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -99,10 +222,10 @@
 					)
 				)
 			)
-			(symbol "Conn_01x03_MountingPin_1_1"
+			(symbol "Conn_01x04_MountingPin_1_1"
 				(rectangle
 					(start -1.27 3.81)
-					(end 1.27 -3.81)
+					(end 1.27 -6.35)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -144,10 +267,21 @@
 						(type none)
 					)
 				)
+				(rectangle
+					(start -1.27 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(polyline
 					(pts
-						(xy -1.016 -4.572)
-						(xy 1.016 -4.572)
+						(xy -1.016 -7.112)
+						(xy 1.016 -7.112)
 					)
 					(stroke
 						(width 0.1524)
@@ -158,7 +292,7 @@
 					)
 				)
 				(text "Mounting"
-					(at 0 -4.191 0)
+					(at 0 -6.731 0)
 					(effects
 						(font
 							(size 0.381 0.381)
@@ -220,7 +354,25 @@
 					)
 				)
 				(pin passive line
-					(at 0 -7.62 90)
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -10.16 90)
 					(length 3.048)
 					(name "MountPin"
 						(effects
@@ -2008,6 +2160,148 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "power:+5V"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "+5V"
+				(at 0 3.556 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+5V\""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "+5V_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27)
+						(xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54)
+						(xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0)
+						(xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+5V_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:GND"
 			(power global)
 			(pin_numbers
@@ -2134,10 +2428,10 @@
 		(effects (font (size 2.2 2.2) (bold yes)) (justify left bottom))
 		(uuid "3f4abc0f-ecfd-2eb1-388e-f651b1e9ba19")
 	)
-	(text "Debug console UART2 (115200 8N1)"
+	(text "RC receiver UART2 (CRSF / ExpressLRS)"
 		(at 148.59 26.67 0)
 		(effects (font (size 2.2 2.2) (bold yes)) (justify left bottom))
-		(uuid "713ebbd7-0a35-8c9a-6940-0f70d3aa954d")
+		(uuid "3d455221-96cb-9def-7c50-8d587cd3cd3c")
 	)
 	(symbol
 		(lib_id "LFX:Luckfox_Pico_Mini")
@@ -2254,16 +2548,27 @@
 			)
 		)
 	)
-	(no_connect
-		(at 33.02 43.18)
-		(uuid "9b5b115f-61d5-81e9-4b73-adf183c3912b")
+	(wire
+		(pts (xy 33.02 43.18) (xy 29.21 43.18))
+		(stroke (width 0) (type default))
+		(uuid "4b7ad12d-6ab6-f646-f2b4-864e11c0194d")
+	)
+	(global_label "3V3_MOD"
+		(shape bidirectional)
+		(at 29.21 43.18 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "87e2083d-6ca6-eabe-7855-b47d1e76308d")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 29.21 43.18 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
 	)
 	(wire
 		(pts (xy 33.02 45.72) (xy 29.21 45.72))
 		(stroke (width 0) (type default))
 		(uuid "1a6c111d-fc4b-1676-f5c1-2cddb3a4a560")
 	)
-	(global_label "DBG_TX"
+	(global_label "RC_TX"
 		(shape bidirectional)
 		(at 29.21 45.72 180)
 		(effects (font (size 1.27 1.27)) (justify right))
@@ -2278,7 +2583,7 @@
 		(stroke (width 0) (type default))
 		(uuid "131fd53b-a615-5802-96ed-575b9c825d64")
 	)
-	(global_label "DBG_RX"
+	(global_label "RC_RX"
 		(shape bidirectional)
 		(at 29.21 48.26 180)
 		(effects (font (size 1.27 1.27)) (justify right))
@@ -2667,35 +2972,36 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic_MountingPin:Conn_01x03_MountingPin")
-		(at 170.18 39.37 0)
+		(lib_id "Connector_Generic_MountingPin:Conn_01x04_MountingPin")
+		(at 168.91 39.37 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
 		(uuid "6a75b7e7-bc8a-5d14-ff83-f02b17a80288")
 		(property "Reference" "J4"
-			(at 170.18 31.75 0)
+			(at 168.91 31.75 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Value" "SM03B-SRSS-TB"
-			(at 170.18 49.53 0)
+		(property "Value" "SM04B-SRSS-TB"
+			(at 168.91 52.07 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Footprint" "Connector_JST:JST_SH_SM03B-SRSS-TB_1x03-1MP_P1.00mm_Horizontal"
-			(at 170.18 39.37 0)
+		(property "Footprint" "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
+			(at 168.91 39.37 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 170.18 39.37 0)
+			(at 168.91 39.37 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Description" "1:TX (board out) 2:RX (board in) 3:GND"
-			(at 170.18 39.37 0)
+		(property "Description" "RC receiver (ELRS/CRSF). 1:5V 2:GND 3:TX (board out, to receiver RX) 4:RX (board in, from receiver TX)"
+			(at 168.91 39.37 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "7819fe71-3e7a-1c4b-082a-5ec272924604"))
 		(pin "2" (uuid "d52c9533-db62-1024-6a43-d5503b76bc1c"))
 		(pin "3" (uuid "6ed728ef-f59f-2427-05c4-611fbd7dd6fe"))
+		(pin "4" (uuid "4ee6ec9a-51d0-cc03-f84b-ff286a84d362"))
 		(pin "MP" (uuid "f1daf998-fcc3-a6b3-f2dd-faeb93278701"))
 		(instances
 			(project "LFX_FC_R1"
@@ -2706,52 +3012,22 @@
 		)
 	)
 	(wire
-		(pts (xy 165.1 36.83) (xy 161.29 36.83))
+		(pts (xy 163.83 36.83) (xy 160.02 36.83))
 		(stroke (width 0) (type default))
 		(uuid "7a5ebd14-7d1a-43e8-db20-7a684430338d")
 	)
-	(global_label "DBG_TX_X"
-		(shape bidirectional)
-		(at 161.29 36.83 180)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "e364c5d1-4808-79c9-6ecb-01bb20105dff")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 161.29 36.83 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
-		)
-	)
-	(wire
-		(pts (xy 165.1 39.37) (xy 161.29 39.37))
-		(stroke (width 0) (type default))
-		(uuid "85c09d5b-5422-4360-0c61-ecc0516f93ed")
-	)
-	(global_label "DBG_RX_X"
-		(shape bidirectional)
-		(at 161.29 39.37 180)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "8e3406db-db6b-9c6b-593a-06fbe6f8011b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 161.29 39.37 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
-		)
-	)
-	(wire
-		(pts (xy 165.1 41.91) (xy 161.29 41.91))
-		(stroke (width 0) (type default))
-		(uuid "9dfb097a-9f36-7624-9d01-f1f43330c159")
-	)
 	(symbol
-		(lib_id "power:GND")
-		(at 161.29 41.91 0)
+		(lib_id "power:+5V")
+		(at 160.02 36.83 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
-		(uuid "ba7f3beb-5dbc-4de1-0726-fbac873eb7bc")
+		(uuid "3ce23553-ca4f-1ecf-81c3-981b17a56fb2")
 		(property "Reference" "#PWR0057"
-			(at 161.29 38.1 0)
+			(at 160.02 33.02 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Value" "GND"
-			(at 161.29 46.41 0)
+		(property "Value" "+5V"
+			(at 160.02 32.33 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
@@ -2765,22 +3041,22 @@
 		)
 	)
 	(wire
-		(pts (xy 170.18 46.99) (xy 170.18 50.8))
+		(pts (xy 163.83 39.37) (xy 160.02 39.37))
 		(stroke (width 0) (type default))
-		(uuid "f963391d-4002-a528-4b12-f33f79eb3bc4")
+		(uuid "85c09d5b-5422-4360-0c61-ecc0516f93ed")
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 170.18 50.8 0)
+		(at 160.02 39.37 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
-		(uuid "e1ca8fc1-8dc2-1bfb-9dcd-ed417477283c")
+		(uuid "d72a95cd-c41e-c4b2-a92c-c23f0be24942")
 		(property "Reference" "#PWR0058"
-			(at 170.18 46.99 0)
+			(at 160.02 35.56 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Value" "GND"
-			(at 170.18 55.3 0)
+			(at 160.02 43.87 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
@@ -2793,27 +3069,86 @@
 			)
 		)
 	)
+	(wire
+		(pts (xy 163.83 41.91) (xy 160.02 41.91))
+		(stroke (width 0) (type default))
+		(uuid "9dfb097a-9f36-7624-9d01-f1f43330c159")
+	)
+	(global_label "RC_TX_X"
+		(shape bidirectional)
+		(at 160.02 41.91 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "7f333f16-80b9-af69-f5a3-52325b8ec342")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 160.02 41.91 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+	)
+	(wire
+		(pts (xy 163.83 44.45) (xy 160.02 44.45))
+		(stroke (width 0) (type default))
+		(uuid "1070bd65-d8c0-7d86-e97f-e18301f2a692")
+	)
+	(global_label "RC_RX_X"
+		(shape bidirectional)
+		(at 160.02 44.45 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "221905c1-c520-f4db-f802-0b9501d40663")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 160.02 44.45 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+	)
+	(wire
+		(pts (xy 168.91 49.53) (xy 168.91 53.34))
+		(stroke (width 0) (type default))
+		(uuid "f963391d-4002-a528-4b12-f33f79eb3bc4")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 168.91 53.34 0)
+		(unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
+		(uuid "e1ca8fc1-8dc2-1bfb-9dcd-ed417477283c")
+		(property "Reference" "#PWR0059"
+			(at 168.91 49.53 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Value" "GND"
+			(at 168.91 57.84 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
+					(reference "#PWR0059") (unit 1)
+				)
+			)
+		)
+	)
 	(symbol
 		(lib_id "Device:R")
-		(at 179.07 52.07 0)
+		(at 179.07 50.8 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
 		(uuid "d22bfbef-016f-bdb6-12e3-84736351b52a")
 		(property "Reference" "R8"
-			(at 179.07 44.45 0)
+			(at 179.07 43.18 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Value" "33R"
-			(at 179.07 58.42 0)
+			(at 179.07 57.15 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 179.07 52.07 0)
+			(at 179.07 50.8 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 179.07 52.07 0)
+			(at 179.07 50.8 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "02839250-fac4-ad48-2371-f3437426f170"))
@@ -2827,56 +3162,56 @@
 		)
 	)
 	(wire
-		(pts (xy 179.07 48.26) (xy 179.07 44.45))
+		(pts (xy 179.07 46.99) (xy 179.07 43.18))
 		(stroke (width 0) (type default))
 		(uuid "6c32545a-4f03-5e22-6781-fec32ac3a1a7")
 	)
-	(global_label "DBG_TX"
+	(global_label "RC_TX"
 		(shape bidirectional)
-		(at 179.07 44.45 90)
+		(at 179.07 43.18 90)
 		(effects (font (size 1.27 1.27)) (justify left))
 		(uuid "0924c2be-739a-750a-74fa-598f90ebd77b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 179.07 44.45 0)
+			(at 179.07 43.18 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(wire
-		(pts (xy 179.07 55.88) (xy 179.07 59.69))
+		(pts (xy 179.07 54.61) (xy 179.07 58.42))
 		(stroke (width 0) (type default))
 		(uuid "4b8d900b-0477-8c6a-9f07-436c1d306fde")
 	)
-	(global_label "DBG_TX_X"
+	(global_label "RC_TX_X"
 		(shape bidirectional)
-		(at 179.07 59.69 270)
+		(at 179.07 58.42 270)
 		(effects (font (size 1.27 1.27)) (justify right))
 		(uuid "884d1b34-a519-9001-ec67-92bc2e3253ad")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 179.07 59.69 0)
+			(at 179.07 58.42 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 193.04 54.61 0)
+		(at 191.77 53.34 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
 		(uuid "8ba4fd0d-dea8-a562-85f7-4a1f03f46b81")
 		(property "Reference" "R9"
-			(at 193.04 46.99 0)
+			(at 191.77 45.72 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Value" "33R"
-			(at 193.04 60.96 0)
+			(at 191.77 59.69 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 193.04 54.61 0)
+			(at 191.77 53.34 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 193.04 54.61 0)
+			(at 191.77 53.34 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "2e052095-d317-29fb-89a3-fdd68040f2cb"))
@@ -2890,60 +3225,127 @@
 		)
 	)
 	(wire
-		(pts (xy 193.04 50.8) (xy 193.04 46.99))
+		(pts (xy 191.77 49.53) (xy 191.77 45.72))
 		(stroke (width 0) (type default))
 		(uuid "4261b813-8020-e18f-21ae-3bb5d781495f")
 	)
-	(global_label "DBG_RX_X"
+	(global_label "RC_RX_X"
 		(shape bidirectional)
-		(at 193.04 46.99 90)
+		(at 191.77 45.72 90)
 		(effects (font (size 1.27 1.27)) (justify left))
 		(uuid "6da2dbc2-574c-5cac-75ba-209f333d577b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 193.04 46.99 0)
+			(at 191.77 45.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(wire
-		(pts (xy 193.04 58.42) (xy 193.04 62.23))
+		(pts (xy 191.77 57.15) (xy 191.77 60.96))
 		(stroke (width 0) (type default))
 		(uuid "f9603886-a4dd-2f19-cd35-375251f02d76")
 	)
-	(global_label "DBG_RX"
+	(global_label "RC_RX"
 		(shape bidirectional)
-		(at 193.04 62.23 270)
+		(at 191.77 60.96 270)
 		(effects (font (size 1.27 1.27)) (justify right))
 		(uuid "0548944b-e62e-8110-0d1b-e74b6c40087d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 193.04 62.23 0)
+			(at 191.77 60.96 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 204.47 50.8 0)
+		(unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes)
+		(dnp no)
+		(uuid "1acd040a-7ff6-5348-c331-e27561446673")
+		(property "Reference" "R24"
+			(at 204.47 43.18 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "1k"
+			(at 204.47 57.15 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 204.47 50.8 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" ""
+			(at 204.47 50.8 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Description" "Keeps the receiver TX line high at power-up (ELRS wiring guide: 300-1000 R pull-up on the FC RX pad)"
+			(at 204.47 50.8 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1" (uuid "dc02c2a2-504c-0ae7-e438-f8669d1809f5"))
+		(pin "2" (uuid "f554e1ea-aac6-07a8-f9ae-e90af5db4258"))
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
+					(reference "R24") (unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 204.47 46.99) (xy 204.47 43.18))
+		(stroke (width 0) (type default))
+		(uuid "29c1bb5d-2305-9292-bcef-84b8fc60a28e")
+	)
+	(global_label "RC_RX"
+		(shape bidirectional)
+		(at 204.47 43.18 90)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "2b0b9b93-9475-34e3-ab2c-04e52bc05153")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 204.47 43.18 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+	)
+	(wire
+		(pts (xy 204.47 54.61) (xy 204.47 58.42))
+		(stroke (width 0) (type default))
+		(uuid "b9888a43-afb9-99c2-a489-a947a69c402e")
+	)
+	(global_label "3V3_MOD"
+		(shape bidirectional)
+		(at 204.47 58.42 270)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "7264a9f8-cde3-190b-e1cf-8187f8e06354")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 204.47 58.42 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(symbol
 		(lib_id "Power_Protection:TPD4E05U06DQA")
-		(at 231.14 43.18 0)
+		(at 242.57 43.18 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
 		(uuid "00ebb4db-59d6-fcd2-2977-720abb2d8d66")
 		(property "Reference" "U7"
-			(at 231.14 31.75 0)
+			(at 242.57 31.75 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Value" "TPD4E05U06DQA"
-			(at 231.14 58.42 0)
+			(at 242.57 58.42 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "Package_SON:USON-10_2.5x1.0mm_P0.5mm"
-			(at 231.14 43.18 0)
+			(at 242.57 43.18 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 231.14 43.18 0)
+			(at 242.57 43.18 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Description" "ESD at the debug connector (opposite board edge from GPS)"
-			(at 231.14 43.18 0)
+		(property "Description" "ESD at the RC receiver connector"
+			(at 242.57 43.18 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "605e0008-cc39-f085-721c-486071062caf"))
@@ -2965,97 +3367,52 @@
 		)
 	)
 	(wire
-		(pts (xy 218.44 40.64) (xy 214.63 40.64))
+		(pts (xy 229.87 40.64) (xy 226.06 40.64))
 		(stroke (width 0) (type default))
 		(uuid "cff73373-e1e3-48fc-dee8-4a3c602da633")
 	)
-	(global_label "DBG_TX_X"
+	(global_label "RC_TX_X"
 		(shape bidirectional)
-		(at 214.63 40.64 180)
+		(at 226.06 40.64 180)
 		(effects (font (size 1.27 1.27)) (justify right))
 		(uuid "b9f6aec8-f44a-e33e-d691-c5f3429e3d90")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 214.63 40.64 0)
+			(at 226.06 40.64 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(wire
-		(pts (xy 218.44 45.72) (xy 214.63 45.72))
+		(pts (xy 229.87 45.72) (xy 226.06 45.72))
 		(stroke (width 0) (type default))
 		(uuid "64a1834f-377b-7c4c-878a-25d87e0fa1a7")
 	)
-	(global_label "DBG_RX_X"
+	(global_label "RC_RX_X"
 		(shape bidirectional)
-		(at 214.63 45.72 180)
+		(at 226.06 45.72 180)
 		(effects (font (size 1.27 1.27)) (justify right))
 		(uuid "faac3a9d-75ed-2645-342b-bed0d2a19a50")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 214.63 45.72 0)
+			(at 226.06 45.72 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(wire
-		(pts (xy 231.14 55.88) (xy 231.14 59.69))
+		(pts (xy 242.57 55.88) (xy 242.57 59.69))
 		(stroke (width 0) (type default))
 		(uuid "8e2753ec-92d9-94ea-2ee0-621fb505f964")
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 231.14 59.69 0)
+		(at 242.57 59.69 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
 		(uuid "73f02660-d591-2cd6-ac35-4e2bec1f29e3")
-		(property "Reference" "#PWR0059"
-			(at 231.14 55.88 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
-		)
-		(property "Value" "GND"
-			(at 231.14 64.19 0)
-			(effects (font (size 1.27 1.27)))
-		)
-		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(instances
-			(project "LFX_FC_R1"
-				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
-					(reference "#PWR0059") (unit 1)
-				)
-			)
-		)
-	)
-	(no_connect
-		(at 243.84 40.64)
-		(uuid "b752bfbd-79cd-4325-59c3-cf75514dde83")
-	)
-	(no_connect
-		(at 243.84 45.72)
-		(uuid "af6a633f-f792-6520-d8d6-74709bb435ca")
-	)
-	(no_connect
-		(at 243.84 50.8)
-		(uuid "bbbc0ffb-cedf-09f2-a321-6c8031c93117")
-	)
-	(no_connect
-		(at 243.84 35.56)
-		(uuid "ff09de50-cdaf-519a-bdeb-34fdb2c4e8f6")
-	)
-	(wire
-		(pts (xy 231.14 55.88) (xy 231.14 59.69))
-		(stroke (width 0) (type default))
-		(uuid "87eb961a-af42-5f90-5acb-99ebee791ba3")
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 231.14 59.69 0)
-		(unit 1)
-		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
-		(uuid "5bbc8cd5-4a07-c1b0-90cc-012af689d134")
 		(property "Reference" "#PWR0060"
-			(at 231.14 55.88 0)
+			(at 242.57 55.88 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Value" "GND"
-			(at 231.14 64.19 0)
+			(at 242.57 64.19 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
@@ -3069,12 +3426,151 @@
 		)
 	)
 	(no_connect
-		(at 218.44 50.8)
+		(at 255.27 40.64)
+		(uuid "b752bfbd-79cd-4325-59c3-cf75514dde83")
+	)
+	(no_connect
+		(at 255.27 45.72)
+		(uuid "af6a633f-f792-6520-d8d6-74709bb435ca")
+	)
+	(no_connect
+		(at 255.27 50.8)
+		(uuid "bbbc0ffb-cedf-09f2-a321-6c8031c93117")
+	)
+	(no_connect
+		(at 255.27 35.56)
+		(uuid "ff09de50-cdaf-519a-bdeb-34fdb2c4e8f6")
+	)
+	(wire
+		(pts (xy 242.57 55.88) (xy 242.57 59.69))
+		(stroke (width 0) (type default))
+		(uuid "87eb961a-af42-5f90-5acb-99ebee791ba3")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 242.57 59.69 0)
+		(unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
+		(uuid "5bbc8cd5-4a07-c1b0-90cc-012af689d134")
+		(property "Reference" "#PWR0061"
+			(at 242.57 55.88 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Value" "GND"
+			(at 242.57 64.19 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
+					(reference "#PWR0061") (unit 1)
+				)
+			)
+		)
+	)
+	(no_connect
+		(at 229.87 50.8)
 		(uuid "89f633e6-504f-bac2-c8af-5e86bb285c30")
 	)
 	(no_connect
-		(at 218.44 35.56)
+		(at 229.87 35.56)
 		(uuid "2e9a26c1-0abc-3a63-9ae8-b989d8ec7bf4")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 149.86 83.82 0)
+		(unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes)
+		(dnp no)
+		(uuid "2e86675d-d50b-d9d5-7367-40ae58dfea83")
+		(property "Reference" "TP5"
+			(at 149.86 76.708 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "TP"
+			(at 149.86 86.36 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "LFX:TestPad_1.0mm"
+			(at 149.86 83.82 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" ""
+			(at 149.86 83.82 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1" (uuid "4db3d4e7-0cf4-6389-fecf-ef14e717f4b4"))
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
+					(reference "TP5") (unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 149.86 83.82) (xy 149.86 87.63))
+		(stroke (width 0) (type default))
+		(uuid "0220282f-4b2b-1843-5367-f427a8a6e487")
+	)
+	(global_label "RC_TX"
+		(shape bidirectional)
+		(at 149.86 87.63 270)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "c4f11f4e-2931-69a4-f3d3-09374bb635f4")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 149.86 87.63 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 162.56 83.82 0)
+		(unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes)
+		(dnp no)
+		(uuid "83a04b23-f2fa-1952-1484-3c1a4d0efa8f")
+		(property "Reference" "TP6"
+			(at 162.56 76.708 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Value" "TP"
+			(at 162.56 86.36 0)
+			(effects (font (size 1.27 1.27)))
+		)
+		(property "Footprint" "LFX:TestPad_1.0mm"
+			(at 162.56 83.82 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(property "Datasheet" ""
+			(at 162.56 83.82 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
+		(pin "1" (uuid "6d920950-d836-a8ff-7e95-4dede4ed30e8"))
+		(instances
+			(project "LFX_FC_R1"
+				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
+					(reference "TP6") (unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 162.56 83.82) (xy 162.56 87.63))
+		(stroke (width 0) (type default))
+		(uuid "6727ee7b-b13b-139a-7655-23c69c63e2f6")
+	)
+	(global_label "RC_RX"
+		(shape bidirectional)
+		(at 162.56 87.63 270)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "60306951-8aab-27da-01d1-3c69f2eef565")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 162.56 87.63 0)
+			(effects (font (size 1.27 1.27)) (hide yes))
+		)
 	)
 	(sheet_instances
 		(path "/" (page "1"))

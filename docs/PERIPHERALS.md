@@ -35,8 +35,8 @@ Nguồn: ảnh sơ đồ chân của Luckfox (`Luckfox-Pico-Mini-details-inter.j
 |---|---|---|---|
 | 2, 21 | GND | | |
 | 3 | 3V3 (ra) | | |
-| 4 | GPIO1_B2 | **UART2_TX_M1: console Linux** | khớp: `rv1106-pinctrl.dtsi:998-999`, UART2 dùng M1 `rv1106.dtsi:1010` |
-| 5 | GPIO1_B3 | **UART2_RX_M1: console Linux** | khớp: `rv1106-pinctrl.dtsi:996-997` |
+| 4 | GPIO1_B2 | **UART2_TX_M1: console Linux** → trên board LFX_FC_R1: RC_TX (tới RX bộ thu) | khớp: `rv1106-pinctrl.dtsi:998-999`, UART2 dùng M1 `rv1106.dtsi:1010` |
+| 5 | GPIO1_B3 | **UART2_RX_M1: console Linux** → trên board LFX_FC_R1: RC_RX (từ TX bộ thu, CRSF) | khớp: `rv1106-pinctrl.dtsi:996-997` |
 | 6–9 | GPIO1_C0–C3 | SPI0_M0 CS0/CLK/MOSI/MISO; hoặc PWM2/4/5/6_M2 | SPI khớp `:834-848`; PWM mux 3 `:494,540,563,586` |
 | 10 | GPIO1_C4 | UART4 (M1); hoặc PWM8_M1 | PWM `:625`; **hướng UART lệch**: ảnh ghi TX, DTS ghi `uart4_rx_m1` (`:1036-1037`) |
 | 11 | GPIO1_C5 | UART4 (M1); hoặc PWM9_M1 | PWM `:641`; ảnh ghi RX, DTS ghi `uart4_tx_m1` (`:1038-1039`) |
@@ -69,3 +69,23 @@ chính là `g_pwm2Dev` trong HAL MCU (`hal_bsp.c:99-105`, `rv1106.h:790`). Khôn
 
 Không có đường chính thức (điều kiện 4). Milestone 1 dùng vòng đệm log trong RAM (`drv_pstore.c`), đọc bằng `mcu-tool log`.
 Muốn UART thật cho MCU thì phải tự viết driver polled cho UART3 (DW 8250) và kiểm clock `SCLK_UART3` trên board. Đây là việc riêng, chưa làm.
+
+## Bộ thu RC trên UART2
+
+Board LFX_FC_R1 dùng UART2 (chân 4/5), UART cuối cùng còn trống, cho bộ thu ExpressLRS / Crossfire. Cổng J4, JST-SH 4 chân: 1 = 5 V, 2 = GND, 3 = TX của board (tới RX bộ thu), 4 = RX của board (từ TX bộ thu).
+
+| Mục | Giá trị | Nguồn |
+|---|---|---|
+| Giao thức | CRSF: một cặp UART đầy đủ, không đảo, full-duplex | [expresslrs.org: Receiver Wiring](https://www.expresslrs.org/quick-start/receivers/wiring-up/), [Configuring FC](https://www.expresslrs.org/quick-start/receivers/configuring-fc/) |
+| Baud | 420000 (mặc định của ELRS); chuẩn TBS là 416666 | [betaflight#12398](https://github.com/betaflight/betaflight/issues/12398) |
+| Nguồn bộ thu | 5 V | expresslrs.org, Receiver Wiring |
+| Clock UART2 | có bộ chia phân số riêng `clk_uart2_frac` | `drivers/clk/rockchip/clk-rv1106.c:441` |
+| Tạo 420000 baud | 16 × 420000 = 6,72 MHz = 24 MHz × 7/25: về lý thuyết chia đúng | tính toán; **chưa đo, UNKNOWN — NEED VERIFICATION** |
+| Console hiện tại | `earlycon=uart8250,mmio32,0xff4c0000`, `fiq-debugger` `rockchip,serial-id = <2>` | `rv1106.dtsi:225-232`, `rv1106-ipc.dtsi:9` |
+| Pull-up RC_RX | R24 1 kΩ lên 3,3 V của module (chân 3): bộ thu dùng ESP bị kẹt ở bootloader nếu đường này bị kéo thấp khi cấp nguồn | expresslrs.org, Receiver Wiring (300–1000 Ω) |
+
+Việc phần mềm phải làm trước khi cắm bộ thu (chưa làm):
+
+1. Bỏ console khỏi UART2: tắt `fiq-debugger`, bỏ `earlycon`/`console=ttyFIQ0` trong bootargs, bật node `uart2` cho Linux. U-Boot và DDR blob vẫn in log lúc boot ra UART2; bộ thu sẽ nhận rác ở 115200/1500000 nhưng gói CRSF có CRC nên bỏ qua. Có tắt được log DDR blob không: UNKNOWN.
+2. Debug: dùng ADB qua USB, hoặc gắn USB-UART vào TP5/TP6 khi đã rút bộ thu.
+3. Đường RC: bộ thu → Linux (UART2) → IPC → MCU. Linux treo là mất RC, nên MCU phải tự failsafe khi mất heartbeat. MCU tự đọc UART2 thì phải viết mã clock UART cho RV1106 (HAL không có, xem mục 4 ở trên).

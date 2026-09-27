@@ -65,7 +65,7 @@ def jst_sh(n):
 # ---------------------------------------------------------------------------
 SHEETS = [
     ("02_power",   "Power: ESC input, 5 V buck, ideal diode, sensor LDO"),
-    ("03_module",  "Luckfox Pico Mini B socket and debug UART"),
+    ("03_module",  "Luckfox Pico Mini B socket and RC receiver port"),
     ("04_sensors", "IMU ICM-42688-P and barometer BMP390 on SPI0"),
     ("05_io",      "ESC signals, GPS, buzzer, battery sense"),
 ]
@@ -206,9 +206,10 @@ B = "Luckfox Pico Mini B, 2x 1x11 female header"
 C("MOD1", "LFX:Luckfox_Pico_Mini", "Luckfox Pico Mini B", MODULE_FP, {
     "1": "VSYS",            # VBUS
     "2": "GND",
-    "3": "",                # 3V3_O: module's own rail, not loaded
-    "4": "DBG_TX",          # UART2_TX_M1  GPIO1_B2
-    "5": "DBG_RX",          # UART2_RX_M1  GPIO1_B3
+    "3": "3V3_MOD",         # 3V3_O: the SoC's own IO rail; only the RC_RX
+                            # pull-up (R24, <= 3.3 mA) hangs on it
+    "4": "RC_TX",           # UART2_TX_M1  GPIO1_B2  -> receiver RX (telemetry)
+    "5": "RC_RX",           # UART2_RX_M1  GPIO1_B3  <- receiver TX (CRSF)
     "6": "IMU_CS",          # SPI0_CS0_M0  GPIO1_C0
     "7": "SPI_SCK",         # SPI0_CLK_M0  GPIO1_C1
     "8": "SPI_MOSI",        # SPI0_MOSI_M0 GPIO1_C2
@@ -231,16 +232,35 @@ C("MOD1", "LFX:Luckfox_Pico_Mini", "Luckfox Pico Mini B", MODULE_FP, {
 Cap("C15", "10u/10V", C0805, "VSYS", "GND", S, B,
     Description="Local reservoir at header pin 1")
 
-B = "Debug console UART2 (115200 8N1)"
-C("J4", "Connector_Generic_MountingPin:Conn_01x03_MountingPin", "SM03B-SRSS-TB", jst_sh(3),
-  {"1": "DBG_TX_X", "2": "DBG_RX_X", "3": "GND", "MP": "GND"}, S, B,
-  Description="1:TX (board out) 2:RX (board in) 3:GND")
-R("R8", "33R", R0402, "DBG_TX", "DBG_TX_X", S, B)
-R("R9", "33R", R0402, "DBG_RX_X", "DBG_RX", S, B)
+B = "RC receiver UART2 (CRSF / ExpressLRS)"
+# The only UART left on the module.  An ExpressLRS / Crossfire receiver talks
+# CRSF: a full, non-inverted UART pair at 420000 baud (ELRS default; TBS spec
+# 416666), powered from 5 V (expresslrs.org, "Receiver Wiring").  UART2 has
+# its own fractional divider (clk-rv1106.c:441): 16 x 420000 = 6.72 MHz =
+# 24 MHz x 7/25.  Linux's console (earlycon 0xff4c0000, fiq-debugger
+# serial-id 2, rv1106.dtsi:225-232) has to move off UART2 in software; debug
+# goes over ADB, or through TP5/TP6 with the receiver unplugged.
+# Pin order as J5 (GPS): power, ground, then the board's TX and RX.
+C("J4", "Connector_Generic_MountingPin:Conn_01x04_MountingPin",
+  "SM04B-SRSS-TB", jst_sh(4),
+  {"1": "+5V", "2": "GND", "3": "RC_TX_X", "4": "RC_RX_X", "MP": "GND"},
+  S, B, Description="RC receiver (ELRS/CRSF). 1:5V 2:GND 3:TX (board out, "
+                    "to receiver RX) 4:RX (board in, from receiver TX)")
+R("R8", "33R", R0402, "RC_TX", "RC_TX_X", S, B)
+R("R9", "33R", R0402, "RC_RX_X", "RC_RX", S, B)
+# ESP-based ELRS receivers stall in their bootloader when the line from their
+# TX pin is held low at power-up; ExpressLRS suggests 300-1000 R to 3.3 V on
+# the FC RX pad.  The SoC pin's reset pull state is UNKNOWN, so fit it, to
+# the module's own 3.3 V (pin 3): the rail the GPIO bank itself runs from.
+R("R24", "1k", R0402, "RC_RX", "3V3_MOD", S, B,
+  Description="Keeps the receiver TX line high at power-up (ELRS wiring "
+              "guide: 300-1000 R pull-up on the FC RX pad)")
 C("U7", "Power_Protection:TPD4E05U06DQA", "TPD4E05U06DQA", USON10,
-  {"1": "DBG_TX_X", "2": "DBG_RX_X", "3": "GND", "4": "", "5": "",
+  {"1": "RC_TX_X", "2": "RC_RX_X", "3": "GND", "4": "", "5": "",
    "6": "", "7": "", "8": "GND", "9": "", "10": ""}, S, B,
-  Description="ESD at the debug connector (opposite board edge from GPS)")
+  Description="ESD at the RC receiver connector")
+TP("TP5", "RC_TX", S, B)      # UART2 console tap when no receiver is fitted
+TP("TP6", "RC_RX", S, B)
 
 # ===========================================================================
 # SHEET 04 -- SENSORS
