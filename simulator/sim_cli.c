@@ -268,6 +268,35 @@ static int sc_acro_flip(const char *name)
            (double)tilt, (double)est_err, (double)height(&r));
 }
 
+static int sc_alt_engage(const char *name)
+{
+    /* what a keyboard pilot does: hold throttle up, switch to ALT_HOLD while
+     * still climbing fast; it must brake, then hold where it stopped */
+    run r;
+    start(&r, 10);
+    r.mode = 0;
+    fc_request_acc_calibration(&r.s.fc);
+    advance(&r, 1.5f);
+    r.arm = 1;
+    advance(&r, 0.2f);
+    r.thr = 0.68f;
+    advance(&r, 1.5f);
+    float vz0 = -r.s.quad.vel.z;
+    r.mode = 1;
+    r.thr = 0.5f;
+    float hmax = 0.0f;
+    for (int i = 0; i < 300; i++) {
+        advance(&r, 0.01f);
+        hmax = height(&r) > hmax ? height(&r) : hmax;
+    }
+    float h1 = height(&r);
+    advance(&r, 3.0f);
+    float h2 = height(&r);
+    int ok = vz0 > 3.0f && fabsf(h2 - h1) < 0.2f && hmax - h2 < 0.5f && !r.s.quad.crashed;
+    RESULT(ok, "ALT_HOLD engaged climbing %.1f m/s: stops at %.2f m (peak %.2f), 3 s later %.2f m",
+           (double)vz0, (double)h1, (double)hmax, (double)h2);
+}
+
 static void bench(void)
 {
     /* time the ARMED path (estimator + all loops + mixer), on a copy of a
@@ -300,7 +329,7 @@ typedef struct { const char *name; int (*fn)(const char *); } scenario;
 static const scenario ALL[] = {
     {"arm_refusal", sc_arm_refusal}, {"hover", sc_hover}, {"angle_step", sc_angle_step},
     {"yaw", sc_yaw}, {"rc_loss", sc_rc_loss}, {"imu_fail", sc_imu_fail}, {"wind", sc_wind},
-    {"acro_flip", sc_acro_flip},
+    {"acro_flip", sc_acro_flip}, {"alt_engage", sc_alt_engage},
 };
 
 int main(int argc, char **argv)

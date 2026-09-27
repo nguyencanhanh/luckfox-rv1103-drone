@@ -29,6 +29,7 @@ typedef struct {
     float stick_deadband;        /* fraction of full stick */
     pid_params climb;            /* m/s in, collective out */
     float alt_kp;                /* (m/s) per m */
+    float alt_lock_vz;           /* m/s: brake to this before a height is locked */
     float max_climb, max_descent;/* m/s */
     float hover_throttle;        /* collective that holds height, first guess */
     float thr_min;               /* idle collective while armed */
@@ -71,6 +72,7 @@ typedef struct {
     float collective;            /* before tilt compensation */
     float collective_out;        /* to the mixer */
     int alt_engaged;
+    int alt_locked;              /* height_sp is held (vs. braking / stick moving) */
     float fs_hold_collective;
     float land_timer;
     int landed;

@@ -64,6 +64,12 @@
   #gp select { background: #111a1e; color: var(--ink); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; }
   #gp .row { display: grid; grid-template-columns: 52px 1fr 48px; gap: 4px; align-items: center; margin: 2px 0; font-size: 11px; }
   #conn { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; }
+  #crash { position: fixed; top: 38%; left: 50%; transform: translate(-50%, -50%); display: none;
+    text-align: center; padding: 18px 26px; border-color: var(--bad); }
+  #crash b { display: block; font-size: 20px; color: var(--bad); margin-bottom: 6px; }
+  #coach { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); max-width: 46vw;
+    padding: 8px 14px; font-size: 14px; color: var(--ink); border-color: var(--accent); }
+  #coach:empty { display: none; }
   @media (max-width: 700px) { #motors, #gp { display: none !important; } #status { width: auto; right: 12px; } #help { display: none; } }
 </style>
 </head>
@@ -74,6 +80,7 @@
   <div><span id="badge">DISARMED</span><span id="mode">ANGLE</span></div>
   <div id="why"></div>
   <table class="kv num">
+    <tr><td>Ga</td><td id="thr">0 %</td></tr>
     <tr><td>Độ cao</td><td id="h">0.00 m</td></tr>
     <tr><td>Tốc độ lên</td><td id="vz">0.00 m/s</td></tr>
     <tr><td>Tốc độ ngang</td><td id="vh">0.0 m/s</td></tr>
@@ -118,6 +125,9 @@
   <span id="help">Ga <kbd>W</kbd>/<kbd>S</kbd> · yaw <kbd>A</kbd>/<kbd>D</kbd> · pitch <kbd>↑</kbd>/<kbd>↓</kbd> · roll <kbd>←</kbd>/<kbd>→</kbd> · ga giữa <kbd>H</kbd></span>
 </div>
 
+<div id="coach" class="panel"></div>
+<div id="crash" class="panel"><b>Drone đã rơi</b>Rơi quá nhanh xuống đất (&gt; 4 m/s) hoặc bị lật.<br>
+  Bấm <kbd>R</kbd> hoặc nút <b style="display:inline;font-size:inherit;color:inherit">Reset</b> để đặt lại trên bãi đáp.</div>
 <div id="conn" class="panel">Mất kết nối với server.py — chạy <span class="mono">make -C simulator run</span></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -270,6 +280,7 @@ addEventListener("keydown", (e) => {
   }
 });
 addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+addEventListener("keydown", () => { if (gpActive && gpRest) { gpActive = false; gpRest = null; } }, true);
 const $ = (id) => document.getElementById(id);
 function toggleArm() { inp.arm ^= 1; }
 function setMode(m) { inp.mode = m; }
@@ -283,7 +294,12 @@ $("bWind").onclick = cycleWind;
 $("bCal").onclick = () => send({ calibrate: 1 });
 $("bCam").onclick = () => (camMode = (camMode + 1) % 3);
 $("bReset").onclick = reset;
-document.querySelectorAll("button").forEach((b) => b.addEventListener("keydown", (e) => e.preventDefault()));
+// a clicked button keeps focus, and Space/Enter would "click" it again on keyup
+// (Space = ARM toggled twice, Reset fired by accident): drop focus after a click
+document.querySelectorAll("button").forEach((b) => {
+  b.addEventListener("click", () => b.blur());
+  ["keydown", "keyup"].forEach((t) => b.addEventListener(t, (e) => e.preventDefault()));
+});
 
 // gamepad: an EdgeTX / ELRS radio in USB joystick mode shows ch1..ch6 as axes 0..5 (AETR)
 const GP_FIELDS = ["roll", "pitch", "throttle", "yaw", "arm", "mode"];
@@ -298,12 +314,17 @@ function buildGpRows(n) {
   $("gprows").querySelectorAll("select").forEach((s) => (s.onchange = () => { gpMap[s.dataset.f][0] = +s.value; saveMap(); }));
   $("gprows").querySelectorAll("input").forEach((c) => (c.onchange = () => { gpMap[c.dataset.inv][1] = c.checked ? 1 : 0; saveMap(); }));
 }
-let gpAxes = 0;
+let gpAxes = 0, gpRest = null, gpActive = false;
 function readGamepad() {
   const pads = navigator.getGamepads ? navigator.getGamepads() : [];
   const gp = [...pads].find((p) => p && p.axes.length >= 4);
   $("gp").style.display = gp ? "block" : "none";
   if (!gp) return false;
+  // a connected but idle device must not take the keyboard away: the pad
+  // takes over only once a stick moves, a key hands control back
+  if (!gpRest || gpRest.length !== gp.axes.length) gpRest = [...gp.axes];
+  if (gp.axes.some((v, i) => Math.abs(v - gpRest[i]) > 0.15)) gpActive = true;
+  if (!gpActive) return false;
   if (gp.axes.length !== gpAxes) { gpAxes = gp.axes.length; buildGpRows(gpAxes); $("gpname").textContent = gp.id.slice(0, 32); }
   const ax = (f) => { const [i, inv] = gpMap[f]; const v = gp.axes[i] || 0; return inv ? -v : v; };
   inp.roll = ax("roll"); inp.pitch = -ax("pitch"); inp.yaw = ax("yaw");
@@ -319,8 +340,8 @@ function readKeyboard(dt) {
   inp.roll = approach(inp.roll, (k("arrowright") ? 0.6 : 0) - (k("arrowleft") ? 0.6 : 0), 4, dt);
   inp.pitch = approach(inp.pitch, (k("arrowup") ? 0.6 : 0) - (k("arrowdown") ? 0.6 : 0), 4, dt);
   inp.yaw = approach(inp.yaw, (k("d") ? 0.7 : 0) - (k("a") ? 0.7 : 0), 4, dt);
-  if (k("w")) inp.throttle = Math.min(1, inp.throttle + 0.45 * dt);
-  if (k("s")) inp.throttle = Math.max(0, inp.throttle - 0.45 * dt);
+  if (k("w")) inp.throttle = Math.min(1, inp.throttle + 0.3 * dt);
+  if (k("s")) inp.throttle = Math.max(0, inp.throttle - 0.3 * dt);
 }
 
 // ?watch: view only, never sends input (a second screen, or a screenshot)
@@ -343,6 +364,26 @@ function connect() {
 connect();
 
 function fmt(v, d) { return (v >= 0 ? " " : "") + v.toFixed(d); }
+// one line telling a first-time pilot what to press next
+function coach(st) {
+  const k = (x) => `<kbd>${x}</kbd>`;
+  if (S.crashed) return "";
+  if (st === 0) {
+    if (!S.calib_done) return "Đang hiệu chuẩn gyro — để yên 1–2 giây";
+    if (S.imu_fail) return `IMU đang bị hỏng (thử lỗi) — bấm ${k("I")} để bật lại`;
+    if (S.link_cut) return `Đang cắt sóng RC — bấm ${k("L")} để có sóng lại`;
+    if (S.stick_t > 0.05) return `Hạ ga về 0 (giữ ${k("S")}) rồi mới ARM được`;
+    if (S.arm_sw) return `Công tắc ARM đang bật nhưng chưa ARM — bấm ${k("Space")} tắt rồi bấm lại`;
+    return `Bấm ${k("Space")} để ARM`;
+  }
+  if (st >= 2) return `Failsafe đang tự hạ cánh — bấm ${k("L")} để có sóng lại, ${k("Space")} để tắt motor`;
+  const h = -S.z;
+  if (h < 0.2 && S.stick_t < 0.45) return `Đã ARM — giữ ${k("W")} tăng ga tới khoảng 60 % để cất cánh`;
+  if ((S.mode_pos | 0) === 0 && h > 1) return `Đang bay tay (ANGLE) — bấm ${k("2")} rồi ${k("H")} để tự giữ độ cao`;
+  if ((S.mode_pos | 0) === 1 && h > 0.5) return `Giữ độ cao: lái bằng phím mũi tên, ${k("A")}/${k("D")} xoay · hạ cánh: giữ ${k("S")}, chạm đất thì ${k("Space")}`;
+  return "";
+}
+
 function updateHud() {
   if (!S) return;
   const st = S.state | 0;
@@ -358,6 +399,9 @@ function updateHud() {
     if (!S.calib_done) why = "Đang hiệu chuẩn gyro — để drone yên";
   } else if (st >= 2) why = st === 2 ? "Mất sóng RC — giữ thăng bằng 1 s" : "Mất sóng RC — tự hạ cánh";
   $("why").textContent = why;
+  $("crash").style.display = S.crashed ? "block" : "none";
+  $("coach").innerHTML = WATCH ? "" : coach(st);
+  $("thr").textContent = (S.stick_t * 100).toFixed(0) + " %" + ((S.mode_pos | 0) === 1 ? (Math.abs(S.stick_t - 0.5) < 0.05 ? " · giữ độ cao" : S.stick_t > 0.5 ? " · lên" : " · xuống") : "");
   $("h").textContent = fmt(-S.z, 2) + " m";
   $("vz").textContent = fmt(-S.vz, 2) + " m/s";
   $("vh").textContent = Math.hypot(S.vx, S.vy).toFixed(1) + " m/s";

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Real-time bridge between the C simulator (build/libsim) and the 3D page.
 
-    make run                      (or: python3 server.py [--port 8765] [--vib])
-    then open http://127.0.0.1:8765
+    make run                      (or: python3 server.py [--port 8777] [--vib])
+    then open http://127.0.0.1:8777
 
 The flight code that runs here is the same C that the MCU builds; this file
 only paces it against the wall clock (50 steps of 20 ms per second, each
@@ -152,7 +152,7 @@ def pace(sim):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--port", type=int, default=8777)
     ap.add_argument("--vib", action="store_true", help="add the ASSUMED frame vibration")
     a = ap.parse_args()
     sim = Sim(a.vib)

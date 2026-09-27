@@ -3,7 +3,7 @@
 #
 #   make            unit tests binary, scenario runner, Python bridge library
 #   make test       unit tests + every closed-loop scenario
-#   make run        3D viewer on http://127.0.0.1:8765
+#   make run        3D viewer on http://127.0.0.1:8777
 CC      ?= cc
 CFLAGS  ?= -std=c99 -O2 -g -Wall -Wextra -Werror -Wdouble-promotion -Wshadow
 LDLIBS  = -lm
@@ -44,10 +44,14 @@ test: $(B)/test_flight $(B)/sim_cli
 	./$(B)/sim_cli
 	./$(B)/sim_cli --vib
 
+# real key events through headless Chrome (needs Google Chrome and node >= 22)
+e2e: $(SHLIB)
+	node e2e_keyboard.mjs
+
 run: $(SHLIB)
 	python3 server.py
 
 clean:
 	rm -rf $(B)
 
-.PHONY: all test run clean
+.PHONY: all test e2e run clean

@@ -36,7 +36,7 @@ Mục tiêu dự án là trả lời bằng số liệu đo được: **kiến t
 | 03 | Build RT-Thread cho HPMCU | **PASS** | [MCU_BUILD.md](docs/MCU_BUILD.md) |
 | 04 | MCU chạy song song Linux, vòng 1 kHz | **PASS trên board**: 2 × 1 000 000 vòng, 0 lỡ chu kỳ; jitter 18,2 µs lúc idle, 116,7 µs khi camera chạy | [REALTIME.md](docs/REALTIME.md) |
 | — | Mạch bay LFX_FC_R1 (46 × 46 mm, 4 lớp) | thiết kế xong: ERC 0, DRC 0, 0 nối hở, khớp sơ đồ | [phần cứng](#phần-cứng-mạch-bay-lfx_fc_r1) |
-| 05 | Phần mềm bay + mô phỏng SITL + 3D | **66/66 unit test, 8/8 kịch bản bay** (×2 profile cảm biến) | [simulator/README.md](simulator/README.md) |
+| 05 | Phần mềm bay + mô phỏng SITL + 3D | **66/66 unit test, 9/9 kịch bản bay** (×2 profile cảm biến), kiểm thử bàn phím end-to-end 6/6 | [simulator/README.md](simulator/README.md) |
 | 05b | Phần mềm bay chạy trên HPMCU với cảm biến giả (đo thời gian) | build xong (53 KB), **chưa chạy**: board chưa cắm | `tools/run_fc_mcu.sh` |
 | 06–07 | Driver SPI + ICM-42688-P trên MCU | chưa làm: cần module IMU để kiểm | |
 | 11 | Xuất PWM / DShot, đo bằng logic analyzer | chưa làm, **không gắn cánh** | |
@@ -148,6 +148,7 @@ Dữ liệu từ chính các kịch bản kiểm thử (`tools/plot_sim.py`):
 | IMU hỏng giữa trời | tắt motor sau 20 ms |
 | gió 4,5 m/s + giật 2 m/s | độ cao sai < 0,3 m, nghiêng < 4° |
 | lật 360° ở ACRO | đạt 418 °/s (yêu cầu 400), tự cân bằng lại, ước lượng góc vẫn đúng |
+| bật ALT HOLD khi đang lên 9 m/s | phanh rồi khóa độ cao, sau 3 s lệch < 0,2 m |
 
 **Giới hạn đã biết:**
 - **Khung drone là giả định** (0,6 kg, 225 mm, 6 N/motor). Các hệ số PID chỉ là điểm xuất phát.
@@ -162,10 +163,11 @@ Máy phát triển: macOS (Apple Silicon), Docker qua OrbStack, `adb`, KiCad 10 
 
 ```sh
 make -C simulator test       # unit test + kịch bản bay
-make -C simulator run        # rồi mở http://127.0.0.1:8765
+make -C simulator run        # rồi mở http://127.0.0.1:8777
 ```
 
 Lái thử: `C` hiệu chuẩn → `Space` ARM → giữ `W` cho cất cánh → `2` giữ độ cao → `H` ga giữa → phím mũi tên để lái.
+Hạ cánh: vẫn ở `2` (ALT HOLD), giữ `S` (xuống tối đa 1 m/s), chạm đất thì `Space`. Hạ ga về 0 ở chế độ `1` là rơi tự do. Drone rơi thì bấm `R`.
 Thử lỗi: `L` cắt sóng RC, `I` hỏng IMU, `G` gió.
 Tay điều khiển EdgeTX/ELRS cắm USB (chế độ joystick) được nhận tự động.
 

@@ -63,6 +63,7 @@ void fc_default_params(fc_params *p)
     c->stick_deadband = 0.02f;
     c->climb = CLIMB;
     c->alt_kp = 1.0f;
+    c->alt_lock_vz = 0.3f;           /* m/s */
     c->max_climb = 2.0f;
     c->max_descent = 1.0f;
     c->hover_throttle = 0.50f;       /* ASSUMED airframe, see quad_model.c */

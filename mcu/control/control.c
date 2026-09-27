@@ -22,6 +22,7 @@ void control_reset(controller *c)
     c->collective = 0.0f;
     c->collective_out = 0.0f;
     c->alt_engaged = 0;
+    c->alt_locked = 0;
     c->fs_hold_collective = 0.0f;
     c->land_timer = 0.0f;
     c->landed = 1;
@@ -92,6 +93,7 @@ void control_step(controller *c, const control_sticks *s, const control_state *s
     if (mode == MODE_ALT_HOLD) {
         if (!c->alt_engaged) {
             c->alt_engaged = 1;
+            c->alt_locked = 0;
             c->height_sp = st->height;
             pid_reset(&c->climb_pid);
             /* take over without a jump: the integrator carries the difference
@@ -108,9 +110,19 @@ void control_step(controller *c, const control_sticks *s, const control_state *s
             if (st->failsafe == 2) {
                 c->climb_sp = -p->fs_descent_rate;
                 c->height_sp = st->height;
+                c->alt_locked = 0;
             } else if (t != 0.0f) {
                 c->climb_sp = t > 0.0f ? t * p->max_climb : t * p->max_descent;
                 c->height_sp = st->height;
+                c->alt_locked = 0;
+            } else if (!c->alt_locked) {
+                /* brake first, then hold: engaging (or letting the stick go)
+                 * while climbing fast must not lock a height it will overshoot
+                 * and then come back down to (PX4 does the same) */
+                c->climb_sp = 0.0f;
+                c->height_sp = st->height;
+                if (fabsf(st->climb) < p->alt_lock_vz)
+                    c->alt_locked = 1;
             } else {
                 c->climb_sp = constrainf(p->alt_kp * (c->height_sp - st->height),
                                          -p->max_descent, p->max_climb);

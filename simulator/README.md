@@ -22,8 +22,9 @@ biểu đồ: `python3 tools/plot_sim.py`.
 
 ```sh
 make -C simulator            # build: unit test, sim_cli, libsim
-make -C simulator test       # 66 unit test + 8 kịch bản bay × 2 profile cảm biến
-make -C simulator run        # mở http://127.0.0.1:8765 để lái trong 3D
+make -C simulator test       # 66 unit test + 9 kịch bản bay × 2 profile cảm biến
+make -C simulator e2e        # bấm phím thật vào trang 3D qua Chrome headless: cất cánh, bay, hạ cánh
+make -C simulator run        # mở http://127.0.0.1:8777 để lái trong 3D
 ```
 
 Chỉ cần `cc` và `python3` (thư viện chuẩn). Trang 3D tải three.js r128 từ cdnjs.
@@ -46,10 +47,12 @@ Chỉ cần `cc` và `python3` (thư viện chuẩn). Trang 3D tải three.js r1
 
 Cách bay thử: `C` → chờ hết dòng "đang hiệu chuẩn" → `Space` (ARM) → giữ `W` tới ~0,65 cho
 cất cánh → `2` (ALT HOLD) → `H` (ga giữa = giữ độ cao) → lái bằng các phím mũi tên.
+Hạ cánh: ở ALT HOLD giữ `S` (xuống tối đa 1 m/s), chạm đất thì `Space`. Ở ANGLE mà hạ ga về 0 là rơi tự do, chạm
+đất > 4 m/s thì bị tính là rơi: bấm `R` để đặt lại. Dòng gợi ý ở giữa phía trên màn hình luôn nói bước tiếp theo.
 
 **Tay điều khiển thật:** radio EdgeTX / ELRS cắm USB ở chế độ joystick sẽ hiện ra như gamepad.
 Trang tự nhận; bảng "Tay điều khiển USB" cho chọn trục và đảo chiều (mặc định AETR: trục 0–5
-= roll, pitch, ga, yaw, ARM, chế độ). Mở thêm `http://127.0.0.1:8765/?watch` ở màn hình khác để
+= roll, pitch, ga, yaw, ARM, chế độ). Mở thêm `http://127.0.0.1:8777/?watch` ở màn hình khác để
 chỉ xem.
 
 ## Kịch bản tự kiểm (`build/sim_cli`)
@@ -64,6 +67,7 @@ chỉ xem.
 | `imu_fail` | IMU chết giữa trời: tắt motor trong 20 ms |
 | `wind` | gió 4,5 m/s + giật 2 m/s: độ cao sai < 1 m, nghiêng < 20° |
 | `acro_flip` | lật 360° ở ACRO (400 °/s) rồi về ANGLE: tự cân bằng lại, ước lượng góc vẫn đúng |
+| `alt_engage` | bật ALT HOLD khi đang lao lên 9 m/s: phanh rồi mới khóa độ cao, không vọt lên rồi tụt xuống |
 
 `build/sim_cli --csv log.csv hover` ghi log 100 Hz; `--vib` thêm rung khung (giả định).
 
