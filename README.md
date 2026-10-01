@@ -171,6 +171,15 @@ Hạ cánh: vẫn ở `2` (ALT HOLD), giữ `S` (xuống tối đa 1 m/s), chạ
 Thử lỗi: `L` cắt sóng RC, `I` hỏng IMU, `G` gió.
 Tay điều khiển EdgeTX/ELRS cắm USB (chế độ joystick) được nhận tự động.
 
+**Source SDK (Linux kernel, U-Boot, Buildroot, RT-Thread):** 14 GB, nằm trong Docker volume `luckfox-src`
+(ổ ảo của OrbStack phân biệt hoa/thường, ổ SSD thì không). `sdk/` trong repo là symlink tới đó, chỉ mở
+được khi Docker engine đang chạy (`orb start`), và không nằm trong git:
+
+```sh
+ln -s ~/OrbStack/docker/volumes/luckfox-src/luckfox-pico sdk   # tạo lại nếu thiếu
+ls sdk/sysdrv/source/          # kernel  uboot  buildroot  mcu
+```
+
 **Firmware Luckfox (Linux):**
 
 ```sh
@@ -230,6 +239,7 @@ simulator/            mô hình quad, cảm biến giả, kịch bản, server +
 linux/                phía Linux: mcu-tool (nạp / log / dừng MCU), DTS
 tools/                script build / nạp / chụp ảnh
 run.sh                build → flash → connect firmware Luckfox
+sdk -> ~/OrbStack/…   symlink tới SDK Luckfox trong Docker volume (không vào git)
 ```
 
 ## An toàn

@@ -1,0 +1,7 @@
+{
+  // sdk/ is a symlink to the 14 GB Luckfox SDK in the luckfox-src Docker volume:
+  // browse it in the explorer, but keep it out of search and the file watcher
+  "search.exclude": { "sdk/**": true },
+  "files.watcherExclude": { "**/sdk/**": true },
+  "search.followSymlinks": false
+}

@@ -12,3 +12,6 @@
 /out/
 /.board
 /logs/phase0_search_all.txt
+
+# SDK Luckfox (14 GB) nam trong volume Docker luckfox-src; sdk/ chi la symlink toi do
+/sdk
