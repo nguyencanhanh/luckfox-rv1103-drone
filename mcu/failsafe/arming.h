@@ -13,8 +13,11 @@
  *                             github.com/tbs-fpv/tbs-crsf-spec)
  *   still lost                stage 2: level, descend at fs_descent_rate
  *                             with the altitude estimate, or a fixed
- *                             fs_throttle for fs_land_s without one; disarm
- *                             when landed or the time is up
+ *                             fs_throttle without one; disarm when landed,
+ *                             or when the time is up: fs_land_s plus the
+ *                             time the descent itself needs from the height
+ *                             at which the landing began (a fixed limit would
+ *                             cut the motors in mid-air above ~14 m)
  *   IMU silent > imu_timeout  motors off at once (nothing to fly with)
  *   tilt > crash_tilt for crash_s while armed in a self-levelling mode:
  *                             motors off (crashed / flipped)
@@ -71,6 +74,7 @@ typedef struct {
     float tilt;                /* rad from level */
     int landed;                /* from the controller's land detector */
     int crash_check;           /* 0 in ACRO: a flip is not a crash */
+    float fs_descent_s;        /* time to descend from here (0 = height unknown) */
 } arming_inputs;
 
 typedef struct {
@@ -79,6 +83,7 @@ typedef struct {
     int prev_switch;
     int switch_seen_off;       /* the switch has been off since boot/disarm */
     float rc_lost_s, imu_lost_s, crash_timer, fs_timer;
+    float fs_budget;           /* landing time allowed, fixed when the landing began */
     uint32_t blocks;           /* why the last arm attempt (or now) is refused */
     disarm_reason last_disarm;
 } arming_sm;

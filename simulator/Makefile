@@ -13,7 +13,8 @@ FLIGHT  = ../mcu/sensors/filters.c ../mcu/sensors/gyro_calib.c \
           ../mcu/estimator/attitude.c ../mcu/estimator/altitude.c \
           ../mcu/control/pid.c ../mcu/control/control.c ../mcu/mixer/mixer.c \
           ../mcu/failsafe/arming.c ../mcu/fc/fc.c ../mcu/fc/fc_params.c \
-          ../shared/rc/crsf.c ../shared/rc/rc_map.c
+          ../shared/rc/crsf.c ../shared/rc/rc_map.c \
+          ../shared/ipc/fc_ipc.c ../mcu/link/fc_link.c
 SIM     = quad_model.c sim_sensors.c sim.c
 
 UNAME   := $(shell uname)

@@ -66,10 +66,11 @@ docker run --rm --platform linux/amd64 -v "$VOLUME":/work -v "$ROOT/mcu":/src:ro
 		if [ -f "/src/bsp/$BOARD/FLIGHT_CORE" ]; then
 			T="$BSP/board/$BOARD/tree"
 			mkdir -p "$T/mcu" "$T/shared" "$T/simulator"
-			for d in common sensors estimator control mixer failsafe fc; do
+			for d in common sensors estimator control mixer failsafe fc link; do
 				cp -r "/src/$d" "$T/mcu/"
 			done
 			cp -r /shared/rc "$T/shared/"
+			mkdir -p "$T/shared/ipc" && cp /shared/ipc/fc_ipc.[ch] /shared/ipc/mcu_layout.h "$T/shared/ipc/"
 			cp /sim/quad_model.[ch] /sim/sim_sensors.[ch] "$T/simulator/"
 		fi
 	fi

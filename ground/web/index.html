@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LFX Ground Station</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --panel: rgba(10, 15, 18, 0.78); --line: rgba(160, 190, 200, 0.2); --ink: #e6eef1; --dim: #8fa3ab;
+    --accent: #3fd0b0; --warn: #f0b429; --bad: #ff5d5d; --ok: #46d17a; color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: #05080a; color: var(--ink); overflow: hidden;
+    font: 13px/1.4 "IBM Plex Sans", system-ui, sans-serif; }
+  #video, #simview { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: contain; border: 0; background: #05080a; }
+  #novideo { position: fixed; top: 45%; width: 100%; text-align: center; color: var(--dim); font-size: 15px; }
+  .panel { position: fixed; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; backdrop-filter: blur(6px); }
+  .mono, .num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  #status { top: 12px; left: 12px; width: 290px; }
+  #badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font: 600 14px "IBM Plex Mono", monospace; background: #2a3238; }
+  #badge.armed { background: var(--ok); color: #06140b; } #badge.fs { background: var(--warn); color: #1c1400; }
+  #badge.lost { background: var(--bad); color: #1c0000; }
+  #mode { margin-left: 8px; font: 600 13px "IBM Plex Mono", monospace; color: var(--accent); }
+  #why { margin-top: 6px; min-height: 18px; color: var(--warn); font-size: 12px; }
+  table { border-collapse: collapse; width: 100%; margin-top: 4px; }
+  td { padding: 1px 0; } td:first-child { color: var(--dim); } td:last-child { text-align: right; }
+  #horizon { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; opacity: .9; }
+  #right { top: 12px; right: 12px; width: 220px; }
+  .bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; height: 64px; align-items: end; }
+  .bar { position: relative; height: 100%; background: #1b2429; border-radius: 3px; overflow: hidden; }
+  .bar i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--accent); }
+  .bar b { position: absolute; left: 0; right: 0; top: 2px; text-align: center; font: 600 10px "IBM Plex Mono", monospace; color: var(--dim); }
+  #controls { left: 12px; right: 12px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button { font: 600 12px "IBM Plex Sans", sans-serif; color: var(--ink); background: #1e282d; border: 1px solid var(--line);
+    border-radius: 5px; padding: 6px 10px; cursor: pointer; }
+  button.on { background: var(--accent); color: #06140f; border-color: var(--accent); }
+  button.danger.on { background: var(--bad); border-color: var(--bad); color: #1c0000; }
+  kbd { font: 11px "IBM Plex Mono", monospace; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; padding: 0 4px; color: var(--dim); }
+  button.on kbd { color: #06140f; }
+  #help { margin-left: auto; color: var(--dim); font-size: 12px; }
+  #coach { top: 12px; left: 50%; transform: translateX(-50%); font-size: 14px; border-color: var(--accent); max-width: 40vw; }
+  #coach:empty { display: none; }
+</style>
+</head>
+<body>
+<img id="video" alt="" hidden>
+<iframe id="simview" title="Mô phỏng" hidden></iframe>
+<div id="novideo">Không có video</div>
+<canvas id="horizon" width="360" height="360"></canvas>
+
+<div id="status" class="panel">
+  <div><span id="badge">CHƯA KẾT NỐI</span><span id="mode"></span></div>
+  <div id="why"></div>
+  <table class="num">
+    <tr><td>Drone</td><td id="drone">—</td></tr>
+    <tr><td>Telemetry</td><td id="link">—</td></tr>
+    <tr><td>Nguồn lệnh</td><td id="src">—</td></tr>
+    <tr><td>Độ cao</td><td id="h">—</td></tr>
+    <tr><td>Tốc độ lên</td><td id="vz">—</td></tr>
+    <tr><td>Roll / pitch</td><td id="att">—</td></tr>
+    <tr><td>Hướng mũi</td><td id="yaw">—</td></tr>
+    <tr><td>Vòng MCU tb / max</td><td id="loop">—</td></tr>
+    <tr><td>Video</td><td id="vid">—</td></tr>
+  </table>
+</div>
+<div id="coach" class="panel"></div>
+<div id="right" class="panel">
+  <div style="color:var(--dim);font-size:11px;font-weight:600;letter-spacing:.08em;margin-bottom:6px">MOTOR (lệnh, 0–1)</div>
+  <div class="bars"><div class="bar"><b>M4</b><i id="m4"></i></div><div class="bar"><b>M2</b><i id="m2"></i></div>
+    <div class="bar"><b>M3</b><i id="m3"></i></div><div class="bar"><b>M1</b><i id="m1"></i></div></div>
+  <table class="num" style="margin-top:8px">
+    <tr><td>Ga</td><td id="thr">0 %</td></tr>
+    <tr><td>Gửi lệnh</td><td id="sending">—</td></tr>
+  </table>
+</div>
+<div id="controls" class="panel">
+  <button id="bLock" class="danger">Khóa ARM: đang khóa <kbd>U</kbd></button>
+  <button id="bArm">ARM <kbd>Space</kbd></button>
+  <button id="bM0" class="on">ANGLE <kbd>1</kbd></button>
+  <button id="bM1">ALT HOLD <kbd>2</kbd></button>
+  <button id="bM2">ACRO <kbd>3</kbd></button>
+  <span id="help">Ga <kbd>W</kbd>/<kbd>S</kbd> · ga giữa <kbd>H</kbd> · yaw <kbd>A</kbd>/<kbd>D</kbd> · <kbd>↑↓←→</kbd> lái</span>
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const STATE = ["DISARMED", "ARMED", "FAILSAFE HOLD", "FAILSAFE LAND"];
+const MODE = ["ACRO", "ANGLE", "ALT HOLD"];
+const SRC = ["—", "ELRS (bộ thu)", "mạng (trạm mặt đất)"];
+const BLOCKS = [[1, "gạt ARM xuống rồi lên lại"], [2, "hạ ga về 0"], [4, "không có lệnh RC"], [8, "IMU không trả dữ liệu"],
+  [16, "đang hiệu chuẩn, để yên"], [32, "drone đang nghiêng"]];
+const DISARM = ["", "tắt bằng công tắc", "mất IMU", "phát hiện rơi / lật", "failsafe: đã hạ cánh", "failsafe: hết giờ"];
+
+// ---------- video: rkipc RTSP through ffmpeg as MJPEG, or the simulator's FPV ----------
+fetch("/config").then((r) => r.json()).then((c) => {
+  $("drone").textContent = c.drone;
+  if (c.video === "mjpeg") { $("video").src = "/video.mjpg"; $("video").hidden = false; $("novideo").hidden = true; }
+  else if (c.video === "sim") { $("simview").src = c.sim_url; $("simview").hidden = false; $("novideo").hidden = true; }
+});
+
+// ---------- input (same keys as the simulator) ----------
+const inp = { roll: 0, pitch: 0, yaw: 0, throttle: 0, arm: 0, mode: 0, unlocked: 0 };
+const keys = new Set();
+addEventListener("keydown", (e) => {
+  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) e.preventDefault();
+  if (e.repeat) return;
+  keys.add(e.key.toLowerCase());
+  const k = e.key.toLowerCase();
+  if (k === " ") inp.arm ^= 1;
+  else if (k === "1") inp.mode = 0; else if (k === "2") inp.mode = 1; else if (k === "3") inp.mode = 2;
+  else if (k === "h") inp.throttle = 0.5;
+  else if (k === "u") toggleLock();
+});
+addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+function toggleLock() { inp.unlocked ^= 1; if (!inp.unlocked) inp.arm = 0; }
+document.querySelectorAll("button").forEach((b) => {
+  b.addEventListener("click", () => b.blur());
+  ["keydown", "keyup"].forEach((t) => b.addEventListener(t, (e) => e.preventDefault()));
+});
+$("bLock").onclick = toggleLock;
+$("bArm").onclick = () => (inp.arm ^= 1);
+[0, 1, 2].forEach((m) => ($("bM" + m).onclick = () => (inp.mode = m)));
+
+const approach = (v, t, r, dt) => { const d = t - v, s = r * dt; return Math.abs(d) <= s ? t : v + Math.sign(d) * s; };
+let gpRest = null, gpActive = false;
+addEventListener("keydown", () => { gpActive = false; gpRest = null; }, true);
+function readInput(dt) {
+  const gp = [...(navigator.getGamepads ? navigator.getGamepads() : [])].find((p) => p && p.axes.length >= 4);
+  if (gp) {
+    if (!gpRest) gpRest = [...gp.axes];
+    if (gp.axes.some((v, i) => Math.abs(v - gpRest[i]) > 0.15)) gpActive = true;
+  }
+  if (gp && gpActive) {          // EdgeTX / ELRS radio as USB joystick: AETR + AUX1 arm, AUX2 mode
+    const a = gp.axes;
+    inp.roll = a[0]; inp.pitch = -a[1]; inp.throttle = (a[2] + 1) / 2; inp.yaw = a[3];
+    if (a.length > 4) inp.arm = a[4] > 0.4 ? 1 : 0;
+    if (a.length > 5) inp.mode = a[5] < -0.4 ? 0 : a[5] > 0.4 ? 2 : 1;
+    return;
+  }
+  const k = (x) => keys.has(x);
+  inp.roll = approach(inp.roll, (k("arrowright") ? 0.6 : 0) - (k("arrowleft") ? 0.6 : 0), 4, dt);
+  inp.pitch = approach(inp.pitch, (k("arrowup") ? 0.6 : 0) - (k("arrowdown") ? 0.6 : 0), 4, dt);
+  inp.yaw = approach(inp.yaw, (k("d") ? 0.7 : 0) - (k("a") ? 0.7 : 0), 4, dt);
+  if (k("w")) inp.throttle = Math.min(1, inp.throttle + 0.3 * dt);
+  if (k("s")) inp.throttle = Math.max(0, inp.throttle - 0.3 * dt);
+}
+// the server sends RC only while these keep coming (closed tab = drone failsafe)
+setInterval(() => fetch("/input", { method: "POST", body: JSON.stringify(inp) }).catch(() => {}), 20);
+
+// ---------- telemetry ----------
+let G = null;
+new EventSource("/events").onmessage = (ev) => { G = JSON.parse(ev.data); };
+
+const hz = $("horizon").getContext("2d");
+function drawHorizon(roll, pitch) {
+  const W = 360, c = W / 2, ppd = 4;          // pixels per degree of pitch
+  hz.clearRect(0, 0, W, W);
+  hz.save(); hz.translate(c, c); hz.rotate(-roll * Math.PI / 180);
+  hz.strokeStyle = "rgba(230,238,241,.85)"; hz.fillStyle = "rgba(230,238,241,.85)"; hz.lineWidth = 2;
+  hz.font = "11px IBM Plex Mono, monospace"; hz.textAlign = "left";
+  for (let p = -30; p <= 30; p += 10) {
+    const y = (pitch - p) * ppd, w = p === 0 ? 150 : 50;
+    if (Math.abs(y) > 150) continue;
+    hz.beginPath(); hz.moveTo(-w, y); hz.lineTo(w, y); hz.stroke();
+    if (p) hz.fillText(String(p), w + 6, y + 4);
+  }
+  hz.restore();
+  hz.strokeStyle = "#f0b429"; hz.lineWidth = 3;                // fixed aircraft symbol
+  hz.beginPath(); hz.moveTo(c - 40, c); hz.lineTo(c - 12, c); hz.lineTo(c, c + 8); hz.lineTo(c + 12, c); hz.lineTo(c + 40, c); hz.stroke();
+}
+
+function coach(t, connected) {
+  const k = (x) => `<kbd>${x}</kbd>`;
+  if (!connected) return "Chưa nhận được telemetry từ drone — kiểm tra rc-bridge và địa chỉ";
+  if (t.state === 0) {
+    if (!t.calib_done) return "Drone đang hiệu chuẩn — để yên";
+    if (!inp.unlocked) return `Mở khóa ARM: ${k("U")} (chỉ khi xung quanh an toàn)`;
+    if (inp.throttle > 0.05) return `Hạ ga về 0 (${k("S")}) rồi mới ARM`;
+    return `Bấm ${k("Space")} để ARM`;
+  }
+  if (t.state >= 2) return "Drone mất lệnh và đang failsafe";
+  if (t.height_cm < 20 && inp.throttle < 0.45) return `Giữ ${k("W")} tăng ga để cất cánh`;
+  if (t.mode === 1 && t.height_cm > 100) return `Bấm ${k("2")} rồi ${k("H")} để giữ độ cao`;
+  return "";
+}
+
+let last = performance.now();
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  readInput(dt);
+  if (G) {
+    const t = G.tel || {}, connected = G.tel_age !== null && G.tel_age < 1.0;
+    const st = t.state | 0;
+    const badge = $("badge");
+    badge.textContent = connected ? STATE[st] : "MẤT TELEMETRY";
+    badge.className = !connected ? "lost" : st === 1 ? "armed" : st >= 2 ? "fs" : "";
+    $("mode").textContent = connected ? (MODE[t.mode] || "") + (G.flight_mode ? "" : "") : "";
+    let why = "";
+    if (connected && st === 0 && inp.arm && inp.unlocked && t.arm_blocks)
+      why = "Chưa ARM được: " + BLOCKS.filter(([m]) => t.arm_blocks & m).map(([, s]) => s).join(", ");
+    else if (connected && st === 0 && t.disarm_reason) why = "Đã disarm: " + DISARM[t.disarm_reason];
+    $("why").textContent = why;
+    $("link").textContent = connected ? `${(G.tel_age * 1000).toFixed(0)} ms trước` : "không có";
+    $("src").textContent = connected ? SRC[t.rc_source] || "—" : "—";
+    $("h").textContent = connected ? (t.height_cm / 100).toFixed(2) + " m" + (t.alt_valid ? "" : " (chưa tin)") : "—";
+    $("vz").textContent = connected ? (t.climb_cms / 100).toFixed(2) + " m/s" : "—";
+    $("att").textContent = connected ? `${(t.roll_cdeg / 100).toFixed(1)} / ${(t.pitch_cdeg / 100).toFixed(1)}°` : "—";
+    $("yaw").textContent = connected ? (((t.yaw_cdeg / 100) + 360) % 360).toFixed(0) + "°" : "—";
+    $("loop").textContent = !connected ? "—" : t.loop_us_max ? `${t.loop_us_avg} / ${t.loop_us_max} µs` : "không đo (mô phỏng)";
+    $("vid").textContent = G.video_status || ($("simview").hidden ? "—" : "mô phỏng");
+    [1, 2, 3, 4].forEach((i) => ($("m" + i).style.height = ((t["m" + i] || 0) / 2.55).toFixed(0) + "%"));
+    $("sending").textContent = G.sending ? `${G.sent} gói` : "dừng";
+    $("coach").innerHTML = coach(t, connected);
+    if (connected) drawHorizon(t.roll_cdeg / 100, t.pitch_cdeg / 100); else hz.clearRect(0, 0, 360, 360);
+  }
+  $("thr").textContent = (inp.throttle * 100).toFixed(0) + " %";
+  $("bLock").textContent = ""; $("bLock").innerHTML = `Khóa ARM: ${inp.unlocked ? "đã mở" : "đang khóa"} <kbd>U</kbd>`;
+  $("bLock").classList.toggle("on", !!inp.unlocked);
+  $("bArm").classList.toggle("on", !!(inp.arm && inp.unlocked));
+  [0, 1, 2].forEach((m) => $("bM" + m).classList.toggle("on", inp.mode === m));
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

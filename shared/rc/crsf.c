@@ -117,3 +117,49 @@ int crsf_pack_link_stats(const crsf_link_stats *s, uint8_t out[14])
     out[13] = crsf_crc8(&out[2], 11);
     return 14;
 }
+
+int crsf_pack_frame(uint8_t type, const void *payload, int len, uint8_t out[CRSF_MAX_FRAME])
+{
+    if (len < 0 || len > CRSF_MAX_FRAME - 4)
+        return 0;
+    out[0] = CRSF_SYNC_FC;
+    out[1] = (uint8_t)(len + 2);
+    out[2] = type;
+    memcpy(&out[3], payload, (size_t)len);
+    out[3 + len] = crsf_crc8(&out[2], len + 1);
+    return len + 4;
+}
+
+static void be16(uint8_t *p, int v)
+{
+    p[0] = (uint8_t)((v >> 8) & 0xFF);
+    p[1] = (uint8_t)(v & 0xFF);
+}
+
+static int rad_to_crsf(float r)
+{
+    float v = r * 10000.0f;
+    if (v > 32767.0f) v = 32767.0f;
+    if (v < -32768.0f) v = -32768.0f;
+    return (int)v;
+}
+
+int crsf_pack_attitude(float pitch, float roll, float yaw, uint8_t out[CRSF_MAX_FRAME])
+{
+    uint8_t pl[6];
+    be16(&pl[0], rad_to_crsf(pitch));
+    be16(&pl[2], rad_to_crsf(roll));
+    be16(&pl[4], rad_to_crsf(yaw));
+    return crsf_pack_frame(CRSF_TYPE_ATTITUDE, pl, 6, out);
+}
+
+int crsf_pack_flight_mode(const char *mode, uint8_t out[CRSF_MAX_FRAME])
+{
+    int n = (int)strlen(mode);
+    if (n > 16)
+        n = 16;
+    char buf[17];
+    memcpy(buf, mode, (size_t)n);
+    buf[n] = 0;
+    return crsf_pack_frame(CRSF_TYPE_FLIGHT_MODE, buf, n + 1, out);
+}

@@ -18,6 +18,7 @@
 #include "../mcu/fc/fc.h"
 #include "../shared/rc/crsf.h"
 #include "../shared/rc/rc_map.h"
+#include "../mcu/link/fc_link.h"
 
 #define SIM_LINK_QUEUE 64
 
@@ -51,6 +52,11 @@ typedef struct {
     vec3 gust_now;
     int link_cut;
 
+    /* drone mode: RC comes over the Linux link (shared/ipc), not from the
+     * built-in transmitter - a real ground station / rc-bridge flies it */
+    int ipc_mode;
+    fc_link link;
+
     float motor[4];
     float t;
     uint32_t t_us;
@@ -62,6 +68,10 @@ void sim_set_pilot(sim_t *s, float roll, float pitch, float yaw, float throttle,
 void sim_set_faults(sim_t *s, int link_cut, int imu_fail);
 void sim_set_wind(sim_t *s, float north_ms, float east_ms, float gust_ms);
 void sim_step(sim_t *s, int ticks);
+/* drone mode: take RC from (and report telemetry to) the fc_ipc page at `page`
+ * (4 KB, e.g. an mmap'ed file shared with linux/rc-bridge); formats it */
+void sim_attach_ipc(sim_t *s, void *page);
+
 /* the pilot's level calibration (craft still, disarmed); 1 if started */
 int sim_request_level_calibration(sim_t *s);
 /* for callers that allocate sim_t themselves (the Python bridge) */

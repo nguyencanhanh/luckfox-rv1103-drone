@@ -55,6 +55,18 @@ crsf_event crsf_feed(crsf_parser *p, uint8_t byte);
 
 /* build a 26-byte RC_CHANNELS_PACKED frame */
 void crsf_pack_channels(const uint16_t ticks[CRSF_CHANNELS], uint8_t out[CRSF_RC_FRAME_LEN]);
+#define CRSF_TYPE_ATTITUDE      0x1E
+#define CRSF_TYPE_FLIGHT_MODE   0x21
+#define CRSF_TYPE_LFX_STATUS    0x7A    /* private: struct fc_ipc_telemetry, ground station only */
+
+/* any broadcast frame: sync 0xC8, len, type, payload, crc; returns bytes written
+ * (len + 4) or 0 if the payload does not fit a 64-byte frame */
+int crsf_pack_frame(uint8_t type, const void *payload, int len, uint8_t out[CRSF_MAX_FRAME]);
+/* 0x1E, angles in radians, big-endian int16 in 100 urad (TBS crsf.md) */
+int crsf_pack_attitude(float pitch, float roll, float yaw, uint8_t out[CRSF_MAX_FRAME]);
+/* 0x21, NUL-terminated string */
+int crsf_pack_flight_mode(const char *mode, uint8_t out[CRSF_MAX_FRAME]);
+
 /* 14-byte LINK_STATISTICS frame */
 int crsf_pack_link_stats(const crsf_link_stats *s, uint8_t out[14]);
 

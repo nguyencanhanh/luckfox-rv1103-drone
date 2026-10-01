@@ -9,6 +9,8 @@
 #include "../fc/fc.h"
 #include "../../shared/rc/crsf.h"
 #include "../../shared/rc/rc_map.h"
+#include "../../shared/ipc/fc_ipc.h"
+#include "../link/fc_link.h"
 
 static int failures, checks;
 
@@ -199,7 +201,8 @@ static void test_gyro_calib(void)
 static arming_inputs good_inputs(void)
 {
     arming_inputs in = {.rc_ok = 1, .imu_ok = 1, .calib_ok = 1, .arm_switch = 0,
-                        .throttle_stick = 0.0f, .tilt = 0.0f, .landed = 0, .crash_check = 1};
+                        .throttle_stick = 0.0f, .tilt = 0.0f, .landed = 0, .crash_check = 1,
+                        .fs_descent_s = 0.0f};
     return in;
 }
 
@@ -275,6 +278,26 @@ static void test_arming(void)
     in.landed = 1;
     arming_update(&a, &in, dt);
     CHECK(a.state == FC_DISARMED && a.last_disarm == DISARM_FAILSAFE_LANDED, "landed: disarm");
+
+    /* landing time grows with the height: 30 m at 0.7 m/s must not time out at 20 s */
+    in = good_inputs();
+    arming_update(&a, &in, dt);
+    in.arm_switch = 1;
+    arming_update(&a, &in, dt);
+    in.rc_ok = 0;
+    in.fs_descent_s = 30.0f / 0.7f;
+    for (int i = 0; i < 1300; i++)
+        arming_update(&a, &in, dt);
+    CHECK(a.state == FC_FAILSAFE_LAND, "landing from height (setup)");
+    for (int i = 0; i < 40000; i++)
+        arming_update(&a, &in, dt);
+    CHECK(a.state == FC_FAILSAFE_LAND, "still landing after 40 s from 30 m (no mid-air cut)");
+    in.landed = 1;
+    arming_update(&a, &in, dt);
+    CHECK(a.state == FC_DISARMED && a.last_disarm == DISARM_FAILSAFE_LANDED, "then disarms on touchdown");
+    in = good_inputs();
+    in.arm_switch = 0;
+    arming_update(&a, &in, dt);
 
     /* IMU loss disarms at once */
     in = good_inputs();
@@ -360,6 +383,55 @@ static void test_rc_map(void)
           (double)c.throttle, c.arm_switch, c.mode);
 }
 
+static void test_ipc(void)
+{
+    static struct fc_ipc_page page;
+    struct fc_ipc_port mcu = {0}, lnx = {0};
+    mcu.page = lnx.page = &page;
+    fc_ipc_format(&mcu);
+    CHECK(fc_ipc_valid(&lnx), "page formatted by the MCU is valid for Linux");
+
+    struct fc_ipc_rc rc = {0};
+    rc.ch[0] = 1811;
+    rc.source = FC_RC_NETWORK;
+    CHECK(fc_ipc_send(&lnx, &page.down, FC_IPC_RC, &rc, sizeof(rc)), "send");
+    struct fc_ipc_record r;
+    CHECK(fc_ipc_recv(&mcu, &page.down, &r) && r.type == FC_IPC_RC &&
+          ((struct fc_ipc_rc *)r.payload)->ch[0] == 1811, "receive the same record");
+    CHECK(!fc_ipc_recv(&mcu, &page.down, &r), "nothing twice");
+
+    /* a torn / corrupted record is dropped, never delivered */
+    fc_ipc_send(&lnx, &page.down, FC_IPC_RC, &rc, sizeof(rc));
+    page.down.slot[(page.down.head - 1) % FC_IPC_SLOTS].payload[0] ^= 0xFF;
+    CHECK(!fc_ipc_recv(&mcu, &page.down, &r) && mcu.rx_crc_err == 1, "bad CRC rejected");
+
+    /* the ring never overwrites unread data: a full ring refuses */
+    int sent = 0;
+    for (int i = 0; i < 40; i++)
+        sent += fc_ipc_send(&lnx, &page.down, FC_IPC_HEARTBEAT, &i, sizeof(i));
+    CHECK(sent == (int)FC_IPC_SLOTS, "ring holds %u, refuses the rest (sent %d)", FC_IPC_SLOTS, sent);
+
+    /* fc_link: RC on the page becomes pilot input, telemetry comes back */
+    fc_link link;
+    fc_link_init(&link, &page, 1, 1);
+    for (int i = 0; i < 16; i++)
+        rc.ch[i] = CRSF_TICK_MID;
+    rc.ch[2] = crsf_us_to_ticks(1000);
+    rc.ch[4] = crsf_us_to_ticks(2000);
+    fc_ipc_send(&lnx, &page.down, FC_IPC_RC, &rc, sizeof(rc));
+    fc_rc_input in;
+    CHECK(fc_link_poll(&link, &in) && in.valid && in.arm_switch == 1 && in.sticks.throttle < 0.01f,
+          "fc_link maps the channels");
+    fc_params fp;
+    fc_default_params(&fp);
+    static fc_t fc;
+    fc_init(&fc, &fp);
+    fc_link_tick(&link, &fc, 1234, 150);
+    CHECK(fc_ipc_recv(&lnx, &page.up, &r) && r.type == FC_IPC_TELEMETRY &&
+          ((struct fc_ipc_telemetry *)r.payload)->mcu_ms == 1234 &&
+          ((struct fc_ipc_telemetry *)r.payload)->loop_us_max == 150, "telemetry record");
+}
+
 int main(void)
 {
     test_filters();
@@ -371,6 +443,7 @@ int main(void)
     test_arming();
     test_crsf();
     test_rc_map();
+    test_ipc();
     printf("unit tests: %d checks, %d failed\n", checks, failures);
     return failures ? 1 : 0;
 }

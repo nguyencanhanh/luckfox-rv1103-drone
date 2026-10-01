@@ -9,6 +9,7 @@ cwd = GetCurrentDir()
 src = Glob('*.c')
 src += Glob('tree/mcu/*/*.c')
 src += Glob('tree/shared/rc/*.c')
+src += Glob('tree/shared/ipc/*.c')
 src += ['tree/simulator/quad_model.c', 'tree/simulator/sim_sensors.c']
 CPPPATH = [cwd]
 

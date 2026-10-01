@@ -268,6 +268,24 @@ static int sc_acro_flip(const char *name)
            (double)tilt, (double)est_err, (double)height(&r));
 }
 
+static int sc_rc_loss_high(const char *name)
+{
+    /* the failsafe landing must not time out in mid-air from a greater height */
+    run r;
+    start(&r, 11);
+    if (!take_off(&r, 25.0f))
+        RESULT(0, "take-off failed");
+    float h0 = height(&r);
+    sim_set_faults(&r.s, 1, 0);
+    for (int i = 0; i < 9000 && r.s.fc.state != FC_DISARMED; i++)
+        advance(&r, 0.01f);
+    float h_at_disarm = height(&r);
+    int ok = r.s.fc.state == FC_DISARMED && r.s.fc.arm.last_disarm == DISARM_FAILSAFE_LANDED &&
+             h_at_disarm < 0.05f && !r.s.quad.crashed;
+    RESULT(ok, "link cut at %.1f m: disarmed at %.2f m after %.0f s (reason %d), crashed %d",
+           (double)h0, (double)h_at_disarm, (double)r.s.t, r.s.fc.arm.last_disarm, r.s.quad.crashed);
+}
+
 static int sc_alt_engage(const char *name)
 {
     /* what a keyboard pilot does: hold throttle up, switch to ALT_HOLD while
@@ -330,6 +348,7 @@ static const scenario ALL[] = {
     {"arm_refusal", sc_arm_refusal}, {"hover", sc_hover}, {"angle_step", sc_angle_step},
     {"yaw", sc_yaw}, {"rc_loss", sc_rc_loss}, {"imu_fail", sc_imu_fail}, {"wind", sc_wind},
     {"acro_flip", sc_acro_flip}, {"alt_engage", sc_alt_engage},
+    {"rc_loss_high", sc_rc_loss_high},
 };
 
 int main(int argc, char **argv)

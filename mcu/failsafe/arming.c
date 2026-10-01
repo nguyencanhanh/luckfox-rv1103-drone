@@ -7,6 +7,7 @@ void arming_init(arming_sm *a, const arming_params *p)
     a->prev_switch = 0;
     a->switch_seen_off = 0;
     a->rc_lost_s = a->imu_lost_s = a->crash_timer = a->fs_timer = 0.0f;
+    a->fs_budget = p->fs_land_s;
     a->blocks = 0;
     a->last_disarm = DISARM_NONE;
 }
@@ -93,12 +94,13 @@ fc_state arming_update(arming_sm *a, const arming_inputs *in, float dt)
             } else if (a->fs_timer > a->p.fs_hold_s) {
                 a->state = FC_FAILSAFE_LAND;
                 a->fs_timer = 0.0f;
+                a->fs_budget = a->p.fs_land_s + (in->fs_descent_s > 0.0f ? in->fs_descent_s : 0.0f);
             }
         } else {                                    /* FAILSAFE_LAND */
             a->fs_timer += dt;
             if (in->landed)
                 disarm(a, DISARM_FAILSAFE_LANDED);
-            else if (a->fs_timer > a->p.fs_land_s)
+            else if (a->fs_timer > a->fs_budget)
                 disarm(a, DISARM_FAILSAFE_TIMEOUT);
         }
         break;

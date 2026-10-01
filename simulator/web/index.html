@@ -346,6 +346,9 @@ function readKeyboard(dt) {
 
 // ?watch: view only, never sends input (a second screen, or a screenshot)
 const WATCH = new URLSearchParams(location.search).has("watch");
+// ?bare: picture only (the ground station embeds this as its simulated camera)
+if (new URLSearchParams(location.search).has("bare"))
+  document.querySelectorAll(".panel").forEach((el) => (el.style.display = "none"));
 async function send(extra) {
   if (WATCH) return;
   try {

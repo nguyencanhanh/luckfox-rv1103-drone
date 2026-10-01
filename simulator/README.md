@@ -22,7 +22,7 @@ biểu đồ: `python3 tools/plot_sim.py`.
 
 ```sh
 make -C simulator            # build: unit test, sim_cli, libsim
-make -C simulator test       # 66 unit test + 9 kịch bản bay × 2 profile cảm biến
+make -C simulator test       # 77 unit test + 10 kịch bản bay × 2 profile cảm biến
 make -C simulator e2e        # bấm phím thật vào trang 3D qua Chrome headless: cất cánh, bay, hạ cánh
 make -C simulator run        # mở http://127.0.0.1:8777 để lái trong 3D
 ```
@@ -67,9 +67,13 @@ chỉ xem.
 | `imu_fail` | IMU chết giữa trời: tắt motor trong 20 ms |
 | `wind` | gió 4,5 m/s + giật 2 m/s: độ cao sai < 1 m, nghiêng < 20° |
 | `acro_flip` | lật 360° ở ACRO (400 °/s) rồi về ANGLE: tự cân bằng lại, ước lượng góc vẫn đúng |
+| `rc_loss_high` | mất sóng ở 30 m: hạ cánh tới đất rồi mới tắt motor (trước đây tắt giữa trời sau 20 s) |
 | `alt_engage` | bật ALT HOLD khi đang lao lên 9 m/s: phanh rồi mới khóa độ cao, không vọt lên rồi tụt xuống |
 
 `build/sim_cli --csv log.csv hover` ghi log 100 Hz; `--vib` thêm rung khung (giả định).
+
+**Làm drone cho trạm mặt đất:** `python3 server.py --ipc /tmp/lfx_ipc.bin` nhận lệnh qua IPC từ
+`linux/rc-bridge`, giống MCU thật; xem [ground/README.md](../ground/README.md).
 
 **Độ mượt:** mở trang với `?debug` để xem bảng đo: thời gian khung hình, nhịp trạng thái đến, số khung
 drone đứng hình khi đang bay. Server gửi đúng một trạng thái mỗi bước mô phỏng (50 Hz), trang vẽ lùi

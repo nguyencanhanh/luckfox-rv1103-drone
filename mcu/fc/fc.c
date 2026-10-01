@@ -79,6 +79,8 @@ void fc_step(fc_t *fc, const imu_sample *imu, const baro_sample *baro,
     ai.throttle_stick = fc->have_rc ? fc->rc.sticks.throttle : 1.0f;
     ai.tilt = acosf(constrainf(q_cos_tilt(fc->att.q), -1.0f, 1.0f));
     ai.landed = fc->ctl.landed;
+    ai.fs_descent_s = (fc->alt.valid && fc->alt.h > 0.0f && fc->p.ctl.fs_descent_rate > 0.0f)
+                      ? fc->alt.h / fc->p.ctl.fs_descent_rate : 0.0f;
     ai.crash_check = fc->rc.sticks.mode != MODE_ACRO || fc->state == FC_FAILSAFE_HOLD
                      || fc->state == FC_FAILSAFE_LAND;
     fc_state prev = fc->state;

@@ -29,4 +29,9 @@
 #define MCU_BENCH_BASE      (MCU_REGION_BASE + 0x3F000u)
 #define MCU_BENCH_SIZE      0x00001000u
 
+/* struct fc_ipc_page (shared/ipc/fc_ipc.h): the same reserved 4 KB page; a firmware
+ * uses it for the Milestone-1 benchmark or for the flight IPC, never both */
+#define MCU_IPC_BASE        MCU_BENCH_BASE
+#define MCU_IPC_SIZE        MCU_BENCH_SIZE
+
 #endif

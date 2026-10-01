@@ -32,7 +32,7 @@ Nguồn duy nhất: `shared/ipc/mcu_layout.h`. Các chỗ phải khớp được
 |---|---|---|---|
 | code + data + heap | 0x0180_0000 | 0x3C000 | `rtthread.bin` (entry 0x1800200) |
 | log | 0x0183_C000 | 0x3000 | vòng đệm `drv_pstore.c` (`CONFIG_PERSISTENT_RAM_ADDR`) |
-| benchmark | 0x0183_F000 | 0x1000 | `struct mcu_bench_shared` |
+| benchmark **hoặc** IPC | 0x0183_F000 | 0x1000 | `struct mcu_bench_shared` (M1) hoặc `struct fc_ipc_page` (firmware bay, `MCU_IPC_BASE`) |
 
 Lý do chọn 0x01800000: nằm ngoài mọi vùng đã liệt kê ở bảng trên (trên boot.img ≤ 0x1200800, dưới vùng U-Boot relocate).
 Được Linux chừa ra bằng `reserved-memory … no-map` trong `linux/dts/rv1103g-luckfox-pico-mini-m1.dts`.

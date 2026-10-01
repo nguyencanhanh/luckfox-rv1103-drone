@@ -36,11 +36,11 @@ Mục tiêu dự án là trả lời bằng số liệu đo được: **kiến t
 | 03 | Build RT-Thread cho HPMCU | **PASS** | [MCU_BUILD.md](docs/MCU_BUILD.md) |
 | 04 | MCU chạy song song Linux, vòng 1 kHz | **PASS trên board**: 2 × 1 000 000 vòng, 0 lỡ chu kỳ; jitter 18,2 µs lúc idle, 116,7 µs khi camera chạy | [REALTIME.md](docs/REALTIME.md) |
 | — | Mạch bay LFX_FC_R1 (46 × 46 mm, 4 lớp) | thiết kế xong: ERC 0, DRC 0, 0 nối hở, khớp sơ đồ | [phần cứng](#phần-cứng-mạch-bay-lfx_fc_r1) |
-| 05 | Phần mềm bay + mô phỏng SITL + 3D | **66/66 unit test, 9/9 kịch bản bay** (×2 profile cảm biến), kiểm thử bàn phím end-to-end 6/6 | [simulator/README.md](simulator/README.md) |
+| 05 | Phần mềm bay + mô phỏng SITL + 3D | **77/77 unit test, 10/10 kịch bản bay** (×2 profile cảm biến), kiểm thử bàn phím end-to-end 6/6 | [simulator/README.md](simulator/README.md) |
 | 05b | Phần mềm bay chạy trên HPMCU với cảm biến giả (đo thời gian) | build xong (53 KB), **chưa chạy**: board chưa cắm | `tools/run_fc_mcu.sh` |
 | 06–07 | Driver SPI + ICM-42688-P trên MCU | chưa làm: cần module IMU để kiểm | |
 | 11 | Xuất PWM / DShot, đo bằng logic analyzer | chưa làm, **không gắn cánh** | |
-| 12–13 | IPC Linux ↔ MCU, đọc bộ thu ELRS trên Linux | chưa làm: phải chuyển console Linux khỏi UART2 trước | [IPC.md](docs/IPC.md) |
+| 12–13 | Điều khiển từ xa: IPC Linux ↔ MCU, `rc-bridge` (ELRS + mạng), trạm mặt đất có camera | **code xong, chuỗi đầy đủ chạy trên Mac 7/7**; build cho board xong, **chưa chạy trên board**; bộ thu ELRS cần chuyển console khỏi UART2 | [ground/README.md](ground/README.md) |
 | M3 | Camera → NPU → nhận dạng, Wi-Fi, telemetry | chưa làm | |
 
 Kế hoạch đầy đủ theo thứ tự an toàn ở mục [An toàn](#an-toàn).
@@ -155,6 +155,15 @@ Dữ liệu từ chính các kịch bản kiểm thử (`tools/plot_sim.py`):
 - **Chưa có GPS nên không giữ được vị trí.** Khi drone tăng tốc hoặc vào cua, góc ước lượng lệch 2–5°, vì accelerometer không phân biệt được nghiêng với gia tốc.
 - **Thời gian chạy đo trên Mac không đại diện cho MCU.** Phải đo trên board.
 
+## Điều khiển từ xa và camera
+
+![Trạm mặt đất](docs/img/gcs.jpg)
+
+Trạm mặt đất trên Mac: video camera, đường chân trời nhân tạo, telemetry, lái bằng bàn phím hoặc tay điều khiển USB.
+Lệnh đi qua UDP tới `rc-bridge` trên Linux của drone, rồi qua RAM chung tới code bay trên MCU. Bộ thu ELRS (nếu có)
+luôn được ưu tiên. Camera là `rkipc` sẵn có (RTSP `/live/1`, H.265 704×576). Chi tiết, an toàn, giới hạn:
+[ground/README.md](ground/README.md).
+
 ## Bắt đầu nhanh
 
 Máy phát triển: macOS (Apple Silicon), Docker qua OrbStack, `adb`, KiCad 10 (chỉ cần cho phần cứng).
@@ -230,13 +239,15 @@ mcu/
   mixer/              trộn quad-X
   failsafe/           ARM, failsafe, phát hiện rơi
   fc/                 fc_step() / fc_tick(), tham số mặc định
+  link/               nhận lệnh / gửi telemetry qua IPC
   tests/              unit test
   bsp/                board RT-Thread: M1 (đo 1 kHz), FC (phần mềm bay trên MCU)
 shared/
-  ipc/                layout bộ nhớ chung MCU ↔ Linux
+  ipc/                layout bộ nhớ chung MCU ↔ Linux, vòng đệm fc_ipc
   rc/                 CRSF, ánh xạ kênh RC
 simulator/            mô hình quad, cảm biến giả, kịch bản, server + trang 3D
-linux/                phía Linux: mcu-tool (nạp / log / dừng MCU), DTS
+linux/                phía Linux: mcu-tool (nạp / log / dừng MCU), rc-bridge (điều khiển từ xa), DTS
+ground/               trạm mặt đất: gcs.py + trang web (video, telemetry, lái), kiểm thử cả chuỗi
 tools/                script build / nạp / chụp ảnh
 run.sh                build → flash → connect firmware Luckfox
 sdk -> ~/OrbStack/…   symlink tới SDK Luckfox trong Docker volume (không vào git)

@@ -103,13 +103,20 @@ void sim_step(sim_t *s, int ticks)
 {
     float dt = s->fc.dt;
     for (int k = 0; k < ticks; k++) {
-        transmitter(s, dt);
         fc_rc_input rc;
         memset(&rc, 0, sizeof(rc));
-        int fresh = receiver_side(s, &rc);
+        int fresh;
+        if (s->ipc_mode) {
+            fresh = fc_link_poll(&s->link, &rc);
+        } else {
+            transmitter(s, dt);
+            fresh = receiver_side(s, &rc);
+        }
 
         sim_sensors_sample(&s->sens, s->t_us, dt);
         fc_tick(&s->fc, &s->src, fresh ? &rc : NULL, s->motor);
+        if (s->ipc_mode)
+            fc_link_tick(&s->link, &s->fc, (uint32_t)(s->t * 1000.0f), 0);
 
         /* gusts: first-order coloured noise, ~1 s correlation */
         if (s->gust > 0.0f) {
@@ -128,6 +135,12 @@ void sim_step(sim_t *s, int ticks)
         s->t += dt;
         s->t_us += (uint32_t)(dt * 1e6f + 0.5f);
     }
+}
+
+void sim_attach_ipc(sim_t *s, void *page)
+{
+    fc_link_init(&s->link, page, 1, 20);       /* telemetry at 50 Hz */
+    s->ipc_mode = 1;
 }
 
 int sim_request_level_calibration(sim_t *s) { return fc_request_acc_calibration(&s->fc); }
@@ -160,8 +173,15 @@ int sim_get_state(const sim_t *s, float *o, int max)
         f->ctl.rate_sp.z, f->ctl.climb_sp, f->ctl.height_sp, f->ctl.collective_out,
         (float)f->mix.saturated, (float)s->link_cut, (float)s->sens.imu_failed,
         (float)s->crsf.frames_ok, (float)s->crsf.crc_errors, (float)f->calib.done,
-        s->stick_roll, s->stick_pitch, s->stick_yaw, s->stick_throttle,
-        (float)s->arm_switch, (float)s->mode_pos, s->wind.x, s->wind.y,
+        /* what the flight core is being told (in drone mode: by the ground station) */
+        s->ipc_mode ? f->rc.sticks.roll : s->stick_roll,
+        s->ipc_mode ? f->rc.sticks.pitch : s->stick_pitch,
+        s->ipc_mode ? f->rc.sticks.yaw : s->stick_yaw,
+        s->ipc_mode ? f->rc.sticks.throttle : s->stick_throttle,
+        (float)(s->ipc_mode ? f->rc.arm_switch : s->arm_switch),
+        (float)(s->ipc_mode ? (f->rc.sticks.mode == MODE_ANGLE ? 0 : f->rc.sticks.mode == MODE_ALT_HOLD ? 1 : 2)
+                            : s->mode_pos),
+        s->wind.x, s->wind.y,
     };
     int n = (int)(sizeof(v) / sizeof(v[0]));
     if (n > max)

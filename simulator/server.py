@@ -18,6 +18,7 @@ Standard library only, bound to 127.0.0.1.
 import argparse
 import ctypes
 import json
+import mmap
 import os
 import sys
 import threading
@@ -30,7 +31,7 @@ WEB = os.path.join(HERE, "web")
 
 
 class Sim:
-    def __init__(self, vib):
+    def __init__(self, vib, ipc_path=None):
         if not os.path.exists(LIB):
             sys.exit("build the library first: make -C %s" % HERE)
         self.lib = ctypes.CDLL(LIB)
@@ -43,6 +44,16 @@ class Sim:
         L.sim_state_names.restype = ctypes.c_char_p
         L.sim_get_state.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_float), ctypes.c_int]
         L.sim_request_level_calibration.argtypes = [ctypes.c_void_p]
+        L.sim_attach_ipc.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+        # drone mode: a 4 KB file stands in for the shared DDR page at MCU_IPC_BASE;
+        # linux/rc-bridge maps the same file and talks to the flight core through it
+        self.ipc_mm = None
+        if ipc_path:
+            with open(ipc_path, "a+b") as f:
+                f.truncate(4096)
+            self.ipc_file = open(ipc_path, "r+b")
+            self.ipc_mm = mmap.mmap(self.ipc_file.fileno(), 4096)
+            self.ipc_addr = ctypes.addressof(ctypes.c_char.from_buffer(self.ipc_mm))
         L.sim_sizeof.restype = ctypes.c_ulong
         self.names = L.sim_state_names().decode().split(",")
         self.buf = (ctypes.c_float * 128)()
@@ -62,6 +73,8 @@ class Sim:
         with self.lock:
             ctypes.memset(self.mem, 0, self.size)
             self.lib.sim_init(self.mem, seed or int(time.time()) & 0xFFFF, 0 if self.vib else 1)
+            if self.ipc_mm is not None:
+                self.lib.sim_attach_ipc(self.mem, self.ipc_addr)
             self.inp = {"roll": 0, "pitch": 0, "yaw": 0, "throttle": 0, "arm": 0, "mode": 0,
                         "link_cut": 0, "imu_fail": 0, "wind": 0}
             self.calibrate_pending = True
@@ -171,8 +184,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8777)
     ap.add_argument("--vib", action="store_true", help="add the ASSUMED frame vibration")
+    ap.add_argument("--ipc", metavar="FILE",
+                    help="drone mode: RC from linux/rc-bridge through this shared page "
+                         "(the page's own sticks are ignored)")
     a = ap.parse_args()
-    sim = Sim(a.vib)
+    sim = Sim(a.vib, a.ipc)
+    if a.ipc:
+        print("drone mode: RC over %s (start linux/rc-bridge --shm %s)" % (a.ipc, a.ipc))
     threading.Thread(target=pace, args=(sim,), daemon=True).start()
     srv = ThreadingHTTPServer(("127.0.0.1", a.port), make_handler(sim))
     srv.daemon_threads = True

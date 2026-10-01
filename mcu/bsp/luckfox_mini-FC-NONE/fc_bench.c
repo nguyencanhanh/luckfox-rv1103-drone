@@ -10,6 +10,13 @@
   * fc_tick() is the exact call a REAL_SENSOR build will make, so its cycle count is the
   * number that decides whether this rv32imc core (no FPU, soft float) can fly at 1 kHz.
   * Results go to the RAM log every 5 s: tools/mcu-tool log.
+  *
+  * Remote control: the shared page at MCU_IPC_BASE carries RC from Linux
+  * (linux/rc-bridge: ELRS receiver or ground station) and telemetry back
+  * (mcu/link/fc_link.c).  The built-in pilot script flies only until the first RC
+  * record arrives; after that the ground station / receiver is the only pilot, and
+  * its silence is the flight core's RC-loss failsafe.  Still SIM_SENSOR, still no
+  * motor output: the four numbers go to the simulated quad.
   */
 
 #include <rtthread.h>
@@ -22,6 +29,8 @@
 #include "tree/simulator/sim_sensors.h"
 #include "tree/shared/rc/crsf.h"
 #include "tree/shared/rc/rc_map.h"
+#include "tree/mcu/link/fc_link.h"
+#include "mcu_layout.h"
 
 #define FC_STACK_SIZE       4096
 #define FC_PRIORITY         1
@@ -39,6 +48,24 @@ static sim_sensors s_sens;
 static sensor_source s_src;
 static crsf_parser s_crsf;
 static rc_map_params s_map;
+static fc_link s_link;
+static int s_remote;                    /* an RC record has arrived over IPC */
+
+/* MCU D-cache (hal_conf.h: HAL_DCACHE_MODULE_ENABLED) vs Linux's uncached /dev/mem
+ * mapping: push our writes out, drop stale lines before reading Linux's */
+static void ipc_clean(const volatile void *p, size_t n)
+{
+#ifdef HAL_DCACHE_MODULE_ENABLED
+    HAL_DCACHE_CleanByRange((uint32_t)(uintptr_t)p, (uint32_t)n);
+#endif
+}
+
+static void ipc_inval(const volatile void *p, size_t n)
+{
+#ifdef HAL_DCACHE_MODULE_ENABLED
+    HAL_DCACHE_InvalidateByRange((uint32_t)(uintptr_t)p, (uint32_t)n);
+#endif
+}
 
 struct cyc_stat {
     uint32_t n, min, max, hist[HIST_BINS], over;
@@ -165,7 +192,13 @@ static void fc_thread_entry(void *parameter)
         pilot(t);
         fc_rc_input rc;
         memset(&rc, 0, sizeof(rc));
-        int fresh = (k % 4 == 0) && rc_from_crsf(&rc);
+        int fresh = fc_link_poll(&s_link, &rc);
+        if (fresh && !s_remote) {
+            s_remote = 1;
+            rt_kprintf("fc: RC over IPC (source %u): the pilot script is off\n", s_link.rc_source);
+        }
+        if (!s_remote)
+            fresh = (k % 4 == 0) && rc_from_crsf(&rc);
         sim_sensors_sample(&s_sens, k * 1000u, 0.001f);
 
         uint64_t c0 = mcycle_read();
@@ -174,6 +207,7 @@ static void fc_thread_entry(void *parameter)
         quad_step(&s_quad, motor, v3(0.0f, 0.0f, 0.0f), 0.001f);
         uint64_t c2 = mcycle_read();
 
+        fc_link_tick(&s_link, &s_fc, k, (uint32_t)((c1 - c0) / (CPU_HZ / 1000000u)));
         stat_add(&s_fc_cyc, (uint32_t)(c1 - c0));
         stat_add(&s_phys_cyc, (uint32_t)(c2 - c1));
         k++;
@@ -235,6 +269,12 @@ static int fc_bench_init(void)
     fc_init(&s_fc, &s_fcp);
     crsf_parser_init(&s_crsf);
     rc_map_default(&s_map);
+    fc_link_init(&s_link, (void *)(uintptr_t)MCU_IPC_BASE, 0, 20);
+    s_link.port.clean = ipc_clean;
+    s_link.port.inval = ipc_inval;
+    fc_ipc_format(&s_link.port);
+    rt_kprintf("fc: IPC page at 0x%08x (%u B), telemetry 50 Hz\n", (unsigned)MCU_IPC_BASE,
+               (unsigned)sizeof(struct fc_ipc_page));
     rt_kprintf("fc: flight core %u B state, sensor %s\n", (uint32_t)sizeof(s_fc), s_src.name);
 
     rt_sem_init(&s_tick_sem, "fct", 0, RT_IPC_FLAG_FIFO);
