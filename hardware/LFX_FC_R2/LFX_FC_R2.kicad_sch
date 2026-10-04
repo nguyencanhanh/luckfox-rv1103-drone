@@ -1,0 +1,185 @@
+(kicad_sch
+	(version 20250114)
+	(generator "lfx_gen_sch")
+	(generator_version "10.0")
+	(uuid "9564b83f-500d-c692-1cc5-81840b134811")
+	(paper "A3")
+	(title_block
+		(title "LFX FC R2 - Luckfox RV1103 flight controller + LTE / GNSS")
+		(date "2026-09-24")
+		(rev "R1")
+		(company "")
+		(comment 1 "Root - system block diagram")
+		(comment 2 "Generated from scripts/design.py")
+	)
+	(lib_symbols)
+	(text "LFX FC R2  -  Luckfox Pico Mini B (RV1103) flight controller + LTE / GNSS, one 50 x 50 mm board"
+		(at 20 24 0)
+		(effects (font (size 3.2 3.2) (bold yes)) (justify left bottom))
+		(uuid "a6ecdec1-beca-1201-5f2f-ad24dde18471")
+	)
+	(text "Rails : VBAT 2S-6S (ESC JST-SH 8) -> TPS54360 buck -> +5V -> LM66100 ideal diode -> VSYS (Luckfox VBUS)"
+		(at 20 32 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "14ec011f-68a9-1a0f-c234-f168431ba729")
+	)
+	(text "        VSYS -> TLV75533 -> +3V3S (IMU + barometer only)    +1V8 from the module, ADC clamps only"
+		(at 20 37 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "c851b7e5-05d0-7ed0-7f6a-5e7b9359d619")
+	)
+	(text "SPI0  : ICM-42688-P (CS0, pin 6) + BMP390 (CS1, pin 14), MCU-owned per docs/architecture.html"
+		(at 20 42 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "b212919f-8ce1-9daf-a83b-eb0092077950")
+	)
+	(text "ESC   : PWM8-11_M1 on module pins 10, 11, 16, 17 -> 47R -> S/G pads in the corners, four separate ESCs"
+		(at 20 47 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "62d800a0-6333-ef6d-b763-1975cba0c7f2")
+	)
+	(text "UART  : UART2 RC receiver (pins 4/5) on JST-SH, ESD by TPD4E05U06"
+		(at 20 52 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "bc622135-67df-8a98-bd14-e3399f295706")
+	)
+	(text "LTE   : Lierda NT26-KCN E (bottom) on UART3 (pins 12/13) via SN74LVC1T45, RESET pin 18, BOOT pin 20;"
+		(at 20 57 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "a05780bb-5ce0-72d1-113b-6000d317b43e")
+	)
+	(text "        nano-SIM (top), U.FL LTE + GNSS (bottom front corners), +5V -> TLV62569 -> +3V8, buzzer on its AGPIO5"
+		(at 20 62 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "3922cc9d-4364-79e6-3025-939f89e6483f")
+	)
+	(sheet
+		(at 25 70)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "42ad4a75-a86a-7270-45ed-158e947a49f0")
+		(property "Sheetname" "Power: ESC input, 5 V buck, ideal diode, sensor LDO"
+			(at 25 68.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/02_power.kicad_sch"
+			(at 25 99.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R2"
+				(path "/9564b83f-500d-c692-1cc5-81840b134811" (page "2"))
+			)
+		)
+	)
+	(sheet
+		(at 199 70)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "ff557765-04f8-5d0c-aacb-cf31df93a6f3")
+		(property "Sheetname" "Luckfox Pico Mini B socket and RC receiver port"
+			(at 199 68.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/03_module.kicad_sch"
+			(at 199 99.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R2"
+				(path "/9564b83f-500d-c692-1cc5-81840b134811" (page "3"))
+			)
+		)
+	)
+	(sheet
+		(at 25 108)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "c82caefc-2e87-e1e1-6c09-5edd5fcfe75d")
+		(property "Sheetname" "IMU ICM-42688-P and barometer BMP390 on SPI0"
+			(at 25 106.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/04_sensors.kicad_sch"
+			(at 25 137.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R2"
+				(path "/9564b83f-500d-c692-1cc5-81840b134811" (page "4"))
+			)
+		)
+	)
+	(sheet
+		(at 199 108)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "b1565971-9e64-56ca-7eef-11c7d16deeff")
+		(property "Sheetname" "ESC pads, buzzer, battery sense"
+			(at 199 106.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/05_io.kicad_sch"
+			(at 199 137.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R2"
+				(path "/9564b83f-500d-c692-1cc5-81840b134811" (page "5"))
+			)
+		)
+	)
+	(sheet
+		(at 25 146)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "193bbec6-dc90-4fde-b284-17a783f45797")
+		(property "Sheetname" "Lierda NT26-KCN E LTE Cat.1 bis + GNSS: supply, UART, reset / download"
+			(at 25 144.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/06_lte.kicad_sch"
+			(at 25 175.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R2"
+				(path "/9564b83f-500d-c692-1cc5-81840b134811" (page "6"))
+			)
+		)
+	)
+	(sheet
+		(at 199 146)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "486fed97-cc29-a85e-49e2-733c526b6b7f")
+		(property "Sheetname" "LTE nano-SIM and antennas (U.FL LTE + GNSS)"
+			(at 199 144.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/07_lte_rf.kicad_sch"
+			(at 199 175.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_FC_R2"
+				(path "/9564b83f-500d-c692-1cc5-81840b134811" (page "7"))
+			)
+		)
+	)
+	(sheet_instances
+		(path "/" (page "1"))
+	)
+)

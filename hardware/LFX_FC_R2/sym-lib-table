@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "LFX")(type "KiCad")(uri "${KIPRJMOD}/../LFX_FC_R1/lib/symbols/LFX.kicad_sym")(options "")(descr "LFX custom symbols, shared with LFX_FC_R1"))
+)

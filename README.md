@@ -18,7 +18,7 @@ Mục tiêu dự án là trả lời bằng số liệu đo được: **kiến t
 
 - [Trạng thái theo mốc](#trạng-thái-theo-mốc)
 - [Kiến trúc](#kiến-trúc)
-- [Phần cứng: mạch bay LFX_FC_R1](#phần-cứng-mạch-bay-lfx_fc_r1)
+- [Phần cứng: mạch bay LFX_FC_R2](#phần-cứng-mạch-bay-lfx_fc_r2)
 - [Mô phỏng](#mô-phỏng)
 - [Bắt đầu nhanh](#bắt-đầu-nhanh)
 - [Cấu trúc repo](#cấu-trúc-repo)
@@ -80,106 +80,119 @@ Chi tiết và rủi ro: [ARCHITECTURE.md](docs/ARCHITECTURE.md), [architecture.
 | Tải camera làm jitter MCU tăng 6,4 lần | ảnh hưởng độ ổn định vòng điều khiển |
 | Tín hiệu RC đi qua Linux | Linux treo là mất RC; MCU phải tự vào failsafe |
 
-## Phần cứng: mạch bay LFX_FC_R1
+## Phần cứng: mạch bay LFX_FC_R2
 
-Mạch mang Luckfox Pico Mini B, thiết kế bằng pipeline KiCad 10 viết bằng script, trong [`hardware/LFX_FC_R1/`](hardware/LFX_FC_R1).
+**Một board 50 × 50 mm** gồm mạch bay cho Luckfox Pico Mini B và module **LTE Cat.1 bis + GNSS** (Lierda NT26-KCN E, khay nano-SIM, 2 cổng U.FL). Thiết kế bằng pipeline KiCad 10 viết bằng script, trong [`hardware/LFX_FC_R2/`](hardware/LFX_FC_R2): `design.py` → sơ đồ → PCB → file sản xuất.
 
 | Mặt trên | Mặt dưới | 3D |
 |---|---|---|
-| ![top](docs/img/pcb/3d_top.jpg) | ![bottom](docs/img/pcb/3d_bottom.jpg) | ![iso](docs/img/pcb/3d_iso.jpg) |
+| ![top](docs/img/pcb/r2_3d_top.jpg) | ![bottom](docs/img/pcb/r2_3d_bottom.jpg) | ![iso](docs/img/pcb/r2_3d_iso.jpg) |
+
+Module Lierda và đế cắm Luckfox chưa có mô hình 3D trong KiCad nên trên ảnh render chỉ thấy pad của chúng.
 
 **Thông số:**
-- **Kích thước:** 46 × 46 mm, 4 lớp: F.Cu tín hiệu / GND / VSYS + đảo 3,3 V / B.Cu nguồn.
-- **Lỗ bắt vít:** 4 lỗ M3 ở góc, khoảng cách lỗ **39 × 39 mm**. Không lắp chung được với stack chuẩn 30,5 mm.
-- **Nguồn vào:** pin 2S–6S.
+- **Kích thước:** 50 × 50 mm, 4 lớp: F.Cu tín hiệu / GND / VSYS (+ đảo 3,3 V cảm biến, đảo 3,8 V dưới module LTE, đảo GND dưới đường anten) / B.Cu.
+- **Lỗ bắt vít:** 4 lỗ M3, khoảng cách lỗ **39 × 39 mm**, cách mép 5,5 mm.
+- **Nguồn vào:** pin 2S–6S, hàn vào pad BAT+ / BAT− (mặt trên, phía trước bên phải).
 - **Mạch nguồn:**
   - TVS SMAJ33A và ferrite chặn xung, lọc nhiễu.
-  - Buck TPS54360 ra 5 V (theo thiết kế mẫu TI SLVSBB4G), ngưỡng UVLO 6,44 V.
-  - Diode lý tưởng LM66100 cấp VSYS cho module.
-  - LDO TLV75533 cấp 3,3 V riêng cho cảm biến.
-- **Cảm biến trên SPI0:**
-  - IMU ICM-42688-P và barometer BMP390, đặt dưới module.
-  - Có vùng cấm via và đường mạch dưới thân chip.
-  - 4 đường SPI của IMU vẽ tay, chạy song song, không dùng via.
-- **LTE + GNSS:** nằm trên board con [LFX_LTE_R1](#board-lte-lfx_lte_r1) xếp tầng, nối qua J5.
+  - Buck TPS54360 ra 5 V (theo thiết kế mẫu TI SLVSBB4G), ngưỡng UVLO 6,44 V. Đặt ở mặt dưới dải phải, cách IMU khoảng 15 mm, có lớp GND In1 ở giữa.
+  - Diode lý tưởng LM66100 cấp VSYS cho Luckfox; LDO TLV75533 cấp 3,3 V riêng cho cảm biến.
+  - Buck TLV62569 hạ +5 V xuống **3,8 V** cho module LTE. VBAT của module chỉ chịu 3,3–4,5 V, nên không lấy thẳng từ pin.
+- **Cảm biến trên SPI0:** IMU ICM-42688-P và barometer BMP390, đặt dưới Luckfox; 4 đường SPI của IMU vẽ tay, không dùng via.
+- **Motor:** 4 cặp pad S/G ở 4 góc cho **4 ESC rời** (PWM8–11, điện trở 47 Ω). Không còn cổng ESC 4-in-1.
+- **LTE + GNSS: Lierda NT26-KCN E** ở mặt dưới, nửa trước. Khi đặt mua chọn bản **GPS + BDS**: bản NT26KCNE20GNB trong sổ tay phần cứng chỉ có BeiDou, chân ra giống hệt.
+  - UART3 của Luckfox (chân 12/13) đi qua 2 con SN74LVC1T45 để chuyển 3,3 V ↔ 1,8 V. Chip này tự cách ly khi module tắt, vì UART của module không chịu điện áp ngược. Cùng một UART dùng cho lệnh AT, đọc GNSS và nạp firmware (921600 bd).
+  - **Luckfox nạp firmware cho Lierda:** chân 18 kéo RESET_N qua MOSFET; chân 20 (GPIO4_C1, bank 1,8 V, cùng mức với module) nối USB_BOOT qua 1 kΩ. Giữ BOOT mức cao rồi reset ≥ 300 ms là module vào chế độ nạp. Có test pad USB (D+/D−/VBUS) để nạp cứu bằng máy tính.
+  - Khay **nano-SIM** có nắp bản lề ở mặt trên, giữa phía trước; điện trở 22 Ω, tụ 33 pF, chống ESD TPD4E05U06.
+  - 2 cổng U.FL ở 2 góc trước mặt dưới: GNSS bên trái, LTE bên phải. Đường 50 Ω rộng 0,35 mm trên B.Cu, có mạch π để chỉnh phối hợp trở kháng. GNSS cấp nguồn 3,3 V cho anten active; dùng anten thụ động thì bỏ R43.
+  - Còi được điều khiển từ chân AGPIO5 (pad 97, ở mép module) của Lierda, vì Luckfox đã hết chân.
+  - **Không bật chế độ ngủ của module** (`AT+QSCLK=1`): khi ngủ, VDD_EXT tắt nên bộ chuyển mức cách ly, Luckfox không đánh thức được qua UART.
 
-**Đầu cắm** (JST-SH 1,0 mm, miệng hướng ra mép board):
+**Đầu cắm và pad:**
 
 | Cổng | Chân | Ghi chú |
 |---|---|---|
-| J1 · ESC 4-in-1 (mặt dưới) | 1 VBAT, 2 GND, 3 dòng điện, 4 telemetry, 5–8 M1–M4 | thứ tự chân mỗi hãng ESC một khác: kiểm dây trước khi cấp điện |
+| J2 / J3 · pad pin | BAT+ / BAT− | dây XT30 từ pin, cùng dây cấp cho 4 ESC |
 | J4 · bộ thu RC ELRS | 1 5 V, 2 GND, 3 TX board → RX bộ thu, 4 RX board ← TX bộ thu | UART2, CRSF; R24 1 kΩ kéo lên để bộ thu không kẹt bootloader |
-| J5 · board LTE | 1–2 +5 V, 3–4 GND, 5 TX, 6 RX, 7 RESET, 8 BOOT, 9 cổng còi, 10 dòng ESC | cáp JST-SH 10 thẳng (chân n ↔ chân n) sang J1 của LFX_LTE_R1; chống ESD tại cổng |
-| J6 · còi | 1 +5 V, 2 còi − (MOSFET đóng ngắt) | gate MOSFET do GPIO1 của Lierda điều khiển qua J5 |
-| J7–J14 · pad ESC rời | S / G ở 4 góc | M1 sau-phải, M2 trước-phải, M3 sau-trái, M4 trước-trái (Betaflight) |
-| J2 / J3 · pad pin | VBAT / GND | nguồn bàn khi không có ESC |
-| TP1–TP6 | +5 V, VSYS, +3V3S, telemetry ESC, RC_TX, RC_RX | TP5/TP6: xem console khi rút bộ thu |
+| J6 · còi | 1 +5 V, 2 còi − (MOSFET đóng ngắt) | gate do AGPIO5 của Lierda điều khiển |
+| J7–J14 · pad ESC | S / G ở 4 góc | M1 sau-phải, M2 trước-phải, M3 sau-trái, M4 trước-trái (Betaflight) |
+| J15 · nano-SIM | | GCT SIM8060, nắp bản lề |
+| J16 · U.FL LTE / J17 · U.FL GNSS | | mặt dưới, 2 góc trước |
+| TP1–TP3, TP5, TP6 | +5 V, VSYS, +3V3S, RC_TX, RC_RX | TP5/TP6: xem console khi rút bộ thu |
+| TP7–TP13 | +3V8, VDD_EXT 1,8 V, USB D+, USB D−, USB VBUS, DBG TX, DBG RX của Lierda | nạp cứu / xem log module |
 
-**Kiểm tra:** ERC 0, DRC 0 vi phạm, 0 nối hở, 0 lỗi khớp sơ đồ (`--schematic-parity`).
+**Kiểm tra:** ERC 0, DRC 0 vi phạm / 0 cảnh báo, 0 nối hở, 0 lỗi khớp sơ đồ (`--schematic-parity`).
 
-### Board LTE: LFX_LTE_R1
+**Bộ file sản xuất** (Gerber, khoan, BOM, vị trí linh kiện, STEP) do `make_fab.py` tạo ra `fab/`. Thư mục này không lưu trong git.
 
-Board con 46 × 46 mm, cùng 4 lỗ M3 (39 × 39 mm) để xếp tầng với mạch bay, linh kiện **chỉ ở mặt trên**. Nằm trong [`hardware/LFX_LTE_R1/`](hardware/LFX_LTE_R1), dùng chung pipeline script và thư viện LFX với LFX_FC_R1.
+**Cần làm trước khi đặt hàng:**
+- BOM chưa có mã linh kiện cụ thể (MPN).
+- Nên chọn xi **ENIG**: IMU, barometer là chip chân LGA và module Lierda là LCC + LGA 109 chân, cần pad phẳng.
 
-- **Module: Lierda NT26-KCN E**, LTE Cat.1 bis + GNSS. Khi đặt mua chọn bản **GPS + BDS**: bản NT26KCNE20GNB trong sổ tay phần cứng chỉ có BeiDou, chân ra giống hệt.
-- **Kết nối với mạch bay (J1, JST-SH 10):** UART3 của Luckfox (chân 12/13) đi qua 2 con SN74LVC1T45 để chuyển 3,3 V ↔ 1,8 V. Chip này tự cách ly khi module tắt, vì UART của module không chịu điện áp ngược. Cùng một UART dùng cho lệnh AT, đọc GNSS và nạp firmware (921600 bd).
-- **Luckfox nạp firmware cho Lierda:**
-  - chân 18 (RESET) kéo RESET_N xuống qua MOSFET;
-  - chân 20 (BOOT, GPIO4_C1, bank 1,8 V, cùng mức với module) nối USB_BOOT qua 1 kΩ;
-  - giữ BOOT mức cao rồi reset ≥ 300 ms là module vào chế độ nạp;
-  - có test pad USB (D+/D−/VBUS) để nạp cứu bằng máy tính.
-- **Nguồn:**
-  - buck TLV62569 hạ +5 V xuống **3,8 V**. VBAT của module chỉ chịu 3,3–4,5 V, nên không lấy thẳng từ pin 2S–6S. Nối tới module qua mặt phẳng +3V8 trên lớp In2; tụ 2 × 47 µF + 100 nF / 33 pF / 8,2 pF đặt tại chân VBAT.
-  - LDO TLV75533 cấp 3,3 V cho phía Luckfox của bộ chuyển mức.
-- **SIM:** khay nano-SIM có nắp bản lề, điện trở 22 Ω, tụ 33 pF, chống ESD TPD4E05U06.
-- **Anten:** 2 cổng U.FL, LTE và GNSS. GNSS cấp nguồn 3,3 V cho anten active; dùng anten thụ động thì bỏ R24. Đường 50 Ω rộng 0,35 mm trên F.Cu, có mạch π để chỉnh phối hợp trở kháng.
-- **Còi và cảm biến dòng ESC** chuyển sang GPIO1 / ADC0 của Lierda (đi qua cáp), vì Luckfox đã hết chân. Rút board LTE ra thì còi không kêu.
-- **Không bật chế độ ngủ của module** (`AT+QSCLK=1`): khi ngủ, VDD_EXT tắt nên bộ chuyển mức cách ly, Luckfox không đánh thức được qua UART.
+### Lắp drone: khung LFX_FRAME_R1, động cơ không chổi than, 4 ESC rời
 
-| Cổng | Ghi chú |
-|---|---|
-| J1 · sang mạch bay | JST-SH 10, cùng thứ tự chân với J5 của LFX_FC_R1 |
-| J2 · nano-SIM | GCT SIM8060, nắp bản lề |
-| J3 · U.FL LTE / J4 · U.FL GNSS | |
-| TP1–TP7 | +3V8, VDD_EXT 1,8 V, USB D+, USB D−, USB VBUS, DBG TX, DBG RX |
+| Khung (in 3D) | Lắp đủ: khung + board + vỏ + motor + ESC + pin | Nhìn từ trên |
+|---|---|---|
+| ![frame](docs/img/frame/frame.jpg) | ![assembly](docs/img/frame/frame_assembly.jpg) | ![top](docs/img/frame/frame_assembly_top.jpg) |
 
-### Lắp drone: động cơ không chổi than + 4 ESC rời
+**Khung [`hardware/LFX_FRAME_R1`](hardware/LFX_FRAME_R1)** dựng bằng FreeCAD (script tham số `frame_freecad.py`), in 3D:
+- Tấm giữa dày 3 mm: board bắt thẳng bằng **4 cột M3 dài 8 mm** vào lỗ 39 × 39, không cần tấm chuyển. Có 2 khe dây buộc pin 15 mm, lỗ khoét giảm nhẹ, 2 lỗ phía sau để buộc ống anten.
+- 4 tay đòn dày 4 mm kiểu X. Đế motor có **rãnh M2 hướng tâm** (bán kính 3,3–4,5 mm), lắp được motor 1104 (4 × M2 trên vòng Ø9 mm) và loại 1103 nhỏ hơn.
+- **Khoảng cách motor do script tự tìm:** đẩy dần motor ra xa cho tới khi cánh 3" (thêm 2 mm dự phòng) không chạm vỏ canopy. Kết quả: motor cách tâm 58 mm theo mỗi trục (đường chéo trục 164 mm), khung 133 × 133 mm.
+- 4 ESC buộc dây rút lên tay đòn, nằm ngoài vỏ; pin buộc dưới tấm giữa.
+- In: PETG (hoặc PLA-CF), 5 lớp viền, infill 40 %. Khối lượng đặc khoảng 26 g.
 
-Board LFX_FC_R1 dùng nguyên bản, không phải sửa gì: J1 (ESC 4-in-1) để trống, 4 ESC rời hàn vào pad S/G ở 4 góc, board lấy nguồn qua pad J2/J3.
-
-**Linh kiện (drone 3", pin 2S, giá tham khảo):**
+**Linh kiện mua thêm (giá tham khảo):**
 
 | Linh kiện | Gợi ý | Ghi chú |
 |---|---|---|
-| Motor ×4 | 1103 8000–10000 KV hoặc 1104 7500 KV | 1103 trên 2S: khoảng 145 g lực đẩy/con, 3,5–4 g/con |
+| Motor ×4 | 1103 8000–10000 KV hoặc 1104 7500 KV | 1103 trên 2S: khoảng 145 g lực đẩy/con |
 | ESC ×4 | BLHeli_S 12A rời (vd. Makerfire 12A, ~$2,5, 6 g) | EMAX 6A nhẹ hơn, đủ cho 1103 |
-| Khung | toothpick 3" carbon (vd. HappyModel Crux3, ~$10) | lỗ bắt FC 20×20 hoặc 25,5×25,5 mm |
 | Cánh | 3" (3016/3018) | |
 | Pin | LiPo 2S 450–550 mAh, đầu XT30 | |
-| Tấm chuyển | [`hardware/LFX_MOUNT_R1`](hardware/LFX_MOUNT_R1): PCB FR4 1,0 mm hình chữ X, khoảng 1,7 g | 4 lỗ M3 39×39 cho board FC; lỗ M2 cho khung 20×20 và 25,5×25,5. Đặt mạch in cùng 2 board kia |
+| Cột M3 | 4 × 8 mm (khung → board) | |
+| Anten | LTE dạng dán (FPC) + GNSS 25 × 25 mm (active 3,3 V hoặc thụ động), đầu U.FL | anten GNSS đặt trong hốc trên nóc vỏ |
 
 **Đấu nối:**
 ```
 Pin 2S ─ XT30 ─┬─ nguồn 4 ESC (đỏ / đen)
-               └─ J2 (VBAT) / J3 (GND), mặt dưới board FC
+               └─ BAT+ / BAT− (J2 / J3) trên board
 ESC n: tín hiệu → pad S, mass tín hiệu → pad G ở góc của motor n
    M1 sau-phải J7/J11 · M2 trước-phải J8/J12 · M3 sau-trái J9/J13 · M4 trước-trái J10/J14
 Motor: 3 dây vào ESC; quay ngược chiều thì đổi 2 dây bất kỳ
 ```
 - Buck 5 V khởi động từ 6,44 V và tự ngắt ở 5,83 V (khoảng 2,9 V/cell), nên dùng pin 2S đã nạp đầy.
 - ESC rời không có chân báo dòng, nên chỉ đo được áp pin (ADC_VBAT), không đo được dòng.
-- Thứ tự lắp từ dưới lên: khung → tấm chuyển (vít M2 vào khung) → cột nhựa M3 → board FC → (board LTE nếu dùng).
 
 **Trọng lượng ước tính** (chưa cân thực tế):
-- Board FC + Luckfox + camera khoảng 19 g, 4 ESC rời khoảng 24 g, 4 motor 1104 khoảng 24 g, khung khoảng 30 g, cánh khoảng 4 g, pin khoảng 30 g, tấm chuyển + ốc + dây khoảng 7 g.
-- Tổng **khoảng 138 g**; gắn thêm board LTE thì **khoảng 153 g**.
-- 4 motor 1103 cho khoảng 580 g lực đẩy, tức **tỉ lệ khoảng 3,8–4:1**: dư lực, bay ổn định.
+- Board R2 khoảng 16 g, Luckfox + camera khoảng 8 g, 4 ESC khoảng 24 g, 4 motor 1104 khoảng 24 g, khung khoảng 26 g, vỏ khoảng 13 g, cánh khoảng 4 g, pin khoảng 30 g, anten + ốc + dây khoảng 8 g.
+- Tổng **khoảng 153 g**. 4 motor 1103 cho khoảng 580 g lực đẩy, tức **tỉ lệ khoảng 3,8:1**: dư lực, bay ổn định.
 
-**Bộ file sản xuất** (Gerber, khoan, BOM, vị trí linh kiện, STEP) do `make_fab.py` tạo ra `fab/`. Thư mục này không lưu trong git.
+### Vỏ in 3D: LFX_CANOPY_R1
 
-**Cần làm trước khi đặt hàng:**
-- BOM chưa có mã linh kiện cụ thể (MPN).
-- Nên chọn xi **ENIG**, vì IMU và barometer là chip chân LGA cần pad phẳng.
+| Vỏ | Nhìn xuyên (kiểm tra lắp) | Phía sau |
+|---|---|---|
+| ![canopy](docs/img/canopy/canopy_r2_closed.jpg) | ![fit](docs/img/canopy/canopy_r2_fit.jpg) | ![rear](docs/img/canopy/canopy_r2_rear.jpg) |
+
+Vỏ che board, dựng bằng **FreeCAD 1.1** (script tham số [`canopy_freecad.py`](hardware/LFX_CANOPY_R1/canopy_freecad.py), chạy trong FreeCAD hoặc qua addon [freecad-mcp](https://github.com/neka-nat/freecad-mcp)). Script dựng cả cụm lắp ráp từ file STEP của board (KiCad) cộng khối đại diện cho Luckfox, camera, Lierda, cột đỡ, rồi **kiểm tra va chạm**: không chạm.
+
+- File in: [`canopy.stl`](hardware/LFX_CANOPY_R1/canopy.stl) (và `canopy.step`), 58 × 60 × 29 mm, khoảng 13 g PETG.
+- Thành 1,2 mm (3 lớp viền với đầu phun 0,4 mm), bo tròn mọi cạnh, lỗ ống kính vát mép.
+- Camera SC3336 áp vào mặt trong thành trước, có gờ định vị 4 phía; cố định bằng băng dính 2 mặt hoặc keo nến.
+- Lỗ USB-C phía sau, nên **vẫn cắm cáp nạp code cho Luckfox khi đã đậy vỏ**.
+- Hai bên hông để trống phía dưới cho dây RC, còi, ESC, dây pin và cáp U.FL; khe thông gió ngay trên Luckfox.
+- Trên nóc có hốc lõm 0,8 mm đặt anten GNSS loại 25 × 25 mm (nằm trên cùng, nhìn thẳng lên trời) và lỗ luồn cáp; mặt nóc vẫn phẳng để in úp.
+- 4 trụ rỗng tì xuống board tại 4 lỗ 39 × 39; vít **M3 × 25** xuyên trụ, qua board, vào cột đỡ.
+- In: úp nóc xuống bàn in, PETG, không cần support.
+- Sửa kích thước: đổi tham số đầu file `canopy_freecad.py` rồi chạy lại trong FreeCAD. File STEP của board xuất bằng `kicad-cli pcb export step` vào `hardware/LFX_CANOPY_R1/step/`.
+
+### Phiên bản cũ
+
+Vẫn giữ trong repo, DRC sạch, nhưng không còn là thiết kế chính:
+- [`LFX_FC_R1`](hardware/LFX_FC_R1): mạch bay 46 × 46 mm, cổng ESC 4-in-1 (J1), cổng J5 nối sang board LTE ([ảnh](docs/img/pcb/3d_iso.jpg)).
+- [`LFX_LTE_R1`](hardware/LFX_LTE_R1): board LTE 46 × 46 mm xếp tầng trên R1 ([ảnh](docs/img/pcb/lte_3d_iso.jpg)).
+- [`LFX_MOUNT_R1`](hardware/LFX_MOUNT_R1): tấm chuyển lỗ 39 × 39 → khung 20 × 20 / 25,5 × 25,5 mm, dùng khi lắp board lên khung mua sẵn thay cho LFX_FRAME_R1 ([ảnh](docs/img/pcb/mount_3d_iso.jpg)).
 
 ## Mô phỏng
 
@@ -288,7 +301,11 @@ Nguồn gốc duy nhất của mạch là `scripts/design.py`. Không sửa tay 
 
 ```
 docs/                 kiến trúc, bằng chứng phần cứng, bản đồ bộ nhớ, kết quả đo, ảnh
-hardware/LFX_FC_R1/   mạch bay: scripts/ (design.py → sơ đồ → PCB → file sản xuất), lib/, sch/
+hardware/LFX_FC_R2/   mạch bay + LTE/GNSS trên 1 board: scripts/ (design.py → sơ đồ → PCB → file sản xuất), sch/
+hardware/LFX_FRAME_R1/   khung in 3D (FreeCAD: frame_freecad.py → frame.stl / .step)
+hardware/LFX_CANOPY_R1/  vỏ in 3D (FreeCAD: canopy_freecad.py → canopy.stl / .step)
+hardware/LFX_FC_R1/   bản cũ 46 × 46 mm; lib/ là thư viện symbol / footprint LFX dùng chung
+hardware/LFX_LTE_R1/, LFX_MOUNT_R1/   bản cũ: board LTE xếp tầng, tấm chuyển lỗ bắt vít
 hardware/datasheets/  danh sách datasheet và link chính thức (PDF tải bằng hardware/fetch_vendor.sh)
 mcu/
   common/             toán vector / quaternion (float)

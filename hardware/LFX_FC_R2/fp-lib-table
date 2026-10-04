@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "LFX")(type "KiCad")(uri "${KIPRJMOD}/../LFX_FC_R1/lib/footprints/LFX.pretty")(options "")(descr "LFX custom footprints, shared with LFX_FC_R1"))
+)
