@@ -143,6 +143,38 @@ Board con 46 × 46 mm, cùng 4 lỗ M3 (39 × 39 mm) để xếp tầng với m�
 | J3 · U.FL LTE / J4 · U.FL GNSS | |
 | TP1–TP7 | +3V8, VDD_EXT 1,8 V, USB D+, USB D−, USB VBUS, DBG TX, DBG RX |
 
+### Lắp drone: động cơ không chổi than + 4 ESC rời
+
+Board LFX_FC_R1 dùng nguyên bản, không phải sửa gì: J1 (ESC 4-in-1) để trống, 4 ESC rời hàn vào pad S/G ở 4 góc, board lấy nguồn qua pad J2/J3.
+
+**Linh kiện (drone 3", pin 2S, giá tham khảo):**
+
+| Linh kiện | Gợi ý | Ghi chú |
+|---|---|---|
+| Motor ×4 | 1103 8000–10000 KV hoặc 1104 7500 KV | 1103 trên 2S: khoảng 145 g lực đẩy/con, 3,5–4 g/con |
+| ESC ×4 | BLHeli_S 12A rời (vd. Makerfire 12A, ~$2,5, 6 g) | EMAX 6A nhẹ hơn, đủ cho 1103 |
+| Khung | toothpick 3" carbon (vd. HappyModel Crux3, ~$10) | lỗ bắt FC 20×20 hoặc 25,5×25,5 mm |
+| Cánh | 3" (3016/3018) | |
+| Pin | LiPo 2S 450–550 mAh, đầu XT30 | |
+| Tấm chuyển | [`hardware/LFX_MOUNT_R1`](hardware/LFX_MOUNT_R1): PCB FR4 1,0 mm hình chữ X, khoảng 1,7 g | 4 lỗ M3 39×39 cho board FC; lỗ M2 cho khung 20×20 và 25,5×25,5. Đặt mạch in cùng 2 board kia |
+
+**Đấu nối:**
+```
+Pin 2S ─ XT30 ─┬─ nguồn 4 ESC (đỏ / đen)
+               └─ J2 (VBAT) / J3 (GND), mặt dưới board FC
+ESC n: tín hiệu → pad S, mass tín hiệu → pad G ở góc của motor n
+   M1 sau-phải J7/J11 · M2 trước-phải J8/J12 · M3 sau-trái J9/J13 · M4 trước-trái J10/J14
+Motor: 3 dây vào ESC; quay ngược chiều thì đổi 2 dây bất kỳ
+```
+- Buck 5 V khởi động từ 6,44 V và tự ngắt ở 5,83 V (khoảng 2,9 V/cell), nên dùng pin 2S đã nạp đầy.
+- ESC rời không có chân báo dòng, nên chỉ đo được áp pin (ADC_VBAT), không đo được dòng.
+- Thứ tự lắp từ dưới lên: khung → tấm chuyển (vít M2 vào khung) → cột nhựa M3 → board FC → (board LTE nếu dùng).
+
+**Trọng lượng ước tính** (chưa cân thực tế):
+- Board FC + Luckfox + camera khoảng 19 g, 4 ESC rời khoảng 24 g, 4 motor 1104 khoảng 24 g, khung khoảng 30 g, cánh khoảng 4 g, pin khoảng 30 g, tấm chuyển + ốc + dây khoảng 7 g.
+- Tổng **khoảng 138 g**; gắn thêm board LTE thì **khoảng 153 g**.
+- 4 motor 1103 cho khoảng 580 g lực đẩy, tức **tỉ lệ khoảng 3,8–4:1**: dư lực, bay ổn định.
+
 **Bộ file sản xuất** (Gerber, khoan, BOM, vị trí linh kiện, STEP) do `make_fab.py` tạo ra `fab/`. Thư mục này không lưu trong git.
 
 **Cần làm trước khi đặt hàng:**
