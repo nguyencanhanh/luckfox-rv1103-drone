@@ -4262,7 +4262,7 @@
 			(at 163.83 121.92 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Description" "60 V 3 A catch diode.  SLVSBB4G fig. 34 uses a 5 A B560C for 3.5 A out; this board draws <= 2 A (LM66100 1.5 A + GPS + buzzer), and the SMC package does not fit 36 mm"
+		(property "Description" "60 V 3 A catch diode.  SLVSBB4G fig. 34 uses a 5 A B560C for 3.5 A out; this board draws <= 2.6 A (LM66100 1.5 A + the LTE board's 1.05 A peak + buzzer), and the SMC package does not fit 36 mm"
 			(at 163.83 121.92 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)

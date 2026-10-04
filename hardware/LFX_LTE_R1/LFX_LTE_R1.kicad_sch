@@ -1,0 +1,112 @@
+(kicad_sch
+	(version 20250114)
+	(generator "lfx_gen_sch")
+	(generator_version "10.0")
+	(uuid "13d6d6f9-4ce3-6071-80ab-67e2e685a899")
+	(paper "A3")
+	(title_block
+		(title "LFX LTE R1 - LTE Cat.1 bis + GNSS board for LFX FC R1")
+		(date "2026-09-24")
+		(rev "R1")
+		(company "")
+		(comment 1 "Root - system block diagram")
+		(comment 2 "Generated from scripts/design.py")
+	)
+	(lib_symbols)
+	(text "LFX LTE R1  -  LTE Cat.1 bis + GNSS board for LFX FC R1, 46 x 46 mm, stacked"
+		(at 20 24 0)
+		(effects (font (size 3.2 3.2) (bold yes)) (justify left bottom))
+		(uuid "419b5207-6aa5-c3df-28b5-ee5c61b256ad")
+	)
+	(text "Modem : Lierda NT26-KCN E (GPS + BDS variant), all values from its hardware design manual Rev1.0"
+		(at 20 32 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "05f6dee6-5683-8c5c-5235-1eb59c62fd44")
+	)
+	(text "Link  : J1 JST-SH 10 to LFX_FC_R1 J5, straight-through: 5V x2, GND x2, UART3 TX/RX, RESET, BOOT, buzzer, ESC current"
+		(at 20 37 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "6e60e164-d373-a713-a7ef-95f584c69b74")
+	)
+	(text "Rails : +5V -> TLV62569 -> +3V8 (modem VBAT, In2 plane);  +5V -> TLV75533 -> +3V3 (translator A side)"
+		(at 20 42 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "fd2e312c-560a-f9ab-834d-45c339af9db7")
+	)
+	(text "UART  : Luckfox 3.3 V <-> modem 1.8 V by 2 x SN74LVC1T45 (Hi-Z while the modem is off)"
+		(at 20 47 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "1c960070-2cb3-8907-e81b-2b001b653fc8")
+	)
+	(text "Flash : BOOT high + RESET pulse = download mode; firmware over the same UART (921600), USB test pads as fall-back"
+		(at 20 52 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "5b6a4b41-7f75-a682-6e6d-7611527c1c86")
+	)
+	(sheet
+		(at 25 70)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "dd1dd828-5f25-a108-af15-a366f4c4f7b5")
+		(property "Sheetname" "Link to the flight controller, 3.8 V and 3.3 V supplies"
+			(at 25 68.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/02_power.kicad_sch"
+			(at 25 99.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_LTE_R1"
+				(path "/13d6d6f9-4ce3-6071-80ab-67e2e685a899" (page "2"))
+			)
+		)
+	)
+	(sheet
+		(at 199 70)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "76ec95a4-813d-5b7b-ad61-3fefef7f918a")
+		(property "Sheetname" "Lierda NT26-KCN E LTE Cat.1 bis + GNSS, UART translation, reset / download"
+			(at 199 68.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/03_modem.kicad_sch"
+			(at 199 99.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_LTE_R1"
+				(path "/13d6d6f9-4ce3-6071-80ab-67e2e685a899" (page "3"))
+			)
+		)
+	)
+	(sheet
+		(at 25 108)
+		(size 160 26)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+		(stroke (width 0.2) (type solid))
+		(fill (color 0 0 0 0.0))
+		(uuid "16851ea2-c41a-fe56-7e5b-e58cc73921c7")
+		(property "Sheetname" "Nano-SIM and antennas (U.FL LTE + GNSS)"
+			(at 25 106.5 0)
+			(effects (font (size 1.8 1.8)) (justify left bottom))
+		)
+		(property "Sheetfile" "sch/04_rf.kicad_sch"
+			(at 25 137.5 0)
+			(effects (font (size 1.4 1.4)) (justify left top))
+		)
+		(instances
+			(project "LFX_LTE_R1"
+				(path "/13d6d6f9-4ce3-6071-80ab-67e2e685a899" (page "4"))
+			)
+		)
+	)
+	(sheet_instances
+		(path "/" (page "1"))
+	)
+)

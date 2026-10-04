@@ -13,10 +13,10 @@
 		(comment 2 "Generated from scripts/design.py")
 	)
 	(lib_symbols)
-	(text "LFX FC R1  -  Luckfox Pico Mini B (RV1103) flight controller carrier, 36 x 36 mm, 30.5 mm stack"
+	(text "LFX FC R1  -  Luckfox Pico Mini B (RV1103) flight controller carrier, 46 x 46 mm"
 		(at 20 24 0)
 		(effects (font (size 3.2 3.2) (bold yes)) (justify left bottom))
-		(uuid "6a80afde-ef6a-a27b-5baf-eec4b52c2cab")
+		(uuid "4c877738-40ed-9f62-bff4-f2b61e6231c8")
 	)
 	(text "Rails : VBAT 2S-6S (ESC JST-SH 8) -> TPS54360 buck -> +5V -> LM66100 ideal diode -> VSYS (Luckfox VBUS)"
 		(at 20 32 0)
@@ -38,10 +38,20 @@
 		(effects (font (size 1.8 1.8)) (justify left bottom))
 		(uuid "779294a8-607d-1b7f-caae-77c631b502c0")
 	)
-	(text "UART  : UART2 debug (pins 4/5) and UART3 GPS (pins 12/13) on JST-SH, ESD by TPD4E05U06"
+	(text "UART  : UART2 RC receiver (pins 4/5) on JST-SH, ESD by TPD4E05U06"
 		(at 20 52 0)
 		(effects (font (size 1.8 1.8)) (justify left bottom))
-		(uuid "bdf9d6c5-2fa2-5a92-97db-c33fc3572edc")
+		(uuid "1459f7b0-8f68-a1de-fca8-01f21d00ce95")
+	)
+	(text "LTE   : J5 (JST-SH 10) to the stacked LFX_LTE_R1 board (Lierda NT26-KCN E LTE + GNSS):"
+		(at 20 57 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "973f5133-31c0-baea-93c1-51213ba81f94")
+	)
+	(text "        UART3 (pins 12/13), RESET (pin 18), BOOT (pin 20); the buzzer gate and ESC current return over it"
+		(at 20 62 0)
+		(effects (font (size 1.8 1.8)) (justify left bottom))
+		(uuid "32c8ddb1-51b1-08b5-6274-8f287f663886")
 	)
 	(sheet
 		(at 25 70)
@@ -113,7 +123,7 @@
 		(stroke (width 0.2) (type solid))
 		(fill (color 0 0 0 0.0))
 		(uuid "baed7e30-381c-fce3-035d-c85ae370376a")
-		(property "Sheetname" "ESC signals, GPS, buzzer, battery sense"
+		(property "Sheetname" "ESC signals, LTE board link, buzzer, battery sense"
 			(at 199 106.5 0)
 			(effects (font (size 1.8 1.8)) (justify left bottom))
 		)

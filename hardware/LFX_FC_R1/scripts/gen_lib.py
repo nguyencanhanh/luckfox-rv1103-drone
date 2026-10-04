@@ -23,6 +23,12 @@ Custom parts, each drawn from its datasheet:
                       pins 1.0 mm drill, rows 17.78 mm apart, 2.54 mm pitch,
                       board 21.0 x 28.16 mm, pin 1 at 1.599 / 1.393 mm from the
                       USB-C corner
+  * NT26-KCN          Lierda NT26-KCN E LTE Cat.1 bis + GNSS: symbol +
+                      LCC/LGA-109 footprint.  Pin table: Lierda NT26-KCN E
+                      hardware design manual Rev1.0 ("HDM") table 2-5 and
+                      fig. 2-2; land pattern: HDM fig. 8-3
+  * SIM_Card_Shield   the stock Connector:SIM_Card plus the holder's
+                      shield pads (SH), so they can be grounded
   * SolderPad_2.5x4mm bench-supply pads
   * TestPad_1.0mm     probe pad
 
@@ -57,9 +63,13 @@ def pin(num, name, etype, x, y, rot, length=5.08, hide=False):
 
 
 def box_symbol(name, left, right, footprint, description, datasheet="",
-               keywords="", half_w=10.16, value=None, ref="U"):
+               keywords="", half_w=10.16, value=None, ref="U", hidden=()):
     """Rectangle symbol.  left/right: [(num, pin_name, etype), ...] top down;
-    a None entry leaves a gap."""
+    a None entry leaves a gap.  An entry may also be a list of such tuples:
+    they are stacked on one row, the first visible and the rest hidden
+    passive pins (KLC S4.3), so one wire joins them all.  `hidden` lists
+    (num, name) no-connect pins kept out of sight inside the body, one grid
+    point each."""
     P = 2.54
     rows = max(len(left), len(right))
     top = (rows // 2) * P + P
@@ -73,12 +83,17 @@ def box_symbol(name, left, right, footprint, description, datasheet="",
         y = top - P
         for item in lst:
             if item is not None:
-                num, nm, et = item
-                if side == 0:
-                    pins.append(pin(num, nm, et, -half_w - 5.08, y, 0))
-                else:
-                    pins.append(pin(num, nm, et, half_w + 5.08, y, 180))
+                stack = item if isinstance(item, list) else [item]
+                for k, (num, nm, et) in enumerate(stack):
+                    x, rot = ((-half_w - 5.08, 0) if side == 0
+                              else (half_w + 5.08, 180))
+                    pins.append(pin(num, nm, et if k == 0 else "passive",
+                                    x, y, rot, hide=k > 0))
             y -= P
+    # unused / reserved pins: a column of hidden no-connect pins in the body
+    for k, (num, nm) in enumerate(hidden):
+        pins.append(pin(num, nm, "no_connect", -half_w + 2.54 * (1 + k % 6),
+                        top - P * (1 + k // 6), 0, length=0, hide=True))
 
     def prop(k, v, py, hide):
         return (f'\t\t(property {q(k)} {q(v)} (at 0 {py:g} 0)'
@@ -205,7 +220,105 @@ def luckfox_symbol():
         "luckfox rv1103 linux module", half_w=15.24, ref="MOD")
 
 
-POWER_RAILS = ["VBAT", "VSYS", "+3V3S", "+1V8"]
+# Lierda NT26-KCN E, HDM table 2-5
+NT26_GND = (1, 10, 27, 34, 36, 37, 40, 41, 45, 46, 47, 48, 70, 71, 72, 73,
+            88, 89, 90, 91, 92, 93, 94, 95)
+NT26_REV = (3, 4, 26, 30, 31, 32, 33, 44, 49, 54, 55, 56, 68, 69, 74, 75, 76,
+            77, 78, 80, 81, 83, 84, 85, 86, 87, 98, 100, 102, 103, 104, 105,
+            106, 108, 109)
+
+
+def nt26_symbol():
+    gnd = [(str(n), "GND", "power_in") for n in NT26_GND]
+    left = [[("42", "VBAT", "power_in"), ("43", "VBAT", "power_in")],
+            None,
+            ("7", "PWRKEY", "input"),
+            ("15", "RESET_N", "input"),
+            ("82", "USB_BOOT", "input"),
+            None,
+            ("17", "MAIN_RXD", "input"),
+            ("18", "MAIN_TXD", "output"),
+            ("19", "MAIN_DTR", "input"),
+            ("20", "MAIN_RI", "output"),
+            ("21", "MAIN_DCD", "output"),
+            ("22", "MAIN_CTS", "output"),
+            ("23", "MAIN_RTS", "input"),
+            None,
+            ("38", "DBG_RXD", "input"),
+            ("39", "DBG_TXD", "output"),
+            ("28", "AUX_RXD", "input"),
+            ("29", "AUX_TXD", "output"),
+            None,
+            ("61", "USB_VBUS", "input"),
+            ("59", "USB_DP", "bidirectional"),
+            ("60", "USB_DM", "bidirectional"),
+            None,
+            ("66", "I2C_SDA", "bidirectional"),
+            ("67", "I2C_SCL", "output"),
+            ("58", "CAM_I2C_SDA", "bidirectional"),
+            ("57", "CAM_I2C_SCL", "output"),
+            None,
+            gnd]
+    right = [("24", "VDD_EXT", "power_out"),
+             ("8", "GNSS_ANT_VCC", "power_out"),
+             None,
+             ("35", "ANT_MAIN", "bidirectional"),
+             ("2", "GNSS_ANT", "bidirectional"),
+             None,
+             ("14", "USIM_VDD", "power_out"),
+             ("13", "USIM_CLK", "output"),
+             ("12", "USIM_RST", "output"),
+             ("11", "USIM_DATA", "bidirectional"),
+             ("79", "USIM_DET", "input"),
+             ("65", "USIM2_VDD", "power_out"),
+             ("62", "USIM2_CLK", "output"),
+             ("63", "USIM2_RST", "output"),
+             ("64", "USIM2_DATA", "bidirectional"),
+             None,
+             ("16", "NET_STATUS", "output"),
+             ("25", "STATUS", "output"),
+             None,
+             ("9", "ADC0", "input"),
+             ("96", "ADC1", "input"),
+             ("5", "SPK_P", "output"),
+             ("6", "SPK_N", "passive"),
+             None,
+             ("50", "GPIO1", "bidirectional"),
+             ("51", "GPIO3", "bidirectional"),
+             ("52", "GPIO4", "bidirectional"),
+             ("53", "GPIO5", "bidirectional"),
+             ("101", "AGPIO3", "bidirectional"),
+             ("97", "AGPIO5", "bidirectional"),
+             ("107", "AGPIO5", "bidirectional"),   # same signal, own pad
+             ("99", "AGPIO6", "bidirectional")]
+    return box_symbol(
+        "NT26-KCN", left, right, "LFX:Lierda_NT26-KCN_LCC-LGA-109_15.8x17.7mm",
+        "Lierda NT26-KCN E LTE Cat.1 bis module with GNSS, LCC+LGA 109 pins, "
+        "17.7 x 15.8 x 2.4 mm",
+        "https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/index.html",
+        "lte cat1 4g gnss gps beidou modem", half_w=12.7,
+        hidden=[(str(n), "REV") for n in NT26_REV])
+
+
+def sim_symbol():
+    # pins as the stock Connector:SIM_Card (ISO 7816 contact numbers) plus
+    # the holder's shield
+    left = [("1", "VCC", "power_in"),
+            ("2", "RST", "input"),
+            ("3", "CLK", "input"),
+            ("7", "I/O", "bidirectional"),
+            ("6", "VPP", "passive")]
+    right = [("5", "GND", "power_in"),
+             None,
+             ("SH", "SHIELD", "passive")]
+    return box_symbol(
+        "SIM_Card_Shield", left, right,
+        "Connector_Card:nanoSIM_GCT_SIM8060-6-0-14-00",
+        "SIM card holder with shield / mounting pads", "", "sim card holder",
+        half_w=7.62, ref="J")
+
+
+POWER_RAILS = ["VBAT", "VSYS", "+3V3S", "+1V8", "+3V8"]
 
 
 def power_symbol(name):
@@ -374,6 +487,107 @@ def luckfox_footprint():
     return "\n".join(L)
 
 
+# Lierda NT26-KCN E land pattern, HDM fig. 8-3 (top view, mm, origin at the
+# module centre).  Module 15.8 (x) x 17.7 (y).
+NT26_W, NT26_H = 15.8, 17.7
+# LCC castellations: 1.1 mm pitch, 13 per long side (span 13.2), 11 per short
+# side (span 11).  Pads 0.6 x 2.3 mm, 1.0 mm of it outside the outline.
+LCC_W, LCC_L, LCC_OUT = 0.6, 2.3, 1.0
+# LGA: outer ring 10.0 x 12.0 on a 1.2 mm pitch (7 x 1.2 = 7.2 between the
+# corners on the short rows), inner columns 6.4 apart with 8 pads at 1.2,
+# a row of 3 at the bottom, and a 2 x 3 field of 1.3 mm ground pads on a
+# 1.8 mm pitch in the middle.
+RING1 = {   # (column x, list top -> bottom) and (row y, list left -> right)
+    "left":   [99, 45, 46, 47, 48, 49, 50, 51, 52, 53, 100],
+    "right":  [104, 67, 66, 65, 64, 63, 62, 61, 60, 59, 103],
+    "top":    [99, 106, 72, 71, 70, 69, 68, 105, 104],
+    "bottom": [100, 101, 54, 55, 56, 57, 58, 102, 103],
+}
+RING2 = {
+    "left":   [73, 74, 75, 76, 77, 78, 79, 80],
+    "right":  [88, 87, 86, 85, 84, 83, 82, 81],
+    "bottom": [107, 108, 109],
+}
+NT26_CENTRE = [(89, -0.9, -1.8), (94, 0.9, -1.8), (90, -0.9, 0.0),
+               (93, 0.9, 0.0), (91, -0.9, 1.8), (92, 0.9, 1.8)]
+
+
+def nt26_pads():
+    """[(number, x, y, w, h)] for all 109 pads."""
+    out = []
+    hx, hy = NT26_W / 2, NT26_H / 2
+    c = LCC_OUT - LCC_L / 2                   # pad centre beyond the edge
+    for i in range(13):                       # left: 1..13 top -> bottom
+        out.append((1 + i, -hx - c, -6.6 + 1.1 * i, LCC_L, LCC_W))
+    for i in range(13):                       # right: 23..35 bottom -> top
+        out.append((23 + i, hx + c, 6.6 - 1.1 * i, LCC_L, LCC_W))
+    bottom = [95] + list(range(14, 23)) + [96]          # left -> right
+    for i, n in enumerate(bottom):
+        out.append((n, -5.5 + 1.1 * i, hy + c, LCC_W, LCC_L))
+    top = [97] + list(range(36, 45)) + [98]             # right -> left
+    for i, n in enumerate(top):
+        out.append((n, 5.5 - 1.1 * i, -hy - c, LCC_W, LCC_L))
+    seen = set()
+    for side, lst in RING1.items():
+        for i, n in enumerate(lst):
+            if n in seen:
+                continue
+            seen.add(n)
+            if side in ("left", "right"):
+                x, y = (-5.0 if side == "left" else 5.0), -6.0 + 1.2 * i
+            else:
+                y = -6.0 if side == "top" else 6.0
+                x = -5.0 if i == 0 else 5.0 if i == len(lst) - 1 \
+                    else -3.6 + 1.2 * (i - 1)
+            corner = abs(x) == 5.0
+            out.append((n, x, y, 1.0 if corner or side in ("left", "right")
+                        else 0.7, 0.7))
+    for side, lst in RING2.items():
+        for i, n in enumerate(lst):
+            if side == "bottom":
+                out.append((n, -1.2 + 1.2 * i, 4.2, 0.65, 0.9))
+            else:
+                out.append((n, -3.2 if side == "left" else 3.2,
+                            -4.2 + 1.2 * i, 0.9, 0.65))
+    for n, x, y in NT26_CENTRE:
+        out.append((n, x, y, 1.3, 1.3))
+    nums = sorted(p[0] for p in out)
+    assert nums == list(range(1, 110)), "NT26 pad set is not 1..109"
+    return out
+
+
+def nt26_footprint():
+    hx, hy = NT26_W / 2, NT26_H / 2
+    cx, cy = hx + LCC_OUT + 0.25, hy + LCC_OUT + 0.25
+    L = fp_header("Lierda_NT26-KCN_LCC-LGA-109_15.8x17.7mm",
+                  "Lierda NT26-KCN E LTE Cat.1 bis + GNSS, LCC 48 + LGA 61, "
+                  "15.8 x 17.7 mm. Land pattern per the Lierda NT26-KCN E "
+                  "hardware design manual Rev1.0 fig. 8-3; keep other parts "
+                  "2 mm off the pads for a stepped stencil (HDM 8.3)",
+                  "lierda nt26 lte cat1 gnss lcc lga", "smd",
+                  -cy - 1.0, cy + 1.0)
+    L.append(rect(-hx, -hy, hx, hy, "F.Fab", 0.1))
+    L.append(rect(-cx, -cy, cx, cy, "F.CrtYd", 0.05))
+    # silk: the four corners only (castellations run up to them), pin-1 dot
+    sx, sy = hx + 0.15, hy + 0.15
+    for ax, ay in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+        L.append(line(ax * sx, ay * sy, ax * 6.2, ay * sy, "F.SilkS", 0.12))
+        L.append(line(ax * sx, ay * sy, ax * sx, ay * 7.3, "F.SilkS", 0.12))
+    L.append('\t(fp_circle (center %g -6.6) (end %g -6.6) (stroke (width 0.2) '
+             '(type solid)) (fill yes) (layer "F.SilkS"))'
+             % (-hx - LCC_OUT - 0.6, -hx - LCC_OUT - 0.45))
+    for n, x, y, w, h in nt26_pads():
+        rr = 0.25 if (w == LCC_L or h == LCC_L) else 0.1
+        L += [f'\t(pad "{n}" smd roundrect',
+              f'\t\t(at {x:g} {y:g})',
+              f'\t\t(size {w:g} {h:g})',
+              '\t\t(layers "F.Cu" "F.Mask" "F.Paste")',
+              f'\t\t(roundrect_rratio {rr:g})',
+              '\t)']
+    L += ['\t(embedded_fonts no)', ')']
+    return "\n".join(L)
+
+
 def solderpad_footprint():
     return textwrap.dedent(f'''\
         (footprint "SolderPad_2.5x4mm"
@@ -477,7 +691,7 @@ def main():
     os.makedirs(FP_DIR, exist_ok=True)
 
     parts = [icm42688_symbol(), bmp390_symbol(), lm66100_symbol(),
-             luckfox_symbol()]
+             luckfox_symbol(), nt26_symbol(), sim_symbol()]
     parts += [power_symbol(n) for n in POWER_RAILS]
     lib = ['(kicad_symbol_lib',
            f'\t(version {SYM_VERSION})',
@@ -492,6 +706,8 @@ def main():
 
     for name, text in (("Bosch_BMP390_LGA-10_2x2mm_P0.5mm", bmp390_footprint()),
                        ("Luckfox_Pico_Mini_Socket", luckfox_footprint()),
+                       ("Lierda_NT26-KCN_LCC-LGA-109_15.8x17.7mm",
+                        nt26_footprint()),
                        ("SolderPad_2.5x4mm", solderpad_footprint()),
                        ("SolderPad_1.5x2.5mm", motorpad_footprint()),
                        ("TestPad_1.0mm", testpad_footprint())):

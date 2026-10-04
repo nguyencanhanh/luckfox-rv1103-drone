@@ -2746,7 +2746,7 @@
 		(stroke (width 0) (type default))
 		(uuid "e680f094-2e41-4586-cec2-4eacb31e9fe8")
 	)
-	(global_label "ADC_CUR"
+	(global_label "LTE_BOOT"
 		(shape bidirectional)
 		(at 77.47 43.18 0)
 		(effects (font (size 1.27 1.27)) (justify left))
@@ -2776,7 +2776,7 @@
 		(stroke (width 0) (type default))
 		(uuid "5d93d0a3-0a14-ce36-aa1d-e087fc4601aa")
 	)
-	(global_label "BUZ_CTRL"
+	(global_label "LTE_RST"
 		(shape bidirectional)
 		(at 77.47 48.26 0)
 		(effects (font (size 1.27 1.27)) (justify left))
@@ -2851,7 +2851,7 @@
 		(stroke (width 0) (type default))
 		(uuid "f0832337-6808-da1e-44ed-be9920d14028")
 	)
-	(global_label "GPS_RX"
+	(global_label "LTE_RX"
 		(shape bidirectional)
 		(at 77.47 60.96 0)
 		(effects (font (size 1.27 1.27)) (justify left))
@@ -2866,7 +2866,7 @@
 		(stroke (width 0) (type default))
 		(uuid "1ba54580-21b3-0186-4217-12eb7b439cf5")
 	)
-	(global_label "GPS_TX"
+	(global_label "LTE_TX"
 		(shape bidirectional)
 		(at 77.47 63.5 0)
 		(effects (font (size 1.27 1.27)) (justify left))
@@ -3440,35 +3440,6 @@
 	(no_connect
 		(at 255.27 35.56)
 		(uuid "ff09de50-cdaf-519a-bdeb-34fdb2c4e8f6")
-	)
-	(wire
-		(pts (xy 242.57 55.88) (xy 242.57 59.69))
-		(stroke (width 0) (type default))
-		(uuid "87eb961a-af42-5f90-5acb-99ebee791ba3")
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 242.57 59.69 0)
-		(unit 1)
-		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
-		(uuid "5bbc8cd5-4a07-c1b0-90cc-012af689d134")
-		(property "Reference" "#PWR0061"
-			(at 242.57 55.88 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
-		)
-		(property "Value" "GND"
-			(at 242.57 64.19 0)
-			(effects (font (size 1.27 1.27)))
-		)
-		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(instances
-			(project "LFX_FC_R1"
-				(path "/45fe5ea4-7ed3-d7ce-88f3-57d97f18bd10/cc2da1be-4875-9c97-002a-54558758a378"
-					(reference "#PWR0061") (unit 1)
-				)
-			)
-		)
 	)
 	(no_connect
 		(at 229.87 50.8)

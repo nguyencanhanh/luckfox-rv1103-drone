@@ -54,7 +54,7 @@ jitter 18,2 µs khi idle và 116,7 µs khi camera chạy ([REALTIME.md](REALTIME
 | Miền | Phần cứng (đề xuất) | Phần mềm (đề xuất) |
 |---|---|---|
 | MCU | SPI0 (chân 6–9, CS1 chân 14): IMU ICM-42688-P + barometer; PWM2 kênh 8–11 (chân 10, 11, 16, 17): 4 ESC | RT-Thread: ctrl_rate 1 kHz, ctrl_att 250 Hz, ctrl_alt 100 Hz, safety 100 Hz, comms 100 Hz, blackbox |
-| Linux | CSI camera; UART3 (chân 12/13): GPS; SARADC (chân 19/20): pin; USB host: Wi-Fi | vision, flight-manager, telemetry + web, blackbox-writer, mcu-loader |
+| Linux | CSI camera; UART3 (chân 12/13): module LTE + GNSS Lierda NT26-KCN E; chân 18 / 20: RESET / BOOT của module; SARADC IN0 (chân 19): áp pin; USB host: Wi-Fi | vision, flight-manager, telemetry + web, blackbox-writer, mcu-loader, lte-loader (nạp firmware Lierda) |
 | Chung | DDR: MCU 0x01800000 (256 KB, đã chạy) + IPC 0x01840000 (256 KB, đề xuất) | vòng đệm SPSC + polling (không có mailbox driver, không có RPMsg cho RV1106) |
 
 Những điểm có thể buộc phải dùng MCU điều khiển bay rời (phương án B):

@@ -5,12 +5,12 @@ Produce the manufacturing package in fab/ :
 
   gerbers/          Gerber X2 for all copper, mask, silk, paste, edge
   drill/            Excellon plated + non-plated, with a map
-  LFX_FC_R1_schematic.pdf
-  LFX_FC_R1_assembly_top.pdf / _bottom.pdf
-  LFX_FC_R1_bom.csv          grouped, with DNF flagged
-  LFX_FC_R1_pos_top.csv      pick and place
-  LFX_FC_R1.step             3D model
-  LFX_FC_R1_stats.txt        board statistics
+  LFX_LTE_R1_schematic.pdf
+  LFX_LTE_R1_assembly_top.pdf / _bottom.pdf
+  LFX_LTE_R1_bom.csv          grouped, with DNF flagged
+  LFX_LTE_R1_pos_top.csv      pick and place
+  LFX_LTE_R1.step             3D model
+  LFX_LTE_R1_stats.txt        board statistics
   README_FAB.txt                what to tell the fab house
 
 Run:  python3 scripts/make_fab.py
@@ -25,17 +25,17 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 CLI = "/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli"
-SCH = os.path.join(ROOT, "LFX_FC_R1.kicad_sch")
-PCB = os.path.join(ROOT, "LFX_FC_R1.kicad_pcb")
+SCH = os.path.join(ROOT, "LFX_LTE_R1.kicad_sch")
+PCB = os.path.join(ROOT, "LFX_LTE_R1.kicad_pcb")
 FAB = os.path.join(ROOT, "fab")
 
-FAB_README = """LFX FC R1 - fabrication notes
-=============================
+FAB_README = """LFX LTE R1 - fabrication notes
+==============================
 
 Board
   size              46.0 x 46.0 mm, 2 mm corner radius
-  mounting          4 x M3 NPTH (3.2 mm), 39 x 39 mm pattern, unplated on
-                    purpose (no frame ground through the standoffs)
+  mounting          4 x M3 NPTH (3.2 mm), 39 x 39 mm pattern - the same as
+                    LFX_FC_R1, the two boards stack
   layers            4 (F.Cu / GND / PWR / B.Cu)
   thickness         1.6 mm
   stack-up          JLC04161H-7628 or equivalent:
@@ -43,33 +43,26 @@ Board
                       prepreg 7628 x1   0.2104 mm   Er 4.4
                       In1.Cu 17 um   SOLID GROUND
                       core              1.065 mm
-                      In2.Cu 17 um   VSYS plane + 3V3S island
+                      In2.Cu 17 um   +3V8 plane
                       prepreg 7628 x1   0.2104 mm
                       B.Cu   35 um
   outer copper      1 oz finished
-  min track / gap   0.15 / 0.15 mm (fan-out of the 0.5 mm pitch LGA
-                    sensors; general logic is 0.20 mm)
+  min track / gap   0.15 / 0.15 mm
   min drill         0.25 mm vias (0.50 mm pad), tented both sides
   copper to edge    0.25 mm minimum
-  surface finish    ENIG strongly preferred: the ICM-42688-P (LGA-14) and
-                    BMP390 (LGA-10) need flat pads; HASL is not advised
+  surface finish    ENIG: the modem is an LCC + LGA part (109 pads)
   solder mask       both sides
   silkscreen        both sides
 
 CONTROLLED IMPEDANCE
-  None required.
-
-EXPOSED COPPER
-  J2 / J3 (battery, 2.5 x 4 mm) and J7..J14 (ESC signal / ground,
-  1.5 x 2.5 mm) are bare solder pads for wires: normal mask openings.
+  Not ordered as a controlled-impedance build.  The two antenna feeds (LTE
+  and GNSS, a few mm each, F.Cu over the In1 ground) are 0.35 mm wide: 50 ohm
+  on the JLC04161H-7628 stack above.  Keep that stack-up.
 
 ASSEMBLY
-  Both sides carry SMD parts: the 5 V buck (U1, L1, D3), the ESC connector
-  J1, battery pads and the ADC dividers are on the bottom; the Luckfox
-  socket, sensors, RC / LTE-board / buzzer connectors and ESC pads on the top.
-  MOD1 is two 1 x 11, 2.54 mm female headers (the module plugs in) - hand
-  soldered, through hole.
-  Parts marked DNF in the BOM are not fitted.
+  Top side only.  U4 is a Lierda NT26-KCN E - order the GPS + BDS variant;
+  its LGA joints are under the body: X-ray or at least an electrical check.
+  Parts marked DNF in the BOM (the antenna pi-match shunts) are not fitted.
 """
 
 
@@ -106,13 +99,13 @@ def main():
 
     print("documents")
     run("sch", "export", "pdf", "-o",
-        os.path.join(FAB, "LFX_FC_R1_schematic.pdf"), SCH)
+        os.path.join(FAB, "LFX_LTE_R1_schematic.pdf"), SCH)
     run("pcb", "export", "pdf", "--layers",
         "F.SilkS,F.Fab,Edge.Cuts", "--mode-single",
-        "-o", os.path.join(FAB, "LFX_FC_R1_assembly_top.pdf"), PCB)
+        "-o", os.path.join(FAB, "LFX_LTE_R1_assembly_top.pdf"), PCB)
     run("pcb", "export", "pdf", "--layers",
         "B.SilkS,B.Fab,Edge.Cuts", "--mode-single", "--mirror",
-        "-o", os.path.join(FAB, "LFX_FC_R1_assembly_bottom.pdf"), PCB)
+        "-o", os.path.join(FAB, "LFX_LTE_R1_assembly_bottom.pdf"), PCB)
 
     print("bom and placement")
     run("sch", "export", "bom",
@@ -121,10 +114,10 @@ def main():
         "--labels", "Refs,Value,Footprint,Qty,Description,Manufacturer,MPN,DNF",
         "--group-by", "Value,Footprint",
         "--sort-field", "Reference",
-        "-o", os.path.join(FAB, "LFX_FC_R1_bom.csv"), SCH)
+        "-o", os.path.join(FAB, "LFX_LTE_R1_bom.csv"), SCH)
     run("pcb", "export", "pos", "--format", "csv", "--units", "mm",
         "--side", "both", "--use-drill-file-origin",
-        "-o", os.path.join(FAB, "LFX_FC_R1_pos.csv"), PCB)
+        "-o", os.path.join(FAB, "LFX_LTE_R1_pos.csv"), PCB)
 
     print("verification reports")
     run("pcb", "drc", "--severity-all", "--schematic-parity",
@@ -134,9 +127,9 @@ def main():
 
     print("3d and statistics")
     run("pcb", "export", "step", "--subst-models", "--no-dnp",
-        "-o", os.path.join(FAB, "LFX_FC_R1.step"), PCB)
+        "-o", os.path.join(FAB, "LFX_LTE_R1.step"), PCB)
     run("pcb", "export", "stats", "-o",
-        os.path.join(FAB, "LFX_FC_R1_stats.txt"), PCB)
+        os.path.join(FAB, "LFX_LTE_R1_stats.txt"), PCB)
 
     with open(os.path.join(FAB, "README_FAB.txt"), "w") as fh:
         fh.write(FAB_README)

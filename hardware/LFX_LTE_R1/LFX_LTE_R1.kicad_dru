@@ -1,0 +1,28 @@
+(version 1)
+
+# ---------------------------------------------------------------------------
+# LFX FC R1 custom design rules
+#
+# The net classes (scripts/stackup.py) set the blanket widths and clearances.
+# The relationships that matter for this board are scoped here.
+# ---------------------------------------------------------------------------
+
+# TI SLVSBB4G 10.1 layout guidelines: route the feedback and compensation
+# network away from the switch node.  Scoped to the two groups so the
+# divider's own pads are not flagged.
+(rule "feedback clear of the switch node"
+    (constraint clearance (min 1.0mm))
+    (condition "A.NetClass == 'Sense' && B.Net == 'SW5'"))
+
+# No switch-node copper under or next to the gyro: keep SW5 2 mm off every
+# IMU pad on any layer.
+(rule "switch node clear of the IMU"
+    (constraint clearance (min 2.0mm))
+    (condition "A.Net == 'SW5' && B.Type == 'Pad' && B.Parent.Reference == 'U4'"))
+
+# A package's own pad pitch is not something the layout can change: the
+# ICM-42688-P LGA leaves 0.15 mm between adjacent pads.  A class clearance
+# above that would fail forever at a spot nobody can fix.
+(rule "package pad pitch governs pad-to-pad spacing"
+    (constraint clearance (min 0.15mm))
+    (condition "A.Type == 'Pad' && B.Type == 'Pad'"))

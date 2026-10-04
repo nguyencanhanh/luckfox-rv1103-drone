@@ -49,8 +49,8 @@ Kế hoạch đầy đủ theo thứ tự an toàn ở mục [An toàn](#an-toà
 
 | Miền | Chạy gì | Sở hữu phần cứng |
 |---|---|---|
-| **HPMCU** RISC-V SCR1 297 MHz, `rv32imc` (không FPU), RT-Thread | vòng tốc độ quay 1 kHz, vòng góc 250 Hz, vòng độ cao 100 Hz, trộn motor, ARM / failsafe | SPI0 (IMU, barometer), PWM2 kênh 8–11 (4 ESC), chân 18 (còi) |
-| **Cortex-A7** 1,1 GHz, Linux (Buildroot của SDK) | đọc bộ thu RC (CRSF), camera + NPU, điều hướng, GPS, telemetry Wi-Fi, nạp firmware MCU | UART2 (bộ thu RC), UART3 (GPS), MIPI CSI, USB, SARADC, CRU |
+| **HPMCU** RISC-V SCR1 297 MHz, `rv32imc` (không FPU), RT-Thread | vòng tốc độ quay 1 kHz, vòng góc 250 Hz, vòng độ cao 100 Hz, trộn motor, ARM / failsafe | SPI0 (IMU, barometer), PWM2 kênh 8–11 (4 ESC) |
+| **Cortex-A7** 1,1 GHz, Linux (Buildroot của SDK) | đọc bộ thu RC (CRSF), camera + NPU, điều hướng, LTE + GPS (module Lierda), telemetry Wi-Fi, nạp firmware MCU và Lierda | UART2 (bộ thu RC), UART3 (Lierda: AT, GNSS, nạp firmware), chân 18/20 (RESET/BOOT Lierda), MIPI CSI, USB, SARADC, CRU |
 | **DDR chung** 64 MB | MCU chạy ở `0x01800000` (256 KB, đã kiểm chứng); IPC đề xuất ở `0x01840000` | [MEMORY_MAP.md](docs/MEMORY_MAP.md) |
 
 Luồng điều khiển:
@@ -101,6 +101,7 @@ Mạch mang Luckfox Pico Mini B, thiết kế bằng pipeline KiCad 10 viết b�
   - IMU ICM-42688-P và barometer BMP390, đặt dưới module.
   - Có vùng cấm via và đường mạch dưới thân chip.
   - 4 đường SPI của IMU vẽ tay, chạy song song, không dùng via.
+- **LTE + GNSS:** nằm trên board con [LFX_LTE_R1](#board-lte-lfx_lte_r1) xếp tầng, nối qua J5.
 
 **Đầu cắm** (JST-SH 1,0 mm, miệng hướng ra mép board):
 
@@ -108,13 +109,39 @@ Mạch mang Luckfox Pico Mini B, thiết kế bằng pipeline KiCad 10 viết b�
 |---|---|---|
 | J1 · ESC 4-in-1 (mặt dưới) | 1 VBAT, 2 GND, 3 dòng điện, 4 telemetry, 5–8 M1–M4 | thứ tự chân mỗi hãng ESC một khác: kiểm dây trước khi cấp điện |
 | J4 · bộ thu RC ELRS | 1 5 V, 2 GND, 3 TX board → RX bộ thu, 4 RX board ← TX bộ thu | UART2, CRSF; R24 1 kΩ kéo lên để bộ thu không kẹt bootloader |
-| J5 · GPS | 1 5 V, 2 GND, 3 TX, 4 RX | UART3, chống ESD ngay tại cổng |
-| J6 · còi | 1 +5 V, 2 còi − (MOSFET đóng ngắt) | |
+| J5 · board LTE | 1–2 +5 V, 3–4 GND, 5 TX, 6 RX, 7 RESET, 8 BOOT, 9 cổng còi, 10 dòng ESC | cáp JST-SH 10 thẳng (chân n ↔ chân n) sang J1 của LFX_LTE_R1; chống ESD tại cổng |
+| J6 · còi | 1 +5 V, 2 còi − (MOSFET đóng ngắt) | gate MOSFET do GPIO1 của Lierda điều khiển qua J5 |
 | J7–J14 · pad ESC rời | S / G ở 4 góc | M1 sau-phải, M2 trước-phải, M3 sau-trái, M4 trước-trái (Betaflight) |
 | J2 / J3 · pad pin | VBAT / GND | nguồn bàn khi không có ESC |
 | TP1–TP6 | +5 V, VSYS, +3V3S, telemetry ESC, RC_TX, RC_RX | TP5/TP6: xem console khi rút bộ thu |
 
 **Kiểm tra:** ERC 0, DRC 0 vi phạm, 0 nối hở, 0 lỗi khớp sơ đồ (`--schematic-parity`).
+
+### Board LTE: LFX_LTE_R1
+
+Board con 46 × 46 mm, cùng 4 lỗ M3 (39 × 39 mm) để xếp tầng với mạch bay, linh kiện **chỉ ở mặt trên**. Nằm trong [`hardware/LFX_LTE_R1/`](hardware/LFX_LTE_R1), dùng chung pipeline script và thư viện LFX với LFX_FC_R1.
+
+- **Module: Lierda NT26-KCN E**, LTE Cat.1 bis + GNSS. Khi đặt mua chọn bản **GPS + BDS**: bản NT26KCNE20GNB trong sổ tay phần cứng chỉ có BeiDou, chân ra giống hệt.
+- **Kết nối với mạch bay (J1, JST-SH 10):** UART3 của Luckfox (chân 12/13) đi qua 2 con SN74LVC1T45 để chuyển 3,3 V ↔ 1,8 V. Chip này tự cách ly khi module tắt, vì UART của module không chịu điện áp ngược. Cùng một UART dùng cho lệnh AT, đọc GNSS và nạp firmware (921600 bd).
+- **Luckfox nạp firmware cho Lierda:**
+  - chân 18 (RESET) kéo RESET_N xuống qua MOSFET;
+  - chân 20 (BOOT, GPIO4_C1, bank 1,8 V, cùng mức với module) nối USB_BOOT qua 1 kΩ;
+  - giữ BOOT mức cao rồi reset ≥ 300 ms là module vào chế độ nạp;
+  - có test pad USB (D+/D−/VBUS) để nạp cứu bằng máy tính.
+- **Nguồn:**
+  - buck TLV62569 hạ +5 V xuống **3,8 V**. VBAT của module chỉ chịu 3,3–4,5 V, nên không lấy thẳng từ pin 2S–6S. Nối tới module qua mặt phẳng +3V8 trên lớp In2; tụ 2 × 47 µF + 100 nF / 33 pF / 8,2 pF đặt tại chân VBAT.
+  - LDO TLV75533 cấp 3,3 V cho phía Luckfox của bộ chuyển mức.
+- **SIM:** khay nano-SIM có nắp bản lề, điện trở 22 Ω, tụ 33 pF, chống ESD TPD4E05U06.
+- **Anten:** 2 cổng U.FL, LTE và GNSS. GNSS cấp nguồn 3,3 V cho anten active; dùng anten thụ động thì bỏ R24. Đường 50 Ω rộng 0,35 mm trên F.Cu, có mạch π để chỉnh phối hợp trở kháng.
+- **Còi và cảm biến dòng ESC** chuyển sang GPIO1 / ADC0 của Lierda (đi qua cáp), vì Luckfox đã hết chân. Rút board LTE ra thì còi không kêu.
+- **Không bật chế độ ngủ của module** (`AT+QSCLK=1`): khi ngủ, VDD_EXT tắt nên bộ chuyển mức cách ly, Luckfox không đánh thức được qua UART.
+
+| Cổng | Ghi chú |
+|---|---|
+| J1 · sang mạch bay | JST-SH 10, cùng thứ tự chân với J5 của LFX_FC_R1 |
+| J2 · nano-SIM | GCT SIM8060, nắp bản lề |
+| J3 · U.FL LTE / J4 · U.FL GNSS | |
+| TP1–TP7 | +3V8, VDD_EXT 1,8 V, USB D+, USB D−, USB VBUS, DBG TX, DBG RX |
 
 **Bộ file sản xuất** (Gerber, khoan, BOM, vị trí linh kiện, STEP) do `make_fab.py` tạo ra `fab/`. Thư mục này không lưu trong git.
 

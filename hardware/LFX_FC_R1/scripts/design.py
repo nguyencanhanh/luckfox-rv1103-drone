@@ -24,6 +24,21 @@ Rails
     +3V3S       TLV75533 LDO from VSYS, IMU + barometer only
     +1V8        Luckfox 1V8_OUT (header pin 22), used only to clamp the ADC inputs
                 (SARADC range is 0-1.8 V, Luckfox wiki ADC page)
+
+LTE board link (J5)
+-------------------
+The LTE / GNSS modem (Lierda NT26-KCN E) sits on its own 46 x 46 mm board,
+hardware/LFX_LTE_R1, stacked on the same four M3 holes and joined by a
+straight-through JST-SH 10 cable.  Every header pin was already in use, so:
+    12 / 13     UART3 TX / RX: AT commands, GNSS, and the modem's firmware
+                download (the external GPS connector is gone - the modem has
+                GNSS on board)
+    18          LTE_RST, high = modem RESET_N low (FET on the LTE board)
+    20          LTE_BOOT, GPIO4_C1: a 1.8 V-only bank, the same level as the
+                modem's USB_BOOT; high during reset = download mode
+The buzzer and the ESC current sense lost their pins (18, 20): the buzzer
+gate is now driven by the modem's GPIO1 and the ESC current is read by its
+ADC0, both over the same cable.
 """
 
 # ---------------------------------------------------------------------------
@@ -67,7 +82,7 @@ SHEETS = [
     ("02_power",   "Power: ESC input, 5 V buck, ideal diode, sensor LDO"),
     ("03_module",  "Luckfox Pico Mini B socket and RC receiver port"),
     ("04_sensors", "IMU ICM-42688-P and barometer BMP390 on SPI0"),
-    ("05_io",      "ESC signals, GPS, buzzer, battery sense"),
+    ("05_io",      "ESC signals, LTE board link, buzzer, battery sense"),
 ]
 
 POWER_NETS = {
@@ -163,8 +178,9 @@ Cap("C6", "6n8/50V", C0603, "COMP5_C", "GND", S, B)
 Cap("C7", "39p/50V", C0603, "COMP5", "GND", S, B)
 Diode("D3", "B360B", SMB, "GND", "SW5", S, B, kind="Device:D_Schottky",
       Description="60 V 3 A catch diode.  SLVSBB4G fig. 34 uses a 5 A B560C "
-                  "for 3.5 A out; this board draws <= 2 A (LM66100 1.5 A + "
-                  "GPS + buzzer), and the SMC package does not fit 36 mm")
+                  "for 3.5 A out; this board draws <= 2.6 A (LM66100 1.5 A + "
+                  "the LTE board's 1.05 A peak + buzzer), and the SMC "
+                  "package does not fit 36 mm")
 L("L1", "8.2uH", IND_XAL5050, "SW5", "+5V", S, B,
   Description="8.2 uH (SLVSBB4G fig. 34 value), Isat >= 3.5 A, "
               "DCR <= 40 mOhm, 5 x 5 mm (Coilcraft XAL5050-822 class). "
@@ -216,15 +232,15 @@ C("MOD1", "LFX:Luckfox_Pico_Mini", "Luckfox Pico Mini B", MODULE_FP, {
     "9": "SPI_MISO",        # SPI0_MISO_M0 GPIO1_C3
     "10": "ESC_M3_IO",      # PWM8_M1      GPIO1_C4   rear-left motor
     "11": "ESC_M4_IO",      # PWM9_M1      GPIO1_C5   front-left motor
-    "12": "GPS_TX",         # UART3_TX_M1  GPIO1_D0
-    "13": "GPS_RX",         # UART3_RX_M1  GPIO1_D1
+    "12": "LTE_TX",         # UART3_TX_M1  GPIO1_D0  -> modem MAIN_RXD
+    "13": "LTE_RX",         # UART3_RX_M1  GPIO1_D1  <- modem MAIN_TXD
     "14": "BARO_CS",        # SPI0_CS1_M0  GPIO1_D2 (pinctrl:852-855)
     "15": "IMU_INT1",       # GPIO1_D3
     "16": "ESC_M1_IO",      # PWM10_M1     GPIO1_C6   rear-right motor
     "17": "ESC_M2_IO",      # PWM11_M1     GPIO1_C7   front-right motor
-    "18": "BUZ_CTRL",       # GPIO0_A4
+    "18": "LTE_RST",        # GPIO0_A4     high = modem in reset
     "19": "ADC_VBAT",       # SARADC_IN0   GPIO4_C0
-    "20": "ADC_CUR",        # SARADC_IN1   GPIO4_C1
+    "20": "LTE_BOOT",       # GPIO4_C1     high at reset = modem download
     "21": "GND",
     "22": "+1V8",           # 1V8_OUT (10 R inside the module)
 }, S, B, Description="Plugs in with USB-C at the board edge; 2x 1x11 "
@@ -240,7 +256,7 @@ B = "RC receiver UART2 (CRSF / ExpressLRS)"
 # 24 MHz x 7/25.  Linux's console (earlycon 0xff4c0000, fiq-debugger
 # serial-id 2, rv1106.dtsi:225-232) has to move off UART2 in software; debug
 # goes over ADB, or through TP5/TP6 with the receiver unplugged.
-# Pin order as J5 (GPS): power, ground, then the board's TX and RX.
+# Pin order: power, ground, then the board's TX and RX.
 C("J4", "Connector_Generic_MountingPin:Conn_01x04_MountingPin",
   "SM04B-SRSS-TB", jst_sh(4),
   {"1": "+5V", "2": "GND", "3": "RC_TX_X", "4": "RC_RX_X", "MP": "GND"},
@@ -321,7 +337,7 @@ for n, (sig, gnd) in enumerate((("J7", "J11"), ("J8", "J12"),
     C(gnd, "Connector:TestPoint", "M%d GND" % n, PAD_MOTOR,
       {"1": "GND"}, S, B, Description="Motor %d signal ground" % n)
 
-B = "Battery voltage and current sense (SARADC 0-1.8 V)"
+B = "Battery voltage sense (SARADC 0-1.8 V)"
 R("R16", "100k 1%", R0603, "VBAT", "ADC_VBAT", S, B)
 R("R17", "6k8 1%", R0603, "ADC_VBAT", "GND", S, B,
   Description="Ratio 0.0637: 25.2 V -> 1.60 V, 1.8 V at 28.3 V")
@@ -329,33 +345,41 @@ Cap("C21", "100n/16V", C0402, "ADC_VBAT", "GND", S, B)
 C("D5", "Diode:BAT54S", "BAT54S", SOT23,
   {"1": "GND", "2": "+1V8", "3": "ADC_VBAT"}, S, B,
   Description="Clamps the ADC pin between GND and 1V8")
-R("R18", "10k 1%", R0603, "ESC_CUR", "ADC_CUR", S, B)
-R("R19", "12k 1%", R0603, "ADC_CUR", "GND", S, B,
-  Description="Ratio 0.545: 3.3 V ESC current output -> 1.80 V")
-Cap("C22", "100n/16V", C0402, "ADC_CUR", "GND", S, B)
-C("D6", "Diode:BAT54S", "BAT54S", SOT23,
-  {"1": "GND", "2": "+1V8", "3": "ADC_CUR"}, S, B)
 
-B = "GPS / GNSS (UART3)"
-C("J5", "Connector_Generic_MountingPin:Conn_01x04_MountingPin", "SM04B-SRSS-TB", jst_sh(4),
-  {"1": "+5V", "2": "GND", "3": "GPS_TX_X", "4": "GPS_RX_X", "MP": "GND"},
-  S, B, Description="1:5V 2:GND 3:TX (board out) 4:RX (board in)")
-R("R20", "33R", R0402, "GPS_TX", "GPS_TX_X", S, B)
-R("R21", "33R", R0402, "GPS_RX_X", "GPS_RX", S, B)
+B = "LTE board link (JST-SH 10, to LFX_LTE_R1)"
+# Straight-through cable, pin n to pin n.  +5V and GND on two contacts each:
+# JST-SH is rated 1 A per contact and the modem's 1.2 A bursts at 3.8 V are
+# ~1.05 A at 5 V.  The UART is at the Luckfox's 3.3 V; the LTE board
+# translates to the modem's 1.8 V.
+C("J5", "Connector_Generic_MountingPin:Conn_01x10_MountingPin",
+  "SM10B-SRSS-TB", jst_sh(10),
+  {"1": "+5V", "2": "+5V", "3": "GND", "4": "GND", "5": "LTE_TX_X",
+   "6": "LTE_RX_X", "7": "LTE_RST_X", "8": "LTE_BOOT_X", "9": "BUZ_CTRL",
+   "10": "ESC_CUR", "MP": "GND"}, S, B,
+  Description="LTE board. 1,2:5V 3,4:GND 5:TX (board out) 6:RX (board in) "
+              "7:RESET 8:BOOT 9:buzzer gate (in) 10:ESC current (out)")
+R("R20", "33R", R0402, "LTE_TX", "LTE_TX_X", S, B)
+R("R21", "33R", R0402, "LTE_RX_X", "LTE_RX", S, B)
+R("R18", "33R", R0402, "LTE_RST", "LTE_RST_X", S, B)
+R("R19", "33R", R0402, "LTE_BOOT", "LTE_BOOT_X", S, B)
+# ESD on the UART pair here; RESET and BOOT are clamped at the LTE board's
+# end of the cable (its U1), where they enter the modem circuit.
 C("U6", "Power_Protection:TPD4E05U06DQA", "TPD4E05U06DQA", USON10,
-  {"1": "GPS_TX_X", "2": "GPS_RX_X", "3": "GND", "4": "", "5": "",
-   "6": "", "7": "", "8": "GND", "9": "", "10": ""}, S, B,
-  Description="ESD at the GPS connector")
+  {"1": "LTE_TX_X", "2": "LTE_RX_X", "3": "GND", "4": "", "5": "",
+   "6": "", "7": "", "8": "GND", "9": "", "10": ""},
+  S, B, Description="ESD on the LTE board UART")
 
-B = "Buzzer driver"
+B = "Buzzer driver (gate from the LTE board)"
 C("J6", "Connector_Generic_MountingPin:Conn_01x02_MountingPin", "SM02B-SRSS-TB", jst_sh(2),
   {"1": "+5V", "2": "BUZ_N", "MP": "GND"}, S, B,
   Description="1:+5V 2:buzzer - (low side switched)")
 C("Q1", "Transistor_FET:AO3400A", "AO3400A", SOT23,
   {"1": "BUZ_G", "2": "GND", "3": "BUZ_N"}, S, B)
+# BUZ_CTRL is the modem's GPIO1 (1.8 V) over J5.  AO3400A VGS(th) is
+# 0.65-1.45 V: 1.8 V of gate drive is enough for a ~30 mA buzzer.
 R("R22", "100R", R0402, "BUZ_CTRL", "BUZ_G", S, B)
 R("R23", "100k", R0402, "BUZ_G", "GND", S, B,
-  Description="Buzzer off while the SoC pin floats")
+  Description="Buzzer off while the LTE board is unplugged or off")
 Diode("D7", "BAT54", SOD323, "BUZ_N", "+5V", S, B, kind="Device:D_Schottky",
       Description="Flyback for a magnetic buzzer")
 

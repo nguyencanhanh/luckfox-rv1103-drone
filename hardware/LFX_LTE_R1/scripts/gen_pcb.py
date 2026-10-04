@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Build LFX_FC_R1.kicad_pcb from scripts/design.py.
+Build LFX_LTE_R1.kicad_pcb from scripts/design.py.
 
-46 x 46 mm, 4 layers, M3 standoff holes in the four corners (39 x 39 mm
-pattern, 3.5 mm from each edge).  Two sides, split by job:
+46 x 46 mm, 4 layers, the flight controller's four M3 holes (39 x 39 mm
+pattern, 3.5 mm from each edge) so the two boards stack.  Every part is on
+the top side (one reflow pass):
 
-  TOP      Luckfox Pico Mini B on its socket, USB-C flush with the top edge so
-           a cable plugs in with the stack assembled.  Under the module (the
-           socket leaves ~7 mm of air): IMU, barometer, ideal diode, sensor
-           LDO, ADC dividers.  The two strips outside the header rows carry the
-           side-entry JST-SH connectors, mouths facing the board edge:
-           RC receiver on the left (next to module pins 4/5), buzzer and the
-           LTE-board cable (JST-SH 10) on the right (next to pins 12/13).
-           Four signal / ground solder-pad pairs sit at the corners for
-           separate ESCs, one per quad-X arm.
-  BOTTOM   ESC JST-SH 8 mouth-out at the bottom edge, where a 4-in-1 ESC
-           underneath plugs straight in.  The buck converter sits in the
-           lower third, below the module's header columns, ~20 mm from the
-           gyro with the solid In1 ground plane between.  Bench-supply pads
-           either side of the ESC plug.
+  * Lierda NT26-KCN E in the middle, nudged toward the rear edge; its VBAT
+    pins (42/43) face that edge, with their caps and the 3.8 V buck in the
+    strip behind them
+  * the antenna pins (2 left, 35 right) sit near the rear of its long sides,
+    each in line with a U.FL jack: GNSS on the left, LTE on the right
+  * the hinged nano-SIM below the module, contacts toward it
+  * the JST-SH 10 to the flight controller on the right edge at the same
+    height as the flight controller's J5, so the cable runs straight down
+  * In1 solid ground, In2 one +3V8 plane for the modem's 1.2 A bursts
 
-The camera flat cable leaves the module over the bottom edge of the TOP side,
-so that strip stays free of connectors.
+The placement / packing machinery is the flight controller's
+(LFX_FC_R1/scripts/gen_pcb.py); only the board, zones and anchors differ.
 
 Run with KiCad's python:
 
@@ -44,29 +40,26 @@ import design
 import kisym                                          # noqa: E402
 
 STOCK_FP = "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints"
-LOCAL_FP = os.path.join(ROOT, "lib", "footprints")
+LOCAL_FP = os.path.join(os.path.dirname(ROOT), "LFX_FC_R1", "lib",
+                        "footprints")        # shared LFX library
 
-BOARD_W, BOARD_H = 46.0, 46.0
+FC_W = 46.0                           # same square as the flight controller
+FC_DY = 0.0                           # no offset: one square, board coords
+BOARD_W, BOARD_H = FC_W, FC_W
 EDGE_R = 2.0                          # corner radius
 HOLE_IN = 3.5                         # M3 standoffs in the corners
-HOLE_PITCH = BOARD_W - 2 * HOLE_IN    # 39.0 mm square pattern
+HOLE_PITCH = FC_W - 2 * HOLE_IN       # 39.0 mm square pattern
 HOLE_KEEP = 3.3                       # keep-out radius around each M3 hole
-HOLES = [(HOLE_IN, HOLE_IN), (BOARD_W - HOLE_IN, HOLE_IN),
-         (HOLE_IN, BOARD_H - HOLE_IN), (BOARD_W - HOLE_IN, BOARD_H - HOLE_IN)]
+HOLES = [(HOLE_IN, HOLE_IN), (FC_W - HOLE_IN, HOLE_IN),
+         (HOLE_IN, FC_W - HOLE_IN), (FC_W - HOLE_IN, FC_W - HOLE_IN)]
 
 CLEAR = 0.2                           # placement clearance between courtyards
 MIN_HOLE = 0.25                       # fab minimum drill
 EDGE_CLEAR = 0.3                      # copper to board edge
 
-# Module socket: pin-field centre.  The module's USB-C edge sits 14.093 mm
-# above it (official STEP), so this puts that edge on the board edge.
-MOD_X, MOD_Y = BOARD_W / 2.0, 14.093
-
-
-# In2 island for +3V3S under the sensor cluster, with a finger up to the LDO
-# output (U3 pin 5, C14).  No VSYS pad lies inside it.
-P3V3S_ISLAND = [(25.9, 0.7), (28.8, 0.7), (28.8, 22.8), (16.0, 22.8),
-                (16.0, 7.2), (25.9, 7.2)]
+# In2 is one +3V8 plane over the whole board
+P3V8_ISLAND = [(0.5, 0.5), (BOARD_W - 0.5, 0.5), (BOARD_W - 0.5, BOARD_H - 0.5),
+               (0.5, BOARD_H - 0.5)]
 
 
 def mm(v):
@@ -80,177 +73,101 @@ def P(x, y):
 # ---------------------------------------------------------------------------
 # functional placement zones  (x0, y0, x1, y1, side)
 # ---------------------------------------------------------------------------
-COL_L, COL_R = MOD_X - 8.89, MOD_X + 8.89          # header columns, 14.11 / 31.89
-UNDER = (15.95, 0.45, 30.05, 28.6)                 # between the columns
-BUCK = (9.0, 28.9, 37.0, 39.1)                     # bottom, below the columns
 ZONES = {
-    "under_module": UNDER + ("F",),
-    "left_strip":   (0.4, 7.2, 12.2, 38.8, "F"),
-    "right_strip":  (33.8, 7.2, 45.6, 38.8, "F"),
-    "fpc_strip":    (11.2, 28.6, 34.8, 45.6, "F"),
-    "buck":         BUCK + ("B",),
-    "bottom_under": UNDER + ("B",),
+    "left_strip":  (0.6, 7.2, 13.6, 45.4, "F"),
+    "right_strip": (32.4, 7.2, 45.4, 45.4, "F"),
+    "rear_strip":  (6.8, 0.6, 39.2, 8.6, "F"),
+    "below":       (6.8, 29.4, 39.2, 45.4, "F"),
+    "bottom":      (0.6, 0.6, 45.4, 45.4, "B"),
 }
-SPILL_ORDER = {"F": ["under_module", "left_strip", "right_strip",
-                     "fpc_strip"],
-               "B": ["bottom_under", "buck"]}
+SPILL_ORDER = {"F": ["left_strip", "right_strip", "rear_strip", "below"],
+               "B": ["bottom"]}
 
 BLOCK_ZONE = {
-    "Battery input from the 4-in-1 ESC": "buck",
-    "TPS54360 buck  VBAT -> +5V": "buck",
-    "LM66100 ideal diode  +5V -> VSYS (blocks USB back-feed)": "under_module",
-    "TLV75533 LDO  VSYS -> +3V3S (sensors only)": "under_module",
-    "Luckfox Pico Mini B, 2x 1x11 female header": "under_module",
-    "RC receiver UART2 (CRSF / ExpressLRS)": "left_strip",
-    "ICM-42688-P 6-axis IMU, SPI 4-wire": "under_module",
-    "BMP390 barometer, SPI 4-wire": "under_module",
-    "4-in-1 ESC connector (JST-SH 8)": "under_module",
-    "Battery voltage sense (SARADC 0-1.8 V)": "bottom_under",
-    "LTE board link (JST-SH 10, to LFX_LTE_R1)": "right_strip",
-    "Buzzer driver (gate from the LTE board)": "right_strip",
-    "Separate ESC solder pads (quad-X corners)": "fpc_strip",
+    "Flight-controller link (JST-SH 10)": "right_strip",
+    "TLV62569 buck  +5V -> +3V8 (modem VBAT)": "rear_strip",
+    "Modem supply decoupling at VBAT (HDM 3.4.2)": "rear_strip",
+    "TLV75533 LDO  +5V -> +3V3 (translator A side)": "right_strip",
+    "ESC current sense -> modem ADC0 (0-1.05 V)": "left_strip",
+    "Lierda NT26-KCN E  LTE Cat.1 bis + GNSS": "left_strip",
+    "UART level translation 3.3 V <-> 1.8 V": "right_strip",
+    "Reset and download-mode control from the Luckfox": "right_strip",
+    "Network status LED (HDM 4.7.3)": "right_strip",
+    "Nano-SIM (HDM 4.3)": "below",
+    "LTE antenna (HDM 5.3)": "right_strip",
+    "GNSS active antenna (HDM 6.2, fig. 6-2)": "left_strip",
 }
 
 # Hand placed anchors: ref -> (x, y, rotation, side).  (x, y) is the wanted
 # centre of the COURTYARD.  JST-SH side-entry: the mouth is on the +y side of
-# the footprint at rotation 0, so 90 faces the right edge and 270 the left;
-# on the bottom Flip() mirrors y, so 180 faces the bottom edge.
-X = 5.0          # everything under the module moved right from the 36 mm draft
+# the footprint at rotation 0, so 90 faces the right edge.  The signal pad of
+# a U.FL is on its -x side at rotation 0.
 ANCHORS = {
-    "MOD1": (MOD_X, MOD_Y, 0, "F"),
-    # --- connectors on the edges ------------------------------------------
-    "J4":  (3.55, 14.7, 270, "F"),        # RC receiver, left edge
-    "J6":  (42.45, 14.6, 90, "F"),        # buzzer, right edge
-    "J5":  (42.45, 30.3, 90, "F"),        # LTE board cable, right edge
-    "J1":  (MOD_X, 42.65, 180, "B"),      # 4-in-1 ESC, bottom edge
-    "J2":  (32.6, 42.2, 0, "B"),          # bench VBAT pad, beside J1 pin 1
-    "J3":  (13.4, 42.2, 0, "B"),          # bench GND pad
-    # --- separate-ESC pads: signal + ground, inboard of each corner hole ----
-    "J9":  (8.8, 2.2, 0, "F"),   "J13": (11.0, 2.2, 0, "F"),   # M3 rear-left
-    "J7":  (37.2, 2.2, 0, "F"),  "J11": (35.0, 2.2, 0, "F"),   # M1 rear-right
-    "J10": (8.8, 43.8, 0, "F"),  "J14": (11.0, 43.8, 0, "F"),  # M4 front-left
-    "J8":  (37.2, 43.8, 0, "F"), "J12": (35.0, 43.8, 0, "F"),  # M2 front-right
-    # --- under the module, top row: power path by header pin 1 -------------
-    "U2":  (12.6 + X, 1.9, 0, "F"),       # ideal diode, pin 1 is VSYS
-    "C15": (15.6 + X, 2.4, 90, "F"),
-    "C11": (11.6 + X, 4.95, 90, "F"),
-    "C12": (14.9 + X, 5.65, 0, "F"),
-    "U3":  (19.4 + X, 2.6, 0, "F"),       # sensor LDO
-    "C13": (18.6 + X, 5.3, 0, "F"),
-    "C14": (22.4 + X, 2.4, 90, "F"),
-    # --- sensors: axes square to the board ---------------------------------
-    # sensors in the open middle under the module, next to the SPI pins
-    # (module pins 6-9, left column, y 14-22), well spread for vias
-    "U5":  (18.4, 11.8, 0, "F"),          # barometer, SDI/SDO face the pins
-    "R10": (17.6, 15.1, 0, "F"),          # IMU_CS pull-up at module pin 6
-    "R11": (27.6, 21.0, 0, "F"),          # BARO_CS pull-up at module pin 14
-    "U4":  (21.6, 18.4, 90, "F"),         # IMU, CS/SCK/MOSI/MISO face module
-                                          # pins 6..9 in the same order
-    # --- ESC series resistors at their module pins -------------------------
-    "R12": (24.0 + X, 16.63, 0, "F"),     # M1, pin 16
-    "R13": (24.0 + X, 14.9, 0, "F"),      # M2, pin 17
-    "R14": (12.0 + X, 24.25, 0, "F"),     # M3, pin 10
-    "R15": (12.0 + X, 26.79, 0, "F"),     # M4, pin 11
-    # --- LTE link: ESD at the connector, series resistors by the module ---
-    "U6":  (37.4, 29.6, 180, "F"),
-    "R20": (34.7, 28.6, 0, "F"),          # TX, pin 12
-    "R21": (34.7, 24.25, 180, "F"),       # RX, pin 13
-    # --- left strip: RC ESD, series resistors, 5 V LED, probes ------------
-    "U7":  (2.6, 21.2, 90, "F"),
-    "R8":  (6.2, 20.4, 90, "F"),
-    "R9":  (7.6, 20.4, 90, "F"),
-    "R7":  (2.6, 25.0, 90, "F"),
-    "D4":  (2.6, 28.6, 90, "F"),
-    "TP1": (6.4, 25.4, 0, "F"),
-    "TP2": (9.2, 25.4, 0, "F"),
-    "TP5": (6.4, 28.4, 0, "F"),           # UART2 console tap (RC_TX)
-    "TP6": (9.2, 28.4, 0, "F"),           # UART2 console tap (RC_RX)
-    "R24": (11.2, 9.4, 90, "F"),          # RC_RX pull-up by module pin 3
-    # --- right strip: buzzer driver between its connector and the GPS one -
-    "Q1":  (40.7, 19.9, 0, "F"),
-    "D7":  (44.3, 19.9, 90, "F"),
-    "R22": (40.0, 22.6, 0, "F"),
-    "R23": (42.3, 22.6, 0, "F"),
-    # --- ADC dividers and the battery TVS, top side below the module --------
-    # ADC dividers on the BOTTOM, right beside module pins 19 / 20 / 22
-    # (right column top, reachable from below): the RC filter and the clamp
-    # sit at the SoC's ADC pins, where they do their job
-    # VBAT divider top at the battery end, beside the input ferrite: only
-    # the divided (<1.8 V) node crosses the board, filtered by C21 at the pin
-    "R16": (38.6, 37.8, 90, "B"),         # VBAT -> ADC_VBAT
-    "R17": (23.4, 9.6, 0, "B"),
-    "C21": (23.4, 8.0, 0, "B"),
-    "D5":  (27.6, 9.9, 0, "B"),
-    "R18": (34.4, 11.55, 90, "B"),        # LTE_RST at module pin 18
-    "R19": (34.4, 6.47, 90, "B"),         # LTE_BOOT at module pin 20
-    "D1":  (35.2, 34.8, 90, "F"),         # TVS over the battery entry
-    # --- power train, bottom side, below the header columns ----------------
-    # VBAT arrives on the right (J1 pin 1, bench pad J2), so the input
-    # filter and caps and U1's VIN side face right; U1 is turned 180 degrees
-    # so its SW pin faces L1 and D3 on the left.  +5V leaves upward between
-    # the columns toward the LM66100.
-    "U1":  (27.0, 30.0, 180, "B"),
-    "L1":  (18.8, 30.0, 180, "B"),        # pin 1 faces U1 SW
-    # U1 on the bottom, turned 180: its BOOT / VIN / SW end faces up.  The
-    # catch diode sits right above the U1 / L1 gap, K close to SW.
-    "D3":  (22.6, 24.3, 180, "B"),
-    "C4":  (33.0, 30.4, 90, "B"),         # 100n right at VIN
-    "C1":  (35.2, 30.4, 90, "B"),
-    "C2":  (37.7, 30.4, 90, "B"),
-    "FB1": (36.2, 37.0, 90, "B"),
-    "C8":  (13.6, 30.2, 90, "B"),         # output caps left of L1, at +5V
-    "C9":  (10.0, 30.2, 90, "B"),
-    "C10": (13.6, 35.6, 90, "B"),
-    # control network in two rows under U1 (pins 3-6 are its bottom end):
-    # each column under the pin it serves, the second row under the first
-    # part it shares a node with; 3.6 mm pitch leaves room to route between
-    "C7":  (17.4, 35.0, 0, "B"),          # COMP -> GND (39 pF)
-    "R4":  (20.6, 34.4, 0, "B"),          # COMP -> COMP5_C
-    "C6":  (20.6, 36.9, 0, "B"),          # COMP5_C -> GND
-    "R5":  (24.2, 34.4, 0, "B"),          # +5V -> FB
-    "R6":  (24.2, 36.9, 0, "B"),          # FB -> GND
-    "R3":  (27.8, 34.4, 0, "B"),          # RT
-    # EN node in one straight column at x 30.6 (U1.3 -> R1 -> R2 -> D2):
-    # R1 turned so its VBAT_F end faces the input caps, not the EN pin
-    "R1":  (31.4, 34.4, 180, "B"),        # VBAT_F -> EN
-    "R2":  (31.4, 36.9, 0, "B"),          # EN -> GND
-    "D2":  (28.0, 36.9, 180, "B"),        # EN clamp, cathode on the EN column
+    "U4":  (23.0, 19.0, 0, "F"),          # modem; pin 2 at y 13.5, 35 at 12.4
+    "J4":  (7.4, 13.5, 180, "F"),         # GNSS U.FL in line with pin 2
+    "J3":  (38.6, 12.4, 0, "F"),          # LTE U.FL in line with pin 35
+    "J2":  (23.0, 37.6, 0, "F"),          # nano-SIM, contacts toward the modem
+    "J1":  (42.45, 30.3, 90, "F"),        # to FC J5 (same place on the FC)
+    "U1":  (37.4, 30.3, 180, "F"),        # its ESD
+    # VBAT (pins 42/43 at x 19.7 / 20.8): HF caps right behind the pads,
+    # bulk behind them, the buck beside
+    "C7":  (20.2, 7.4, 0, "F"),
+    "C8":  (22.3, 7.4, 0, "F"),
+    "C9":  (18.1, 7.4, 0, "F"),
+    "C5":  (16.6, 3.6, 0, "F"),
+    "C6":  (21.6, 3.6, 0, "F"),
+    "U2":  (27.4, 3.8, 0, "F"),
+    "L1":  (33.6, 4.0, 0, "F"),
+    "D1":  (40.6, 21.0, 0, "F"),          # network LED
 }
 
 # Parts placed at the pin they serve:
 #   (ref, host, host_pad, dx, dy, rot, side, region)
-INTERIOR = UNDER
+INTERIOR = None
 NEAR = [
-    # --- buck: bootstrap, EN, RT, FB, compensation between U1 and the header
-    ("C5",  "U1", "1", 0.0, -2.0, 0, "B", INTERIOR),    # bootstrap, pin 1
-    ("TP4", "J1", "4", 0.0, -4.0, 0, "B", BUCK),        # ESC telemetry probe
-    ("TP3", "U4", "8", -3.5, 3.5, 0, "B", INTERIOR),    # +3V3S, clear of the
-                                                        # IMU via field
-    # --- sensor decoupling on the pins -------------------------------------
-    # U4 is turned 90 degrees: SPI row faces the module (left), VDD (8) up,
-    # VDDIO (5) and INT1 (4) right, so no escape crosses another
-    ("C16", "U4", "8", 0.0, -1.5, 0),
-    ("C17", "U4", "8", 0.0, -2.9, 0),
-    ("C18", "U4", "5", 2.0, 0.0, 0),      # VDDIO pad in line with pin 5
-
-    ("C19", "U5", "10", 2.2, 0.0, 90),
-    ("C20", "U5", "1", 0.6, -2.2, 0),
-
+    # LTE: pi network in line between pin 35 and J3
+    ("R22", "U4", "35", 2.6, 0.0, 0, "F"),
+    ("C21", "U4", "35", 2.0, 1.5, 90, "F"),
+    ("C22", "J3", "1", -1.8, 1.5, 90, "F"),
+    # GNSS chain on one line: J4.1 -> C25 -> R23 -> pin 2, pad 1 of each part
+    # toward the modem
+    ("R23", "U4", "2", -2.8, 0.0, 180, "F"),
+    ("C23", "U4", "2", -2.4, 1.5, 90, "F"),
+    ("C25", "J4", "1", 1.9, 0.0, 180, "F"),
+    ("C24", "J4", "1", 3.0, 1.5, 90, "F"),
+    ("L2",  "J4", "1", 0.6, 2.4, 90, "F"),
+    ("R24", "U4", "8", -3.0, 0.0, 0, "F"),
+    ("C26", "U4", "8", -3.0, 1.3, 0, "F"),
+    ("C27", "U4", "8", -3.0, -1.1, 0, "F"),
+    ("R8",  "U4", "7", -2.6, 0.0, 0, "F"),     # PWRKEY pull-down
+    ("C12", "U4", "9", -2.4, 0.0, 0, "F"),     # ADC0 filter at the pin
+    # buck: input cap at VIN, output cap at L1, feedback at FB
+    ("C2",  "U2", "4", 0.0, -1.6, 0, "F"),
+    ("C3",  "L1", "2", 0.0, 3.6, 0, "F"),
+    ("R4",  "U2", "5", -1.0, 2.0, 90, "F"),
+    ("R5",  "U2", "5", 0.2, 2.0, 90, "F"),
+    ("C4",  "U2", "5", 1.4, 2.0, 90, "F"),
+    # SIM: series R, caps, ESD between the holder contacts and the modem
+    ("U7",  "J2", "3", -9.0, 0.0, 90, "F"),
+    # BOOT resistor at USB_BOOT (pin 82, inner ring) - just outside the
+    # module on its right; reset FET by RESET_N (pin 15, bottom row)
+    ("R13", "U4", "82", 7.0, 0.0, 90, "F"),
+    ("Q1",  "U4", "15", -6.0, 1.0, 0, "F"),
+    # translators by the cable connector
+    ("U5",  "J1", "5", -6.5, -2.0, 0, "F"),
+    ("U6",  "J1", "6", -6.5, 2.0, 0, "F"),
 ]
 
 # Routing channels reserved before auto placement: (refA, padA, refB, padB, w)
-CHANNELS = [
-    ("U1", "8", "L1", "1", 1.6),       # switch node
-    ("U1", "8", "D3", "1", 1.6),
-    ("L1", "2", "C8", "1", 1.6),       # output
-]
+CHANNELS = []
 
 SILK = []            # every string laid down, for the self-check below
 
 
 def add_silk(board, text, x, y, size=1.2, layer=pcbnew.F_SilkS, rot=0,
-             thickness=0.2, anchor="center"):
-    """Place silkscreen text.
+             thickness=0.2, anchor="center", absolute=False):
+    """Place silkscreen text at square-local (x, y), or board (x, y) with
+    absolute=True.
 
     `anchor` says what (x, y) means.  It defaults to the centre, which is
     KiCad's own default and was the bug behind 'AQUANODE R10' hanging 4.3 mm
@@ -262,7 +179,7 @@ def add_silk(board, text, x, y, size=1.2, layer=pcbnew.F_SilkS, rot=0,
         t.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_LEFT)
     elif anchor == "right":
         t.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_RIGHT)
-    t.SetPosition(P(x, y))
+    t.SetPosition(P(x, y if absolute else y + FC_DY))
     t.SetLayer(layer)
     t.SetTextSize(pcbnew.VECTOR2I(mm(size), mm(size)))
     t.SetTextThickness(mm(thickness))
@@ -433,7 +350,7 @@ _check_unique_anchors()
 # TDK and Bosch both keep copper activity away from the MEMS die; a via under
 # an LGA also cannot be tented reliably between 0.15 mm pad gaps.
 EDGE_KEEP = 0.5
-SENSOR_BODIES = [("U4", 3.0, 2.5), ("U5", 2.0, 2.0)]
+SENSOR_BODIES = []
 
 
 def add_sensor_keepouts(board, placed):
@@ -488,7 +405,7 @@ def fp_path(lib):
 
 
 def make_outline(board):
-    """36 x 36 mm with rounded corners."""
+    """BOARD_W x BOARD_H with rounded corners."""
     def seg(x1, y1, x2, y2):
         s = pcbnew.PCB_SHAPE(board)
         s.SetShape(pcbnew.SHAPE_T_SEGMENT)
@@ -620,7 +537,7 @@ BOARD_BOUNDS = (0.35, 0.35, BOARD_W - 0.35, BOARD_H - 0.35)
 
 
 def main():
-    out = os.path.join(ROOT, "LFX_FC_R1.kicad_pcb")
+    out = os.path.join(ROOT, "LFX_LTE_R1.kicad_pcb")
     board = pcbnew.NewBoard(out)
     board.SetCopperLayerCount(4)
     board.SetLayerName(pcbnew.In1_Cu, "GND")
@@ -688,7 +605,12 @@ def main():
         if ref not in placed:
             continue
         fp = placed[ref][0]
-        bx0, by0, bx1, by1 = put(fp, x, y, rot, side)
+        bx0, by0, bx1, by1 = put(fp, x, y + FC_DY, rot, side)
+        if ref == "U4":
+            # HDM 8.3: 2 mm round the pads for a stepped stencil on the
+            # same side; the HF caps behind VBAT are the one exception
+            packer.occupy(bx0 - CLEAR, by0 - CLEAR, bx1 + CLEAR, by1 + CLEAR,
+                          side)
         if ref == "MOD1":
             # the socket courtyard is two header strips; the space between
             # them is free for low parts under the module
@@ -813,37 +735,24 @@ def main():
     add_mounting_holes(board)
     add_sensor_keepouts(board, placed)
 
-    # ---- silkscreen: every label a person needs to plug the board in -------
-    add_silk(board, "LFX FC R1", 23.0, 38.6, size=1.0)
-    add_silk(board, "RC", 3.55, 10.4, size=0.8)
-    add_silk(board, "BUZ", 42.45, 10.4, size=0.8)
-    add_silk(board, "LTE", 42.45, 37.6, size=0.8)
-    add_silk(board, "5V", 2.6, 31.0, size=0.8)
-    add_silk(board, "FWD v", 23.0, 40.4, size=0.8)
-    # motor pads: S / G under (or over) each pad, the motor name beside them
-    for n, sig, gnd, dy in ((3, "J9", "J13", 2.35), (1, "J7", "J11", 2.35),
-                            (4, "J10", "J14", -2.35), (2, "J8", "J12", -2.35)):
-        for ref, ch in ((sig, "S"), (gnd, "G")):
-            x, y = pad_xy(placed[ref][0], "1")
-            add_silk(board, ch, x, y + dy, size=0.8)
-        xs = [pad_xy(placed[r][0], "1")[0] for r in (sig, gnd)]
-        y = pad_xy(placed[sig][0], "1")[1] + 2 * dy
-        add_silk(board, "M%d" % n, sum(xs) / 2.0, y, size=0.8)
-    add_silk(board, "ESC", 27.6, 38.9, size=0.8, layer=pcbnew.B_SilkS)
-    add_silk(board, "VBAT", 32.6, 39.4, size=0.8, layer=pcbnew.B_SilkS)
-    add_silk(board, "GND", 13.4, 39.4, size=0.8, layer=pcbnew.B_SilkS)
-    # per-pin letters for the side connectors, printed on the BOTTOM right
-    # under each signal pad: they line up with the pins whatever the rotation
-    # J5: 5V 5V G G TX RX reSet Boot buZzer Current
-    for ref, letters in (("J4", "+GTR"), ("J5", "++GGTRSBZC"), ("J6", "+-")):
+    # ---- silkscreen -------------------------------------------------------
+    add_silk(board, "LFX LTE R1", 23.0, 23.0, size=1.0, layer=pcbnew.B_SilkS)
+    add_silk(board, "GNSS", 4.2, 13.5, size=0.8, rot=90)
+    add_silk(board, "LTE", 38.6, 12.4, size=0.8, layer=pcbnew.B_SilkS)
+    add_silk(board, "NET", 40.6, 22.8, size=0.8)
+    add_silk(board, "TO FC", 42.45, 38.4, size=0.8)
+    # J1: 5V 5V G G TX RX reSet Boot buZzer Current, under each pad; the
+    # pads are 1 mm apart, so the letters stagger left / right
+    for ref, letters in (("J1", "++GGTRSBZC"),):
         fp = placed[ref][0]
         for n, ch in enumerate(letters, start=1):
             x, y = pad_xy(fp, str(n))
-            if ref == "J5":           # 10 pads at 1 mm: stagger the letters
-                x += 0.5 if n % 2 else -0.5
-            add_silk(board, ch, x, y, size=0.8, layer=pcbnew.B_SilkS)
-    # J5's reference would sit on U6; the "LTE" label names it
-    placed["J5"][0].Reference().SetLayer(pcbnew.F_Fab)
+            add_silk(board, ch, x + (0.5 if n % 2 else -0.5), y, size=0.8,
+                     layer=pcbnew.B_SilkS, absolute=True)
+    # connector / jack / probe references sit next to other parts here:
+    # assembly drawing only, the silk labels above name them for a person
+    for ref in ("J1", "J2", "J3", "J4", "TP1", "TP6"):
+        placed[ref][0].Reference().SetLayer(pcbnew.F_Fab)
     bad_silk = check_silk(board, set(placed))
     if bad_silk:
         print("  !! %d silkscreen problems" % bad_silk)

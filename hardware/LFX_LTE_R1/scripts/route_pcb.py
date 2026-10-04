@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Route pcb/LFX_FC_R1.kicad_pcb:
+Route pcb/LFX_LTE_R1.kicad_pcb:
 
   1. export a Specctra .dsn
   2. run freerouting head-less
@@ -23,10 +23,10 @@ sys.path.insert(0, HERE)
 
 import pcbnew                                          # noqa: E402
 
-PCB = os.path.join(ROOT, "LFX_FC_R1.kicad_pcb")
-DSN = os.path.join(ROOT, "pcb", "LFX_FC_R1.dsn")
-INNER_LAYERS = ("GND", "PWR")   # In1 GND and In2 VSYS/+3V3S are planes, not routing space
-SES = os.path.join(ROOT, "pcb", "LFX_FC_R1.ses")
+PCB = os.path.join(ROOT, "LFX_LTE_R1.kicad_pcb")
+DSN = os.path.join(ROOT, "pcb", "LFX_LTE_R1.dsn")
+INNER_LAYERS = ("GND", "PWR")   # In1 GND and In2 +3V8 are planes, not routing space
+SES = os.path.join(ROOT, "pcb", "LFX_LTE_R1.ses")
 JAR = os.environ.get("FREEROUTING_JAR", "")
 
 import gen_pcb                                         # noqa: E402
@@ -203,12 +203,9 @@ def add_zones(board):
     add_zone(board, "GND", [pcbnew.F_Cu], full, 10, "GND top", True)
     add_zone(board, "GND", [pcbnew.B_Cu], full, 10, "GND bottom", True)
     add_zone(board, "GND", [pcbnew.In1_Cu], full, 10, "GND plane")
-    # In2 is one VSYS plane.  +5V runs as 0.8 mm track instead of an island:
-    # the buck (bottom, lower half) is 20 mm from the LM66100 (top, by header
-    # pin 1), and an island joining them would cut the VSYS plane in two.
-    add_zone(board, "VSYS", [pcbnew.In2_Cu], full, 5, "VSYS plane")
-    add_zone(board, "+3V3S", [pcbnew.In2_Cu], gen_pcb.P3V3S_ISLAND, 10,
-             "+3V3S island")
+    # In2: the modem's VBAT, one plane under the whole board
+    add_zone(board, "+3V8", [pcbnew.In2_Cu], gen_pcb.P3V8_ISLAND, 5,
+             "+3V8 plane")
 
     zones = list(board.Zones())
     filler = pcbnew.ZONE_FILLER(board)

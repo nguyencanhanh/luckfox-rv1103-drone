@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Build the whole LFX_FC_R1 KiCad project from scripts/design.py:
+Build the whole LFX_LTE_R1 KiCad project from scripts/design.py
+(the generator is the flight controller's, LFX_FC_R1/scripts/gen_sch.py):
 
-    LFX_FC_R1.kicad_pro         project
-    LFX_FC_R1.kicad_sch         root sheet (4 hierarchical sheets)
+    LFX_LTE_R1.kicad_pro         project
+    LFX_LTE_R1.kicad_sch         root sheet (4 hierarchical sheets)
     sch/02_power.kicad_sch ...  the four leaf sheets
     sym-lib-table / fp-lib-table
 
@@ -26,7 +27,7 @@ import design                                          # noqa: E402
 import stackup                                         # noqa: E402
 import kisym                                           # noqa: E402
 
-PROJECT = "LFX_FC_R1"
+PROJECT = "LFX_LTE_R1"
 SCH_VERSION = 20250114
 PAPER = "A3"                      # 420 x 297 mm
 PAGE_W, PAGE_H = 420.0, 297.0
@@ -45,7 +46,7 @@ def snap(v, g=GRID):
 
 
 def uid(*parts):
-    h = hashlib.md5(("LFX_FC_R1|" + "|".join(str(p) for p in parts))
+    h = hashlib.md5(("LFX_LTE_R1|" + "|".join(str(p) for p in parts))
                     .encode()).hexdigest()
     return "%s-%s-%s-%s-%s" % (h[0:8], h[8:12], h[12:16], h[16:20], h[20:32])
 
@@ -387,7 +388,7 @@ def lib_symbols_block(lib_ids):
 
 def title_block(title, rev="R1", date="2026-09-24", sheetno=None):
     return ['\t(title_block',
-            f'\t\t(title {esc("LFX FC R1 - Luckfox RV1103 flight controller")})',
+            f'\t\t(title {esc("LFX LTE R1 - LTE Cat.1 bis + GNSS board for LFX FC R1")})',
             f'\t\t(date {esc(date)})',
             f'\t\t(rev {esc(rev)})',
             f'\t\t(company {esc("")})',
@@ -460,17 +461,14 @@ def build_root():
     out += title_block("Root - system block diagram")
     out += ['\t(lib_symbols)']
 
-    out += emit_text("LFX FC R1  -  Luckfox Pico Mini B (RV1103) flight "
-                     "controller carrier, 46 x 46 mm", 20, 24,
-                     size=3.2)
+    out += emit_text("LFX LTE R1  -  LTE Cat.1 bis + GNSS board for LFX FC R1, "
+                     "46 x 46 mm, stacked", 20, 24, size=3.2)
     notes = [
-        "Rails : VBAT 2S-6S (ESC JST-SH 8) -> TPS54360 buck -> +5V -> LM66100 ideal diode -> VSYS (Luckfox VBUS)",
-        "        VSYS -> TLV75533 -> +3V3S (IMU + barometer only)    +1V8 from the module, ADC clamps only",
-        "SPI0  : ICM-42688-P (CS0, pin 6) + BMP390 (CS1, pin 14), MCU-owned per docs/architecture.html",
-        "ESC   : PWM8-11_M1 on module pins 10, 11, 16, 17 -> 47R -> JST-SH 8 pins 5-8",
-        "UART  : UART2 RC receiver (pins 4/5) on JST-SH, ESD by TPD4E05U06",
-        "LTE   : J5 (JST-SH 10) to the stacked LFX_LTE_R1 board (Lierda NT26-KCN E LTE + GNSS):",
-        "        UART3 (pins 12/13), RESET (pin 18), BOOT (pin 20); the buzzer gate and ESC current return over it",
+        "Modem : Lierda NT26-KCN E (GPS + BDS variant), all values from its hardware design manual Rev1.0",
+        "Link  : J1 JST-SH 10 to LFX_FC_R1 J5, straight-through: 5V x2, GND x2, UART3 TX/RX, RESET, BOOT, buzzer, ESC current",
+        "Rails : +5V -> TLV62569 -> +3V8 (modem VBAT, In2 plane);  +5V -> TLV75533 -> +3V3 (translator A side)",
+        "UART  : Luckfox 3.3 V <-> modem 1.8 V by 2 x SN74LVC1T45 (Hi-Z while the modem is off)",
+        "Flash : BOOT high + RESET pulse = download mode; firmware over the same UART (921600), USB test pads as fall-back",
     ]
     for i, n in enumerate(notes):
         out += emit_text(n, 20, 32 + i * 5.0, size=1.8, bold=False)
@@ -526,7 +524,7 @@ PROJECT_JSON = """{
   "boards": [],
   "cvpcb": { "equivalence_files": [] },
   "libraries": { "pinned_footprint_libs": [], "pinned_symbol_libs": [] },
-  "meta": { "filename": "LFX_FC_R1.kicad_pro", "version": 3 },
+  "meta": { "filename": "LFX_LTE_R1.kicad_pro", "version": 3 },
   "net_settings": {
     "classes": [
       { "name": "Default", "clearance": 0.2, "track_width": 0.25,
@@ -552,6 +550,12 @@ PROJECT_JSON = """{
         "microvia_drill": 0.1, "diff_pair_width": 0.2, "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25, "wire_width": 6, "bus_width": 12,
         "line_style": 0, "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "pcb_color": "rgba(0, 0, 0, 0.000)" },
+      { "name": "RF", "clearance": 0.2, "track_width": 0.25,
+        "via_diameter": 0.6, "via_drill": 0.3, "microvia_diameter": 0.3,
+        "microvia_drill": 0.1, "diff_pair_width": 0.2, "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25, "wire_width": 6, "bus_width": 12,
+        "line_style": 0, "schematic_color": "rgba(0, 0, 0, 0.000)",
         "pcb_color": "rgba(0, 0, 0, 0.000)" }
     ],
     "meta": { "version": 4 },
@@ -559,17 +563,16 @@ PROJECT_JSON = """{
     "netclass_assignments": null,
     "netclass_patterns": [
       { "netclass": "Power", "pattern": "GND" },
-      { "netclass": "PowerHi", "pattern": "VBAT" },
-      { "netclass": "PowerHi", "pattern": "VBAT_F" },
-      { "netclass": "Power", "pattern": "VSYS" },
-      { "netclass": "Power", "pattern": "+3V3S" },
       { "netclass": "PowerHi", "pattern": "+5V" },
-      { "netclass": "PowerHi", "pattern": "SW5" },
-      { "netclass": "Sense", "pattern": "FB5" },
-      { "netclass": "Sense", "pattern": "COMP5" },
-      { "netclass": "Sense", "pattern": "COMP5_C" },
-      { "netclass": "Sense", "pattern": "RT5" },
-      { "netclass": "Sense", "pattern": "EN5" }
+      { "netclass": "PowerHi", "pattern": "+3V8" },
+      { "netclass": "PowerHi", "pattern": "SW38" },
+      { "netclass": "Power", "pattern": "+3V3" },
+      { "netclass": "Sense", "pattern": "FB38" },
+      { "netclass": "RF", "pattern": "LTE_ANT" },
+      { "netclass": "RF", "pattern": "LTE_ANT_J" },
+      { "netclass": "RF", "pattern": "GNSS_ANT" },
+      { "netclass": "RF", "pattern": "GNSS_ANT_M" },
+      { "netclass": "RF", "pattern": "GNSS_ANT_J" }
     ]
   },
   "pcbnew": {
@@ -620,13 +623,13 @@ PROJECT_JSON = """{
 
 SYM_LIB_TABLE = """(sym_lib_table
   (version 7)
-  (lib (name "LFX")(type "KiCad")(uri "${KIPRJMOD}/lib/symbols/LFX.kicad_sym")(options "")(descr "LFX FC R1 custom symbols"))
+  (lib (name "LFX")(type "KiCad")(uri "${KIPRJMOD}/../LFX_FC_R1/lib/symbols/LFX.kicad_sym")(options "")(descr "LFX custom symbols, shared with LFX_FC_R1"))
 )
 """
 
 FP_LIB_TABLE = """(fp_lib_table
   (version 7)
-  (lib (name "LFX")(type "KiCad")(uri "${KIPRJMOD}/lib/footprints/LFX.pretty")(options "")(descr "LFX FC R1 custom footprints"))
+  (lib (name "LFX")(type "KiCad")(uri "${KIPRJMOD}/../LFX_FC_R1/lib/footprints/LFX.pretty")(options "")(descr "LFX custom footprints, shared with LFX_FC_R1"))
 )
 """
 
