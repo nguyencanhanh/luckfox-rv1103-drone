@@ -150,7 +150,9 @@ def run_freerouting():
     # Greedy, single-thread optimisation; the critical nets are hand-routed
     # and locked beforehand, so the router only fills in the logic.
     java = os.environ.get("JAVA_BIN", "java")
-    cmd = [java, "-jar", JAR, "-de", DSN, "-do", SES,
+    # macOS: run as a background UI element - no Dock icon, no focus steal,
+    # so the window does not pop up in front of the user on every attempt
+    cmd = [java, "-Dapple.awt.UIElement=true", "-jar", JAR, "-de", DSN, "-do", SES,
            "-mp", str(os.environ.get("FR_PASSES", "20")),
            "-mt", str(os.environ.get("FR_THREADS", "1"))]
     # freerouting's rip-up is randomised: the same .dsn routes in ~20 s most

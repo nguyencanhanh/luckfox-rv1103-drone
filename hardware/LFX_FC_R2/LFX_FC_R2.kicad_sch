@@ -81,7 +81,7 @@
 		(stroke (width 0.2) (type solid))
 		(fill (color 0 0 0 0.0))
 		(uuid "ff557765-04f8-5d0c-aacb-cf31df93a6f3")
-		(property "Sheetname" "Luckfox Pico Mini B socket and RC receiver port"
+		(property "Sheetname" "Luckfox Pico Mini B socket, RC receiver and GPS ports"
 			(at 199 68.5 0)
 			(effects (font (size 1.8 1.8)) (justify left bottom))
 		)

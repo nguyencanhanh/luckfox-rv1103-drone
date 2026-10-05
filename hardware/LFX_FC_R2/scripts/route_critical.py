@@ -37,8 +37,10 @@ BUCK_NETS = {"SW38", "FB38",
 # power nets that also serve the top side (TVS and ADC divider on VBAT,
 # the LM66100 on +5V): routed after, on either outer layer
 POWER_NETS = {"VBAT", "+5V"}
-SENSOR_NETS = {"SPI_SCK", "SPI_MOSI", "SPI_MISO", "IMU_CS", "BARO_CS",
-               "IMU_INT1"}
+SENSOR_NETS = {"SPI_SCK", "SPI_MOSI", "SPI_MISO", "IMU_CS", "BARO_CS"}
+# external GPS (UART5 RX): from R44 on the bottom straight to header pin 14 on
+# B.Cu, routed before the autorouter so it does not cut the crowded top-left
+GPS_NETS = {"GPS_RX"}
 # antenna feeds: millimetres long, on B.Cu with the modem and the U.FLs, over
 # the In2 ground islands, laid before anything else (HDM 5.4)
 RF_NETS = {"LTE_ANT", "LTE_ANT_J", "GNSS_ANT", "GNSS_ANT_M", "GNSS_ANT_J"}
@@ -106,6 +108,213 @@ def hand_route_imu(board):
     vx, vy, _ = _pad(board, "U4", "5")
     cx, cy, _ = _pad(board, "C18", "1")
     seg("+3V3S", [(vx, vy), (cx, cy)])
+    # VDD (pin 8) to that same cap, round the IMU's right side: the two supply
+    # pins are then one node, and one island via (C16's or C18's) feeds both -
+    # left to the fan-out, a run where both vias missed left them apart
+    dx, dy, _ = _pad(board, "U4", "8")
+    seg("+3V3S", [(dx, dy), (dx + 0.85, dy - 0.85), (cx, dy - 0.85), (cx, cy)])
+
+
+def hand_route_baro(board):
+    """BARO_CS since the external GPS took header pin 14: pin 15 (GPIO1_D3) sits
+    level with the IMU, and left to the routers its chip select cut straight
+    through the IMU's supply fan-out.  Drawn instead: a 0.9 mm stub out of CSB
+    (bottom pad row) on F.Cu, a via 0.34 mm clear of the INT pad beside it,
+    then on B.Cu above the IMU's decoupling and down beside the header into
+    pin 15.  The top side around
+    both sensors stays free for the SPI lines (a top-side run here walled
+    U5's MISO in and came 0.13 mm from C17)."""
+    px, py, _ = _pad(board, "MOD1", "15")
+    bx, by, _ = _pad(board, "U5", "6")
+    vy = by + 0.89                                   # via centre
+    ni = board.FindNet("BARO_CS")
+
+    def seg(layer, pts):
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            t = pcbnew.PCB_TRACK(board)
+            t.SetStart(pcbnew.VECTOR2I(rm.mm(x0), rm.mm(y0)))
+            t.SetEnd(pcbnew.VECTOR2I(rm.mm(x1), rm.mm(y1)))
+            t.SetLayer(layer)
+            t.SetWidth(rm.mm(0.2))
+            t.SetNet(ni)
+            t.SetLocked(True)
+            board.Add(t)
+
+    seg(pcbnew.F_Cu, [(bx, by), (bx, vy)])
+    v = pcbnew.PCB_VIA(board)
+    v.SetPosition(pcbnew.VECTOR2I(rm.mm(bx), rm.mm(vy)))
+    v.SetWidth(rm.mm(rm.VIA_D))
+    v.SetDrill(rm.mm(rm.VIA_DRILL))
+    v.SetNet(ni)
+    v.SetLocked(True)
+    board.Add(v)
+    # B.Cu: up and over the IMU's decoupling instead of under the IMU, where it
+    # took the spots of C16 / C18's island vias; y 12.65 runs above C17 and
+    # clear of TP3 (29.6, 14.0), x 31.6 between TP3 and the header row, and
+    # the GPS line (y 21.71) is never crossed
+    y_run, x_down = 12.65, 31.6
+    seg(pcbnew.B_Cu, [(bx, vy), (bx + (vy - y_run), y_run), (x_down, y_run),
+                      (x_down, py), (px, py)])
+
+
+def hand_route_sim(board):
+    """The two short SIM legs from the ESD array U12 down to their series
+    resistors.  RST (U12.4) drops to R37, CLK (U12.5) runs outside it to R38
+    one row lower, so the two never cross.  With CLK on the inner pad the
+    router walled it in, in 2 of 5 runs."""
+    for net, (ref, num), (rref, rnum) in (
+            ("SIM_RST", ("U12", "4"), ("R37", "2")),
+            ("SIM_CLK", ("U12", "5"), ("R38", "2"))):
+        ni = board.FindNet(net)
+        ux, uy, _ = _pad(board, ref, num)
+        rx, ry, _ = _pad(board, rref, rnum)
+        pts = [(ux, uy), (ux, ry - (ux - rx)), (rx, ry)]
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            t = pcbnew.PCB_TRACK(board)
+            t.SetStart(pcbnew.VECTOR2I(rm.mm(x0), rm.mm(y0)))
+            t.SetEnd(pcbnew.VECTOR2I(rm.mm(x1), rm.mm(y1)))
+            t.SetLayer(pcbnew.F_Cu)
+            t.SetWidth(rm.mm(0.2))
+            t.SetNet(ni)
+            t.SetLocked(True)
+            board.Add(t)
+
+
+def hand_route_buzzer(board):
+    """BUZ_CTRL, modem pin 97 (bottom edge) up to the buzzer FET's gate
+    resistor R22: 25 mm across the modem area, which the auto-router left
+    open in 3 of 6 runs.  This is the path the router found for the committed
+    board (dc53508): F.Cu stub, In2 (PWR) run east of the modem, B.Cu along
+    the bottom edge to the LCC pad."""
+    ni = board.FindNet("BUZ_CTRL")
+    rx, ry, _ = _pad(board, "R22", "1")
+    mx, my, _ = _pad(board, "U8", "97")
+    v1, v2 = (41.63, 24.59), (36.25, 46.35)
+    runs = ((pcbnew.F_Cu, [(rx, ry), (rx, ry + 0.26), v1]),
+            (board.GetLayerID("PWR"), [v1, (43.04, 26.01), (43.04, 30.92),
+                                       (40.40, 33.55), (40.40, 42.19), v2]),
+            (pcbnew.B_Cu, [v2, (35.78, 46.82), (31.58, 46.82), (mx, my)]))
+    for layer, pts in runs:
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            t = pcbnew.PCB_TRACK(board)
+            t.SetStart(pcbnew.VECTOR2I(rm.mm(x0), rm.mm(y0)))
+            t.SetEnd(pcbnew.VECTOR2I(rm.mm(x1), rm.mm(y1)))
+            t.SetLayer(layer)
+            t.SetWidth(rm.mm(0.2))
+            t.SetNet(ni)
+            t.SetLocked(True)
+            board.Add(t)
+    for x, y in (v1, v2):
+        v = pcbnew.PCB_VIA(board)
+        v.SetPosition(pcbnew.VECTOR2I(rm.mm(x), rm.mm(y)))
+        v.SetWidth(rm.mm(rm.VIA_D))
+        v.SetDrill(rm.mm(rm.VIA_DRILL))
+        v.SetNet(ni)
+        v.SetLocked(True)
+        board.Add(v)
+
+
+def escape_ideal_diode(board):
+    """+5V into the ideal diode U2 (pin 1, top edge): pin 1 sits in a corner
+    between the board edge, the module's pad 1 and U2's own GND pin, and the
+    ground fan-out of pin 2 used to take the only way out (open in 2 of 3
+    runs).  Claim it first: the committed board's escape (dc53508), a stub to
+    a Power-class via at (17.59, 1.11); the plane layer carries it on."""
+    ni = board.FindNet("+5V")
+    px, py, _ = _pad(board, "U2", "1")
+    pts = [(px, py), (px - 0.14, 1.11), (17.59, 1.11)]
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        t = pcbnew.PCB_TRACK(board)
+        t.SetStart(pcbnew.VECTOR2I(rm.mm(x0), rm.mm(y0)))
+        t.SetEnd(pcbnew.VECTOR2I(rm.mm(x1), rm.mm(y1)))
+        t.SetLayer(pcbnew.F_Cu)
+        t.SetWidth(rm.mm(0.35))
+        t.SetNet(ni)
+        t.SetLocked(True)
+        board.Add(t)
+    v = pcbnew.PCB_VIA(board)
+    v.SetPosition(pcbnew.VECTOR2I(rm.mm(17.59), rm.mm(1.11)))
+    v.SetWidth(rm.mm(0.6))
+    v.SetDrill(rm.mm(0.3))
+    v.SetNet(ni)
+    v.SetLocked(True)
+    board.Add(v)
+
+
+def hand_route_lte_1v8(board):
+    """LTE_1V8 between the two level shifters' VCCA pins (U9.6, U10.6), the
+    committed board's path (dc53508) - left open by the router in 4 of 10
+    runs, the original R2 included.  The feed from the module joins at the
+    U9 via."""
+    ni = board.FindNet("LTE_1V8")
+    ax, ay, _ = _pad(board, "U9", "6")
+    bx, by, _ = _pad(board, "U10", "6")
+    v1, v2 = (40.78, 25.30), (44.11, 28.12)
+    runs = ((pcbnew.F_Cu, [(ax, ay), (ax + 0.14, v1[1]), v1]),
+            (board.GetLayerID("PWR"), [v1, (40.78, 24.09), (41.85, 24.09),
+                                       (43.44, 25.68), (43.44, 27.44), v2]),
+            (pcbnew.F_Cu, [v2, (44.88, 28.12), (45.27, 27.72),
+                           (45.27, 26.07), (bx + 0.31, by), (bx, by)]))
+    for layer, pts in runs:
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            t = pcbnew.PCB_TRACK(board)
+            t.SetStart(pcbnew.VECTOR2I(rm.mm(x0), rm.mm(y0)))
+            t.SetEnd(pcbnew.VECTOR2I(rm.mm(x1), rm.mm(y1)))
+            t.SetLayer(layer)
+            t.SetWidth(rm.mm(0.2))
+            t.SetNet(ni)
+            t.SetLocked(True)
+            board.Add(t)
+    for x, y in (v1, v2):
+        v = pcbnew.PCB_VIA(board)
+        v.SetPosition(pcbnew.VECTOR2I(rm.mm(x), rm.mm(y)))
+        v.SetWidth(rm.mm(rm.VIA_D))
+        v.SetDrill(rm.mm(rm.VIA_DRILL))
+        v.SetNet(ni)
+        v.SetLocked(True)
+        board.Add(v)
+
+
+def hand_route_gps_power(board):
+    """+5V for the GPS port J18, from the RC port J4's pin 1: a via inside each
+    connector's outline, and between them a B.Cu run hugging the left board
+    edge (x 0.75: 0.55 mm copper-to-edge, rule 0.25).  Everything on the board
+    lies east of it, so it walls nothing in; an earlier run at x 3.2 cut the
+    RC ESD array U7 (x 1.6-3.6) off from the bottom layer and RC_RX_X failed
+    to route.  0.4 mm: the GPS draws ~25 mA (ATGM336H)."""
+    ni = board.FindNet("+5V")
+    jx, jy, _ = _pad(board, "J4", "1")
+    gx, gy, _ = _pad(board, "J18", "1")
+    # vias under the housings, 0.26 mm off the mounting pads, so the B.Cu
+    # corridor east of them (x > 2.85) stays open for +3V8
+    vx, xb = 2.6, 0.75
+
+    def seg(layer, pts):
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            t = pcbnew.PCB_TRACK(board)
+            t.SetStart(pcbnew.VECTOR2I(rm.mm(x0), rm.mm(y0)))
+            t.SetEnd(pcbnew.VECTOR2I(rm.mm(x1), rm.mm(y1)))
+            t.SetLayer(layer)
+            t.SetWidth(rm.mm(0.4))
+            t.SetNet(ni)
+            t.SetLocked(True)
+            board.Add(t)
+
+    def via(x, y):
+        v = pcbnew.PCB_VIA(board)
+        v.SetPosition(pcbnew.VECTOR2I(rm.mm(x), rm.mm(y)))
+        v.SetWidth(rm.mm(rm.VIA_D))
+        v.SetDrill(rm.mm(rm.VIA_DRILL))
+        v.SetNet(ni)
+        v.SetLocked(True)
+        board.Add(v)
+
+    seg(pcbnew.F_Cu, [(jx, jy), (vx, jy)])
+    via(vx, jy)
+    seg(pcbnew.B_Cu, [(vx, jy), (xb + 1.0, jy), (xb, jy + 1.0),
+                      (xb, gy - 1.0), (xb + 1.0, gy), (vx, gy)])
+    via(vx, gy)
+    seg(pcbnew.F_Cu, [(vx, gy), (gx, gy)])
 
 
 def fanout_planes(board):
@@ -168,6 +377,12 @@ def main():
         board.Remove(t)
 
     hand_route_imu(board)
+    hand_route_baro(board)
+    hand_route_gps_power(board)
+    hand_route_sim(board)
+    hand_route_buzzer(board)
+    escape_ideal_diode(board)
+    hand_route_lte_1v8(board)
     n, missed = fanout_planes(board)
     print("plane fan-out: %d vias" % n)
     if missed:
@@ -184,6 +399,9 @@ def main():
     rm.ALLOWED = None
     print("antenna feeds: %d connections still open" % left_rf)
     left = rm.route_open(board, only=SENSOR_NETS, fanout_zones=False)
+    rm.ALLOWED = {pcbnew.B_Cu}
+    left += rm.route_open(board, only=GPS_NETS, fanout_zones=False)
+    rm.ALLOWED = None
     # switch node, input loop and control pins stay on B.Cu, the side the
     # converter sits on; only +5V may climb to the top toward the LM66100
     rm.ALLOWED = {pcbnew.B_Cu}

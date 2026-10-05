@@ -100,6 +100,7 @@ Module Lierda và đế cắm Luckfox chưa có mô hình 3D trong KiCad nên tr
   - Diode lý tưởng LM66100 cấp VSYS cho Luckfox; LDO TLV75533 cấp 3,3 V riêng cho cảm biến.
   - Buck TLV62569 hạ +5 V xuống **3,8 V** cho module LTE. VBAT của module chỉ chịu 3,3–4,5 V, nên không lấy thẳng từ pin.
 - **Cảm biến trên SPI0:** IMU ICM-42688-P và barometer BMP390, đặt dưới Luckfox; 4 đường SPI của IMU vẽ tay, không dùng via.
+- **GPS ngoài (thêm 2026-10-04):** chân 14 (GPIO1_D2) thành **UART5_RX** cho cổng J18; chân chọn chip của barometer chuyển sang chân 15 (GPIO1_D3, MCU điều khiển như GPIO), bỏ chân ngắt dự phòng của IMU (IMU đọc kiểu polling). GNSS trong module Lierda vẫn giữ nguyên.
 - **Motor:** 4 cặp pad S/G ở 4 góc cho **4 ESC rời** (PWM8–11, điện trở 47 Ω). Không còn cổng ESC 4-in-1.
 - **LTE + GNSS: Lierda NT26-KCN E** ở mặt dưới, nửa trước. Khi đặt mua chọn bản **GPS + BDS**: bản NT26KCNE20GNB trong sổ tay phần cứng chỉ có BeiDou, chân ra giống hệt.
   - UART3 của Luckfox (chân 12/13) đi qua 2 con SN74LVC1T45 để chuyển 3,3 V ↔ 1,8 V. Chip này tự cách ly khi module tắt, vì UART của module không chịu điện áp ngược. Cùng một UART dùng cho lệnh AT, đọc GNSS và nạp firmware (921600 bd).
@@ -116,6 +117,7 @@ Module Lierda và đế cắm Luckfox chưa có mô hình 3D trong KiCad nên tr
 | J2 / J3 · pad pin | BAT+ / BAT− | dây XT30 từ pin, cùng dây cấp cho 4 ESC |
 | J4 · bộ thu RC ELRS | 1 5 V, 2 GND, 3 TX board → RX bộ thu, 4 RX board ← TX bộ thu | UART2, CRSF; R24 1 kΩ kéo lên để bộ thu không kẹt bootloader |
 | J6 · còi | 1 +5 V, 2 còi − (MOSFET đóng ngắt) | gate do AGPIO5 của Lierda điều khiển |
+| **J18 · module GPS ngoài** (2026-10-04) | 1 +5 V, 2 GND, 3 không nối, 4 RX board ← TXD module | JST-SH 4 chân ở mép trái, cho module kiểu ATGM336H / NEO-M8N. UART5 chỉ nhận (chân 14), NMEA 9600 mặc định; chống ESD TPD1E05U06 + 33 Ω. +5 V lấy từ buck TPS54360 (cùng nguồn với bộ thu RC J4, đường mặt dưới sát mép trái), nên GPS chỉ có điện khi cắm pin, không chạy khi chỉ cắm USB |
 | J7–J14 · pad ESC | S / G ở 4 góc | M1 sau-phải, M2 trước-phải, M3 sau-trái, M4 trước-trái (Betaflight) |
 | J15 · nano-SIM | | GCT SIM8060, nắp bản lề |
 | J16 · U.FL LTE / J17 · U.FL GNSS | | mặt dưới, 2 góc trước |

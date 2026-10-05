@@ -34,6 +34,9 @@ def tomm(v):
     return pcbnew.ToMM(v)
 
 
+DANGLING_VIAS = []
+
+
 def dangling(board):
     """Ask KiCad which track ends are connected to nothing."""
     board.Save(PCB)
@@ -42,8 +45,14 @@ def dangling(board):
                    capture_output=True, text=True)
     if not os.path.exists(rpt):
         return []
-    out, inblock = [], False
+    out, inblock, via_block = [], False, False
+    global DANGLING_VIAS
+    DANGLING_VIAS = []
     for line in open(rpt):
+        mv = re.match(r"\s*@\((-?[\d.]+) mm, (-?[\d.]+) mm\): Via \[([^\]]*)\]", line)
+        if mv and via_block:
+            DANGLING_VIAS.append((float(mv.group(1)), float(mv.group(2)), mv.group(3)))
+        via_block = line.startswith("[via_dangling]") or (via_block and not line.startswith("["))
         if line.startswith("[track_dangling]"):
             inblock = True
             continue
@@ -106,8 +115,28 @@ def main():
                 removed += 1
             break
 
+    # a via joined on one layer only carries nothing: drop it, and the single
+    # escape track that led to it (a track passing through on to somewhere
+    # else - two or more at the point - stays)
+    vias_removed = 0
+    for x, y, net in DANGLING_VIAS:
+        for v in list(board.GetTracks()):
+            if v.Type() != pcbnew.PCB_VIA_T or v.GetNetname() != net:
+                continue
+            p = v.GetPosition()
+            if abs(tomm(p.x) - x) >= TOL or abs(tomm(p.y) - y) >= TOL:
+                continue
+            touching = [t for t in board.GetTracks()
+                        if t.Type() != pcbnew.PCB_VIA_T and t.GetNetname() == net
+                        and (t.GetStart() == p or t.GetEnd() == p)]
+            if len(touching) == 1:
+                board.Remove(touching[0])
+            board.Remove(v)
+            vias_removed += 1
+            break
+
     board.Save(PCB)
-    print("dangling stubs removed: %d" % removed)
+    print("dangling stubs removed: %d, dangling vias removed: %d" % (removed, vias_removed))
     for net, length in kept:
         print("  kept (locked) %-12s %.3f mm - drawn by hand, left alone"
               % (net, length))

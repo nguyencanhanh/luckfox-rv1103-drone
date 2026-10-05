@@ -15,6 +15,7 @@ labels, which is what makes the result ERC-clean without any hand routing.
 """
 
 import hashlib
+import json
 import os
 import sys
 
@@ -667,8 +668,23 @@ def sync_netclass_widths(text):
 def main():
     os.makedirs(os.path.join(ROOT, "sch"), exist_ok=True)
 
-    with open(os.path.join(ROOT, PROJECT + ".kicad_pro"), "w") as fh:
-        fh.write(sync_netclass_widths(PROJECT_JSON))
+    # the project file also holds the BOARD's design rules (min drill 0.2,
+    # track widths, ...), which only the PCB side writes: keep that part of
+    # an existing file, regenerate the rest - rewriting it whole set the board
+    # back to KiCad's defaults (min hole 0.3 mm) and 199 vias failed DRC
+    pro_path = os.path.join(ROOT, PROJECT + ".kicad_pro")
+    doc = json.loads(sync_netclass_widths(PROJECT_JSON))
+    if os.path.exists(pro_path):
+        try:
+            old = json.load(open(pro_path))
+            if "board" in old:
+                doc["board"] = old["board"]
+            for k in old:                    # sections KiCad added on its own
+                doc.setdefault(k, old[k])
+        except ValueError:
+            pass
+    with open(pro_path, "w") as fh:
+        fh.write(json.dumps(doc, indent=2) + "\n")
     with open(os.path.join(ROOT, "sym-lib-table"), "w") as fh:
         fh.write(SYM_LIB_TABLE)
     with open(os.path.join(ROOT, "fp-lib-table"), "w") as fh:

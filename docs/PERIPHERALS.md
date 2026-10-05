@@ -89,3 +89,17 @@ Việc phần mềm phải làm trước khi cắm bộ thu (chưa làm):
 1. Bỏ console khỏi UART2: tắt `fiq-debugger`, bỏ `earlycon`/`console=ttyFIQ0` trong bootargs, bật node `uart2` cho Linux. U-Boot và DDR blob vẫn in log lúc boot ra UART2; bộ thu sẽ nhận rác ở 115200/1500000 nhưng gói CRSF có CRC nên bỏ qua. Có tắt được log DDR blob không: UNKNOWN.
 2. Debug: dùng ADB qua USB, hoặc gắn USB-UART vào TP5/TP6 khi đã rút bộ thu.
 3. Đường RC: bộ thu → Linux (UART2) → IPC → MCU. Linux treo là mất RC, nên MCU phải tự failsafe khi mất heartbeat. MCU tự đọc UART2 thì phải viết mã clock UART cho RV1106 (HAL không có, xem mục 4 ở trên).
+
+## LFX_FC_R2: GPS ngoài trên UART5 (2026-10-04)
+
+R2 hết chân trống: UART2 cho bộ thu RC, UART3 cho modem Lierda. Để gắn module GPS rời (ATGM336H) mà vẫn giữ cả hai, chân 14 và 15 được đổi vai:
+
+| Chân | GPIO | Trước | Sau | Nguồn |
+|---|---|---|---|---|
+| 14 | GPIO1_D2 | SPI0_CS1 → barometer | **UART5_RX_M1** ← GPS (J18) | `rv1106-pinctrl.dtsi:1082-1083` (`uart5_rx_m1`, mux 4, `pcfg_pull_up`) |
+| 15 | GPIO1_D3 | ngắt IMU (dự phòng) | **CS của barometer**, GPIO do MCU điều khiển | UART5_TX_M1 cũng là chân này (`:1084-1085`), nên không dùng được: GPS chỉ gửi |
+
+Việc phần mềm phải làm (chưa làm):
+1. **DTS:** bật `uart5` với nhóm pinctrl **chỉ có RX** (`<1 RK_PD2 4 &pcfg_pull_up>`), vì `uart5m1_xfer` mặc định chiếm cả D3. Linux đọc NMEA ở `/dev/ttyS5` (tên thật: UNKNOWN), 9600 baud.
+2. **MCU:** đọc BMP390 bằng CS dạng GPIO (GPIO1_D3) thay cho CS1 phần cứng của SPI0.
+3. **Bank GPIO1 dùng chung:** Linux cũng giữ các chân khác của bank GPIO1. Ghi chân CS từ MCU phải dùng thanh ghi có write-mask của Rockchip (`GPIO_SWPORT_DR_L/H`, 16 bit cao là bit cho phép ghi), để không giẫm lên Linux. Có đúng như vậy trên RV1106 không: **UNKNOWN — NEED VERIFICATION** trên TRM.

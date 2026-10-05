@@ -119,6 +119,7 @@ BLOCK_ZONE = {
     "TLV75533 LDO  VSYS -> +3V3S (sensors only)": "under_module",
     "Luckfox Pico Mini B, 2x 1x11 female header": "under_module",
     "RC receiver UART2 (CRSF / ExpressLRS)": "left_strip",
+    "GPS module UART5 (receive only)": "left_strip",
     "ICM-42688-P 6-axis IMU, SPI 4-wire": "under_module",
     "BMP390 barometer, SPI 4-wire": "under_module",
     "Separate ESC solder pads (quad-X corners)": "under_module",
@@ -143,6 +144,11 @@ ANCHORS = {
     "MOD1": (MOD_X, MOD_Y, 0, "F"),
     # --- connectors on the edges ------------------------------------------
     "J4":  (3.55, 16.0, 270, "F"),        # RC receiver, left edge
+    "J18": (3.55, 36.9, 270, "F"),        # GPS module, left edge (UART5 RX)
+    "U13": (8.2, 37.2, 90, "F"),          # its ESD right at the connector
+    "R44": (9.8, 37.2, 90, "B"),          # series 33 R, bottom: the long run
+                                          # to pin 14 stays on B.Cu, clear of
+                                          # the RC / SIM lines on top
     "J6":  (46.45, 16.0, 90, "F"),        # buzzer, right edge
     # --- ESC S / G pads, inboard of each corner hole ----------------------
     "J9":  (10.6, 2.2, 0, "F"),  "J13": (12.8, 2.2, 0, "F"),   # M3 rear-left
@@ -159,7 +165,7 @@ ANCHORS = {
     "C14": (22.4 + X, 2.4, 90, "F"),
     "U5":  (20.4, 11.8, 0, "F"),
     "R10": (19.6, 15.1, 0, "F"),
-    "R11": (29.6, 21.0, 0, "F"),
+    "R11": (28.4, 17.0, 0, "F"),          # BARO_CS pull-up beside its hand route
     "U4":  (23.6, 18.4, 90, "F"),
     "R12": (24.0 + X, 16.63, 0, "F"),     # ESC series resistors at their pins
     "R13": (24.0 + X, 14.9, 0, "F"),
@@ -280,7 +286,7 @@ NEAR = [
 ]
 
 FAB_REFS = ("U1", "U8", "U10", "U11", "L1", "J2", "J3", "J17", "D1", "TP10",
-            "TP11", "TP12", "TP13")
+            "TP11", "TP12", "TP13", "J18", "U13")
 
 # Routing channels reserved before auto placement: (refA, padA, refB, padB, w)
 CHANNELS = [
@@ -859,6 +865,7 @@ def main():
     # ---- silkscreen: every label a person needs to plug the board in -------
     add_silk(board, "LFX FC R2", 25.0, 24.6, size=1.0, layer=pcbnew.B_SilkS)
     add_silk(board, "RC", 3.55, 11.7, size=0.8)
+    add_silk(board, "GPS", 3.55, 32.6, size=0.8)
     add_silk(board, "BUZ", 46.45, 11.7, size=0.8)
     add_silk(board, "BAT+", 48.4, 27.4, size=0.8)
     add_silk(board, "BAT-", 46.4, 39.8, size=0.8)
@@ -875,9 +882,11 @@ def main():
         if n == 1:          # R30 / R31 (modem BOOT) sit under the M1 pads
             x, y = max(xs) + 2.0, pad_xy(placed[sig][0], "1")[1] + 2.0
         add_silk(board, "M%d" % n, x, y, size=0.8)
-    for ref, letters in (("J4", "+GTR"), ("J6", "+-")):
+    for ref, letters in (("J4", "+GTR"), ("J6", "+-"), ("J18", "+G R")):
         fp = placed[ref][0]
         for n, ch in enumerate(letters, start=1):
+            if ch == " ":           # a pin with nothing on it
+                continue
             x, y = pad_xy(fp, str(n))
             add_silk(board, ch, x, y, size=0.8, layer=pcbnew.B_SilkS)
     # dense board: these references would sit on pads - the assembly drawing

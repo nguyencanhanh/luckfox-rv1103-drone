@@ -45,6 +45,9 @@ talk to the modem AND reflash it from Linux:
     20          LTE_BOOT -> USB_BOOT: GPIO4_C1 is a 1.8 V-only bank, the
                 modem's level; high while the modem resets = download mode
                 (HDM 3.5.3, 4.1.3)
+External GPS (added 2026-10-04): pin 14 GPIO1_D2 -> UART5_RX_M1 from the GPS
+port J18; the barometer's chip select moved from 14 (SPI0_CS1) to 15 (GPIO1_D3,
+a GPIO driven by the MCU), giving up the spare IMU interrupt.
 """
 
 # ---------------------------------------------------------------------------
@@ -92,7 +95,7 @@ def jst_sh(n):
 # ---------------------------------------------------------------------------
 SHEETS = [
     ("02_power",   "Power: ESC input, 5 V buck, ideal diode, sensor LDO"),
-    ("03_module",  "Luckfox Pico Mini B socket and RC receiver port"),
+    ("03_module",  "Luckfox Pico Mini B socket, RC receiver and GPS ports"),
     ("04_sensors", "IMU ICM-42688-P and barometer BMP390 on SPI0"),
     ("05_io",      "ESC pads, buzzer, battery sense"),
     ("06_lte",     "Lierda NT26-KCN E LTE Cat.1 bis + GNSS: supply, UART, "
@@ -253,8 +256,12 @@ C("MOD1", "LFX:Luckfox_Pico_Mini", "Luckfox Pico Mini B", MODULE_FP, {
     "11": "ESC_M4_IO",      # PWM9_M1      GPIO1_C5   front-left motor
     "12": "LTE_TX",         # UART3_TX_M1  GPIO1_D0  -> modem MAIN_RXD
     "13": "LTE_RX",         # UART3_RX_M1  GPIO1_D1  <- modem MAIN_TXD
-    "14": "BARO_CS",        # SPI0_CS1_M0  GPIO1_D2 (pinctrl:852-855)
-    "15": "IMU_INT1",       # GPIO1_D3
+    "14": "GPS_RX",         # UART5_RX_M1  GPIO1_D2 (rv1106-pinctrl.dtsi:1082-1083)
+                            # <- external GPS (J18); was SPI0_CS1 for the baro
+    "15": "BARO_CS",        # GPIO1_D3 as a GPIO chip select for the BMP390 (the
+                            # MCU drives it; was IMU_INT1, which was only a
+                            # spare: the IMU is polled).  Its UART5_TX_M1 role
+                            # (:1084-1085) is not used: the GPS only talks
     "16": "ESC_M1_IO",      # PWM10_M1     GPIO1_C6   rear-right motor
     "17": "ESC_M2_IO",      # PWM11_M1     GPIO1_C7   front-right motor
     "18": "LTE_RST",        # GPIO0_A4     high = modem in reset
@@ -297,6 +304,34 @@ C("U7", "Power_Protection:TPD4E05U06DQA", "TPD4E05U06DQA", USON10,
 TP("TP5", "RC_TX", S, B)      # UART2 console tap when no receiver is fitted
 TP("TP6", "RC_RX", S, B)
 
+B = "GPS module UART5 (receive only)"
+# An external GPS board, e.g. the ATGM336H GPS+BDS module ("NEO-M8N
+# replacement": 13.8 x 22.9 mm, VCC GND TXD RXD PPS, 5 V, UART 9600 8N1 NMEA:
+# ICStation listing, ZHONGKEWEI ATGM336H-5N datasheet).  Every Luckfox pin was
+# taken, so header pin 14 (GPIO1_D2) became UART5_RX_M1 and the barometer's
+# chip select moved to pin 15 (GPIO1_D3).  UART5_TX_M1 is that same pin 15, so
+# the board only listens: NMEA at the module's default 9600 bd, no
+# configuration commands.  JST-SH like the other ports (a 2.54 mm header with a
+# Dupont plug would hit the canopy roof, LFX_CANOPY_R1): pin order as R1's GPS
+# port, 1 5V, 2 GND, 3 board TX (not connected here), 4 board RX <- module TXD.
+# Its 5 V comes from the RC port's +5V (J4 pin 1) on a hand-drawn B.Cu run
+# down the left edge (route_critical.hand_route_gps_power): left to the
+# autorouter a top-side +5V trace walled the RC ESD (U7) off from its
+# resistors, and a VSYS via was no answer either - In2 carries signal tracks
+# on this board, so the VSYS copper under J18 was cut off from the rest.
+# ~25 mA (ATGM336H-5N datasheet).
+C("J18", "Connector_Generic_MountingPin:Conn_01x04_MountingPin", "SM04B-SRSS-TB",
+  jst_sh(4), {"1": "+5V", "2": "GND", "3": "", "4": "GPS_RX_X", "MP": "GND"}, S, B,
+  Description="GPS module (ATGM336H / NEO-M8N class). 1:5V 2:GND 3:NC "
+              "(module RXD - no board TX) 4:module TXD -> board RX (UART5)")
+R("R44", "33R", R0402, "GPS_RX_X", "GPS_RX", S, B)
+# no external pull-up: uart5m1_xfer turns on the pad's own pull-up on RX
+# (<1 RK_PD2 4 &pcfg_pull_up>, rv1106-pinctrl.dtsi:1083), so the line idles high
+# with nothing plugged in
+C("U13", "Power_Protection:TPD1E05U06DPY", "TPD1E05U06DPY",
+  "Package_SON:Texas_DPY0002A_0.6x1mm_P0.65mm", {"1": "GPS_RX_X", "2": "GND"}, S, B,
+  Description="ESD at the GPS connector")
+
 # ===========================================================================
 # SHEET 04 -- SENSORS
 # ===========================================================================
@@ -305,7 +340,8 @@ B = "ICM-42688-P 6-axis IMU, SPI 4-wire"
 # Pin table: TDK DS-000347 v1.7 table 10.  RESV 2/3/10/11 "NC or GND" -> GND,
 # RESV 7 "connect to GND", FSYNC (9) "connect to GND if not used".
 C("U4", "LFX:ICM-42688-P", "ICM-42688-P", LGA14,
-  {"1": "SPI_MISO", "2": "GND", "3": "GND", "4": "IMU_INT1", "5": "+3V3S",
+  {"1": "SPI_MISO", "2": "GND", "3": "GND", "4": "", "5": "+3V3S",   # INT1 unused:
+   # polled; its Luckfox pin (15) is the barometer's chip select since R2 + GPS
    "6": "GND", "7": "GND", "8": "+3V3S", "9": "GND", "10": "GND",
    "11": "GND", "12": "IMU_CS", "13": "SPI_SCK", "14": "SPI_MOSI"}, S, B)
 Cap("C16", "100n/16V", C0402, "+3V3S", "GND", S, B,
@@ -538,11 +574,11 @@ Cap("C37", "33p/50V C0G", C0402, "SIM_DATA", "GND", S, B)
 Cap("C38", "100n/16V", C0402, "SIM_VDD", "GND", S, B)
 R("R40", "10k", R0402, "SIM_DATA", "SIM_VDD", S, B)
 C("U12", "Power_Protection:TPD4E05U06DQA", "TPD4E05U06DQA", USON10,
-  {"1": "SIM_VDD", "2": "SIM_DATA", "3": "GND", "4": "SIM_CLK",
-   "5": "SIM_RST", "6": "", "7": "", "8": "GND", "9": "", "10": ""}, S, B,
+  {"1": "SIM_VDD", "2": "SIM_DATA", "3": "GND", "4": "SIM_RST",
+   "5": "SIM_CLK", "6": "", "7": "", "8": "GND", "9": "", "10": ""}, S, B,
   Description="ESD at the SIM holder, 0.5 pF (HDM asks <= 15 pF); the "
-              "four channels are alike, assigned in the order the lines "
-              "pass it")
+              "four channels are alike, assigned so RST/CLK reach R37/R38 "
+              "below without crossing (route_critical.hand_route_sim)")
 
 B = "LTE antenna (HDM 5.3)"
 # Pi match: 0 R in series, both shunts not fitted until the antenna is tuned.
