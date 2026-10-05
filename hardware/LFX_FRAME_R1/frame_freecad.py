@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-LFX_FRAME_R1 - 3D-printable X frame for the LFX_FC_R2 board, 3" props,
-1103 / 1104 motors, four separate ESCs.  Built in FreeCAD 1.x (run as a
+LFX_FRAME_R1 - 3D-printable X frame for the LFX_FC_R2 board, 3.5" props,
+1503 motors (3S-4S), four separate ESCs.  Built in FreeCAD 1.x (run as a
 macro or through the freecad-mcp addon's RPC server).
 
   * centre plate 3 mm, the board on 8 mm M3 standoffs straight onto its
     39 x 39 mm holes, battery strap slots, lightening holes, two holes at
     the rear for antenna tubes / zip ties
-  * four 4 mm arms, true X; the motor spacing is not guessed: the arms are
-    lengthened until a 3" prop disc (plus 2 mm) clears the LFX_CANOPY_R1
+  * four 5 mm arms, true X; the motor spacing is not guessed: the arms are
+    lengthened until a 3.5" prop disc (plus 2 mm) clears the LFX_CANOPY_R1
     canopy - the canopy is ~30 mm tall, right in the prop plane
-  * motor mounts slotted from r 3.3 to 4.5 mm for M2: both the 1104
-    (4 x M2 on 9 mm) and the smaller 1103 patterns fit
+  * motor mounts slotted from r 4.3 to 6.6 mm for M2: the 1503's 9 x 9 mm
+    square (r 6.36) and the 9 mm circle of the 1104 class (r 4.5) both fit
   * ESCs zip-tied on the arms, outside the canopy
 
 Writes frame.stl / frame.step and assembly renders into img/.  Coordinates
@@ -33,20 +33,20 @@ except NameError:                     # exec'd through RPC: no __file__
 CANOPY_DIR = os.path.join(os.path.dirname(HERE), "LFX_CANOPY_R1")
 V = App.Vector
 
-PLATE_T, ARM_T = 3.0, 4.0
+PLATE_T, ARM_T = 3.0, 5.0
 PLATE_X = 29.6                        # canopy outer half width 29.2 + 0.4
 PLATE_FRONT, PLATE_REAR = -33.6, 27.6 # canopy outer -33.2 .. +27.2
 HOLE = 19.5                           # stack standoffs, 39 x 39 mm
-ARM_W = 11.0
-MOUNT_D = 17.0                        # motor pad
-MOTOR_SLOT = (3.3, 4.5, 2.2)          # r0, r1, width (M2)
-SHAFT_D = 6.0
-PROP_D = 76.2                         # 3"
+ARM_W = 13.0
+MOUNT_D = 22.0                        # motor pad (1503 base ~19.5 mm)
+MOTOR_SLOT = (4.3, 6.6, 2.2)          # r0, r1, width (M2)
+SHAFT_D = 7.0                         # clears the shaft / circlip
+PROP_D = 88.9                         # 3.5"
 PROP_MARGIN = 2.0
-MOTOR_D, MOTOR_H = 14.0, 11.5         # 1104 stand-in (bell + stator)
+MOTOR_D, MOTOR_H = 19.5, 14.0         # 1503 stand-in (bell + stator)
 PROP_Z0 = MOTOR_H + 1.0               # prop disc band over the arm top
 PROP_Z1 = PROP_Z0 + 6.0
-ESC_L, ESC_W, ESC_H = 24.0, 12.0, 4.0 # 12 A BLHeli_S class
+ESC_L, ESC_W, ESC_H = 30.0, 14.0, 5.0 # 20-30 A single ESC class
 
 
 def box(x0, y0, z0, x1, y1, z1):
@@ -123,6 +123,10 @@ def frame(a):
     for sx in (-1, 1):
         for sy in (-1, 1):
             f = f.fuse(arm(a, sx, sy))
+    # the arms are thicker than the plate: keep the plate's underside flat
+    # for the battery, full arm depth only outside it
+    f = f.cut(box(-PLATE_X, PLATE_FRONT, -ARM_T - 1, PLATE_X, PLATE_REAR,
+                  -PLATE_T))
     # stack standoffs
     for sx in (-1, 1):
         for sy in (-1, 1):

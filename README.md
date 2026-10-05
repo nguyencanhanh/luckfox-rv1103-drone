@@ -136,38 +136,40 @@ Module Lierda và đế cắm Luckfox chưa có mô hình 3D trong KiCad nên tr
 |---|---|---|
 | ![frame](docs/img/frame/frame.jpg) | ![assembly](docs/img/frame/frame_assembly.jpg) | ![top](docs/img/frame/frame_assembly_top.jpg) |
 
-**Khung [`hardware/LFX_FRAME_R1`](hardware/LFX_FRAME_R1)** dựng bằng FreeCAD (script tham số `frame_freecad.py`), in 3D:
-- Tấm giữa dày 3 mm: board bắt thẳng bằng **4 cột M3 dài 8 mm** vào lỗ 39 × 39, không cần tấm chuyển. Có 2 khe dây buộc pin 15 mm, lỗ khoét giảm nhẹ, 2 lỗ phía sau để buộc ống anten.
-- 4 tay đòn dày 4 mm kiểu X. Đế motor có **rãnh M2 hướng tâm** (bán kính 3,3–4,5 mm), lắp được motor 1104 (4 × M2 trên vòng Ø9 mm) và loại 1103 nhỏ hơn.
-- **Khoảng cách motor do script tự tìm:** đẩy dần motor ra xa cho tới khi cánh 3" (thêm 2 mm dự phòng) không chạm vỏ canopy. Kết quả: motor cách tâm 58 mm theo mỗi trục (đường chéo trục 164 mm), khung 133 × 133 mm.
+**Khung [`hardware/LFX_FRAME_R1`](hardware/LFX_FRAME_R1)** dựng bằng FreeCAD (script tham số `frame_freecad.py`), in 3D, cho **motor 1503 + cánh 3,5"**:
+- Tấm giữa dày 3 mm: board bắt thẳng bằng **4 cột M3 dài 8 mm** vào lỗ 39 × 39, không cần tấm chuyển. Có 2 khe dây buộc pin 15 mm, lỗ khoét giảm nhẹ, 2 lỗ phía sau để buộc ống anten. Mặt dưới tấm giữa phẳng để kê pin.
+- 4 tay đòn kiểu X, dày 5 mm, rộng 13 mm. Đế motor Ø22 mm có **rãnh M2 hướng tâm** (bán kính 4,3–6,6 mm): lắp được motor 1503 (4 × M2 theo hình vuông 9 × 9 mm) và các motor có lỗ trên vòng Ø9 mm. Lỗ giữa Ø7 mm cho trục và phe gài.
+- **Khoảng cách motor do script tự tìm:** đẩy dần motor ra xa cho tới khi cánh 3,5" (thêm 2 mm dự phòng) không chạm vỏ canopy. Kết quả: motor cách tâm 63 mm theo mỗi trục (đường chéo trục 178 mm), khung 148 × 148 mm.
 - 4 ESC buộc dây rút lên tay đòn, nằm ngoài vỏ; pin buộc dưới tấm giữa.
-- In: PETG (hoặc PLA-CF), 5 lớp viền, infill 40 %. Khối lượng đặc khoảng 26 g.
+- In: PETG (hoặc PLA-CF), 5 lớp viền, infill 40 %. Khối lượng đặc khoảng 34 g.
+- Đổi motor hoặc cánh: sửa `PROP_D`, `MOTOR_D`, `MOTOR_SLOT` ở đầu `frame_freecad.py` rồi chạy lại trong FreeCAD; khoảng cách motor tự tính lại.
 
-**Linh kiện mua thêm (giá tham khảo):**
+**Linh kiện mua thêm:**
 
 | Linh kiện | Gợi ý | Ghi chú |
 |---|---|---|
-| Motor ×4 | 1103 8000–10000 KV hoặc 1104 7500 KV | 1103 trên 2S: khoảng 145 g lực đẩy/con |
-| ESC ×4 | BLHeli_S 12A rời (vd. Makerfire 12A, ~$2,5, 6 g) | EMAX 6A nhẹ hơn, đủ cho 1103 |
-| Cánh | 3" (3016/3018) | |
-| Pin | LiPo 2S 450–550 mAh, đầu XT30 | |
+| Motor ×4 | 1503, bản KV dành cho cánh 3,5" và đúng số cell pin (người bán thường ghi "3.5 inch 3S" hoặc "4S") | khoảng 8–9 g/con; 4 × M2 lỗ 9 × 9 mm |
+| ESC ×4 | ESC rời 20–30 A, BLHeli_S / BLHeli_32 / AM32, chịu 2–4S | 1503 + cánh 3,5" kéo dòng cao hơn hẳn 1103, ESC 12 A không đủ |
+| Cánh | 3,5" (3520 / 3525, 2–3 lá), lỗ trục hợp motor | |
+| Pin | LiPo 3S hoặc 4S 450–650 mAh, đầu XT30 | |
 | Cột M3 | 4 × 8 mm (khung → board) | |
 | Anten | LTE dạng dán (FPC) + GNSS 25 × 25 mm (active 3,3 V hoặc thụ động), đầu U.FL | anten GNSS đặt trong hốc trên nóc vỏ |
 
 **Đấu nối:**
 ```
-Pin 2S ─ XT30 ─┬─ nguồn 4 ESC (đỏ / đen)
-               └─ BAT+ / BAT− (J2 / J3) trên board
+Pin 3S/4S ─ XT30 ─┬─ nguồn 4 ESC (đỏ / đen)
+                  └─ BAT+ / BAT− (J2 / J3) trên board
 ESC n: tín hiệu → pad S, mass tín hiệu → pad G ở góc của motor n
    M1 sau-phải J7/J11 · M2 trước-phải J8/J12 · M3 sau-trái J9/J13 · M4 trước-trái J10/J14
 Motor: 3 dây vào ESC; quay ngược chiều thì đổi 2 dây bất kỳ
 ```
-- Buck 5 V khởi động từ 6,44 V và tự ngắt ở 5,83 V (khoảng 2,9 V/cell), nên dùng pin 2S đã nạp đầy.
+- Board chạy 2S–6S (buck 5 V khởi động từ 6,44 V), nên 3S và 4S đều dư.
 - ESC rời không có chân báo dòng, nên chỉ đo được áp pin (ADC_VBAT), không đo được dòng.
 
 **Trọng lượng ước tính** (chưa cân thực tế):
-- Board R2 khoảng 16 g, Luckfox + camera khoảng 8 g, 4 ESC khoảng 24 g, 4 motor 1104 khoảng 24 g, khung khoảng 26 g, vỏ khoảng 13 g, cánh khoảng 4 g, pin khoảng 30 g, anten + ốc + dây khoảng 8 g.
-- Tổng **khoảng 153 g**. 4 motor 1103 cho khoảng 580 g lực đẩy, tức **tỉ lệ khoảng 3,8:1**: dư lực, bay ổn định.
+- Board R2 khoảng 16 g, Luckfox + camera khoảng 8 g, 4 ESC khoảng 24 g, 4 motor 1503 khoảng 36 g, khung khoảng 34 g, vỏ khoảng 13 g, cánh khoảng 6 g, anten + ốc + dây khoảng 8 g, pin 4S 450 mAh khoảng 55 g (3S khoảng 40 g).
+- Tổng **khoảng 200 g với 4S** (khoảng 185 g với 3S).
+- Theo [bảng tra của Oscar Liang](https://oscarliang.com/table-prop-motor-lipo-weight/), cánh 3–3,5" với motor cỡ 1404–1505 trên 3S–4S hợp drone nặng khoảng 150–300 g, nên cấu hình này nằm giữa dải, dư lực. Mình chưa có số đo lực đẩy cụ thể của 1503; hãy xem bảng lực đẩy của đúng mẫu motor khi mua.
 
 ### Vỏ in 3D: LFX_CANOPY_R1
 
