@@ -144,7 +144,8 @@ ANCHORS = {
     "MOD1": (MOD_X, MOD_Y, 0, "F"),
     # --- connectors on the edges ------------------------------------------
     "J4":  (3.55, 16.0, 270, "F"),        # RC receiver, left edge
-    "J18": (3.55, 36.9, 270, "F"),        # GPS module, left edge (UART5 RX)
+    "J18": (2.75, 34.08, 0, "F"),         # GPS header, pads x 4.3 y 29-39,
+                                          # pins out over the left edge
     "U13": (8.2, 37.2, 90, "F"),          # its ESD right at the connector
     "R44": (9.8, 37.2, 90, "B"),          # series 33 R, bottom: the long run
                                           # to pin 14 stays on B.Cu, clear of
@@ -176,7 +177,12 @@ ANCHORS = {
     "D5":  (29.6, 9.9, 0, "B"),
     # --- left strip: RC ESD and series resistors ---------------------------
     "U7":  (2.6, 22.6, 90, "F"),
-    "R8":  (6.2, 26.6, 90, "F"),          # off U1's thermal vias
+    # modem probe pads: TP8/TP9 on the bottom left of the GPS header (it took
+    # their top-side spots), the rest where the packer left them
+    "TP8":  (1.4, 31.6, 0, "B"), "TP9":  (1.4, 34.1, 0, "B"),
+    "TP10": (6.3975, 29.5963, 0, "F"), "TP11": (8.8975, 29.5963, 0, "F"),
+    "TP12": (11.3975, 29.5963, 0, "F"), "TP13": (8.6475, 32.0963, 0, "F"),
+    "R8":  (6.2, 26.6, 90, "F"),          # RC series resistors
     "R9":  (7.6, 26.6, 90, "F"),
     "R24": (13.2, 9.8, 90, "F"),          # RC_RX pull-up by module pin 3
     # --- right strip: buzzer, translators by pins 12/13, reset by pin 18 ---
@@ -285,8 +291,8 @@ NEAR = [
     ("C25", "U11", "5", -2.4, 2.2, 0, "B"),
 ]
 
-FAB_REFS = ("U1", "U8", "U10", "U11", "L1", "J2", "J3", "J17", "D1", "TP10",
-            "TP11", "TP12", "TP13", "J18", "U13")
+FAB_REFS = ("U1", "U8", "U10", "U11", "L1", "J2", "J3", "J17", "D1", "TP8",
+            "TP9", "TP10", "TP11", "TP12", "TP13", "J18", "U13")
 
 # Routing channels reserved before auto placement: (refA, padA, refB, padB, w)
 CHANNELS = [
@@ -865,9 +871,9 @@ def main():
     # ---- silkscreen: every label a person needs to plug the board in -------
     add_silk(board, "LFX FC R2", 25.0, 24.6, size=1.0, layer=pcbnew.B_SilkS)
     add_silk(board, "RC", 3.55, 11.7, size=0.8)
-    add_silk(board, "GPS", 3.55, 32.6, size=0.8)
+    add_silk(board, "GPS", 2.3, 42.3, size=0.8)
     add_silk(board, "BUZ", 46.45, 11.7, size=0.8)
-    add_silk(board, "BAT+", 48.4, 27.4, size=0.8)
+    add_silk(board, "BAT+", 47.6, 27.4, size=0.8)
     add_silk(board, "BAT-", 46.4, 39.8, size=0.8)
     add_silk(board, "FWD v", 25.0, 26.6, size=0.8, layer=pcbnew.B_SilkS)
     # motor pads: S / G under (or over) each pad, the motor name beside them
@@ -882,12 +888,14 @@ def main():
         if n == 1:          # R30 / R31 (modem BOOT) sit under the M1 pads
             x, y = max(xs) + 2.0, pad_xy(placed[sig][0], "1")[1] + 2.0
         add_silk(board, "M%d" % n, x, y, size=0.8)
-    for ref, letters in (("J4", "+GTR"), ("J6", "+-"), ("J18", "+G R")):
+    for ref, letters in (("J4", "+GTR"), ("J6", "+-"), ("J18", "+GTRP")):
         fp = placed[ref][0]
         for n, ch in enumerate(letters, start=1):
             if ch == " ":           # a pin with nothing on it
                 continue
             x, y = pad_xy(fp, str(n))
+            if ref == "J18":        # through-hole pads: letter beside the pad
+                x -= 1.65
             add_silk(board, ch, x, y, size=0.8, layer=pcbnew.B_SilkS)
     # dense board: these references would sit on pads - the assembly drawing
     # (Fab) carries them

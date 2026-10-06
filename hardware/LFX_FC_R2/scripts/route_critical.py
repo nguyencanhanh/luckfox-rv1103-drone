@@ -311,6 +311,12 @@ def hand_route_gps_power(board):
 
     seg(pcbnew.F_Cu, [(jx, jy), (vx, jy)])
     via(vx, jy)
+    gpad = board.FindFootprintByReference("J18").FindPadByNumber("1")
+    if gpad.GetAttribute() == pcbnew.PAD_ATTRIB_PTH:
+        # a through-hole header: the B.Cu run ends on its pin 1 itself
+        seg(pcbnew.B_Cu, [(vx, jy), (xb + 1.0, jy), (xb, jy + 1.0),
+                          (xb, gy - 1.0), (xb + 1.0, gy), (gx, gy)])
+        return
     seg(pcbnew.B_Cu, [(vx, jy), (xb + 1.0, jy), (xb, jy + 1.0),
                       (xb, gy - 1.0), (xb + 1.0, gy), (vx, gy)])
     via(vx, gy)

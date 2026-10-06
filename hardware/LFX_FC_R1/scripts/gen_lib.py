@@ -654,6 +654,47 @@ def motorpad_footprint():
         ''')
 
 
+def edge_header_footprint(n=5):
+    """1 x n, 2.54 mm right-angle pin header for a board edge: pads in a
+    column at x 0 (pad 1 at y 0), the plastic body on the board at x -4.15 ..
+    -1.39 and the bent pins running out over the edge to x -10.15, where a
+    Dupont plug goes on from the side.  The courtyard covers only what sits on
+    the board.  Geometry as the stock PinHeader_1xNN_P2.54mm_Horizontal,
+    mirrored so the pins point to -x."""
+    name = "PinHeader_1x%02d_P2.54mm_EdgeHorizontal" % n
+    L = fp_header(name, "1 x %d 2.54 mm right-angle pin header for a board "
+                  "edge: body on the board, bent pins over the edge (-x)" % n,
+                  "pin header right angle edge dupont", "through_hole",
+                  -2.2, (n - 1) * 2.54 + 2.2, ref="J**")
+    ylo, yhi = -1.27, (n - 1) * 2.54 + 1.27
+    L.append(rect(-3.9, ylo, -1.39, yhi, "F.SilkS", 0.12))   # inset: the
+    # body may sit close to the board edge
+    L.append(rect(-4.15, ylo, -1.39, yhi, "F.Fab", 0.1))
+    for i in range(n):
+        y = i * 2.54
+        L.append(rect(-10.15, y - 0.32, -4.15, y + 0.32, "F.Fab", 0.1))
+    L.append(line(1.4, -0.9, 1.4, 0.9, "F.SilkS", 0.12))       # pin 1
+    L.append(rect(-4.2, ylo - 0.5, 1.1, yhi + 0.5, "F.CrtYd", 0.05))
+    for i in range(n):
+        L += ['\t(pad "%d" thru_hole %s' % (i + 1,
+                                             "rect" if i == 0 else "oval"),
+              '\t\t(at 0 %g)' % (i * 2.54),
+              '\t\t(size 1.7 1.7)',
+              '\t\t(drill 1.0)',
+              '\t\t(layers "*.Cu" "*.Mask")',
+              '\t\t(remove_unused_layers no)',
+              '\t)']
+    # the stock right-angle header model turned 180 degrees: pins to -x
+    L += ['\t(embedded_fonts no)',
+          '\t(model "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/'
+          'PinHeader_1x%02d_P2.54mm_Horizontal.step"' % n,
+          '\t\t(offset (xyz 0 %g 0))' % (-(n - 1) * 2.54),
+          '\t\t(scale (xyz 1 1 1))',
+          '\t\t(rotate (xyz 0 0 180))',
+          '\t)', ')']
+    return name, "\n".join(L)
+
+
 def testpad_footprint():
     return textwrap.dedent(f'''\
         (footprint "TestPad_1.0mm"
@@ -710,7 +751,8 @@ def main():
                         nt26_footprint()),
                        ("SolderPad_2.5x4mm", solderpad_footprint()),
                        ("SolderPad_1.5x2.5mm", motorpad_footprint()),
-                       ("TestPad_1.0mm", testpad_footprint())):
+                       ("TestPad_1.0mm", testpad_footprint()),
+                       edge_header_footprint(5)):
         p = os.path.join(FP_DIR, name + ".kicad_mod")
         with open(p, "w") as fh:
             fh.write(text if text.endswith("\n") else text + "\n")

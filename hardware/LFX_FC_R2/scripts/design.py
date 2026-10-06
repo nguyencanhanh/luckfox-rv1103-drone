@@ -311,19 +311,22 @@ B = "GPS module UART5 (receive only)"
 # taken, so header pin 14 (GPIO1_D2) became UART5_RX_M1 and the barometer's
 # chip select moved to pin 15 (GPIO1_D3).  UART5_TX_M1 is that same pin 15, so
 # the board only listens: NMEA at the module's default 9600 bd, no
-# configuration commands.  JST-SH like the other ports (a 2.54 mm header with a
-# Dupont plug would hit the canopy roof, LFX_CANOPY_R1): pin order as R1's GPS
-# port, 1 5V, 2 GND, 3 board TX (not connected here), 4 board RX <- module TXD.
+# configuration commands.  A 5-pin, 2.54 mm right-angle header in the module's
+# own pin order (VCC GND TXD RXD PPS), body on the board and the bent pins out
+# over the left edge, so a straight 5-wire Dupont lead plugs in from the side,
+# under the canopy (an upright header would hit its roof).  RXD and PPS stay
+# open: no Luckfox pin is free for them.
 # Its 5 V comes from the RC port's +5V (J4 pin 1) on a hand-drawn B.Cu run
 # down the left edge (route_critical.hand_route_gps_power): left to the
 # autorouter a top-side +5V trace walled the RC ESD (U7) off from its
 # resistors, and a VSYS via was no answer either - In2 carries signal tracks
 # on this board, so the VSYS copper under J18 was cut off from the rest.
 # ~25 mA (ATGM336H-5N datasheet).
-C("J18", "Connector_Generic_MountingPin:Conn_01x04_MountingPin", "SM04B-SRSS-TB",
-  jst_sh(4), {"1": "+5V", "2": "GND", "3": "", "4": "GPS_RX_X", "MP": "GND"}, S, B,
-  Description="GPS module (ATGM336H / NEO-M8N class). 1:5V 2:GND 3:NC "
-              "(module RXD - no board TX) 4:module TXD -> board RX (UART5)")
+C("J18", "Connector_Generic:Conn_01x05", "PinHeader 1x05 2.54 RA",
+  "LFX:PinHeader_1x05_P2.54mm_EdgeHorizontal",
+  {"1": "+5V", "2": "GND", "3": "GPS_RX_X", "4": "", "5": ""}, S, B,
+  Description="ATGM336H GPS module, pin for pin: 1:VCC 5V 2:GND 3:module "
+              "TXD -> board RX (UART5) 4:module RXD (open) 5:PPS (open)")
 R("R44", "33R", R0402, "GPS_RX_X", "GPS_RX", S, B)
 # no external pull-up: uart5m1_xfer turns on the pad's own pull-up on RX
 # (<1 RK_PD2 4 &pcfg_pull_up>, rv1106-pinctrl.dtsi:1083), so the line idles high

@@ -136,6 +136,251 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector_Generic:Conn_01x05"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x05"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x05_1_1"
+				(rectangle
+					(start -1.27 6.35)
+					(end 1.27 -6.35)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 5.207)
+					(end 0 4.953)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 5.08 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic_MountingPin:Conn_01x04_MountingPin"
 			(pin_names
 				(offset 1.016)
@@ -3966,8 +4211,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic_MountingPin:Conn_01x04_MountingPin")
-		(at 302.26 39.37 0)
+		(lib_id "Connector_Generic:Conn_01x05")
+		(at 302.26 41.91 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
@@ -3976,27 +4221,27 @@
 			(at 302.26 31.75 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Value" "SM04B-SRSS-TB"
-			(at 302.26 52.07 0)
+		(property "Value" "PinHeader 1x05 2.54 RA"
+			(at 302.26 50.8 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Footprint" "Connector_JST:JST_SH_SM04B-SRSS-TB_1x04-1MP_P1.00mm_Horizontal"
-			(at 302.26 39.37 0)
+		(property "Footprint" "LFX:PinHeader_1x05_P2.54mm_EdgeHorizontal"
+			(at 302.26 41.91 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 302.26 39.37 0)
+			(at 302.26 41.91 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
-		(property "Description" "GPS module (ATGM336H / NEO-M8N class). 1:5V 2:GND 3:NC (module RXD - no board TX) 4:module TXD -> board RX (UART5)"
-			(at 302.26 39.37 0)
+		(property "Description" "ATGM336H GPS module, pin for pin: 1:VCC 5V 2:GND 3:module TXD -> board RX (UART5) 4:module RXD (open) 5:PPS (open)"
+			(at 302.26 41.91 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "1c10fb46-629b-ce55-671a-dd220313eb11"))
 		(pin "2" (uuid "b4b9b7d2-83f5-a0c7-1038-33a0b76e20a8"))
 		(pin "3" (uuid "d6a22504-bf48-5aec-7b6e-a57531933460"))
 		(pin "4" (uuid "efdb2de2-a97a-bacc-1256-6e11ca04acfc"))
-		(pin "MP" (uuid "bb1a223a-9057-dda8-5df5-a857f9c8d5f1"))
+		(pin "5" (uuid "61dcd65f-bda7-5e19-6889-8b9e8fcb564f"))
 		(instances
 			(project "LFX_FC_R2"
 				(path "/9564b83f-500d-c692-1cc5-81840b134811/ff557765-04f8-5d0c-aacb-cf31df93a6f3"
@@ -4063,75 +4308,50 @@
 			)
 		)
 	)
-	(no_connect
-		(at 297.18 41.91)
-		(uuid "76d1f1ca-b440-7fb5-c65c-f01b9a4c6a73")
-	)
 	(wire
-		(pts (xy 297.18 44.45) (xy 293.37 44.45))
+		(pts (xy 297.18 41.91) (xy 293.37 41.91))
 		(stroke (width 0) (type default))
-		(uuid "16d91c10-5ba3-8b40-58a9-6011f1cad4ec")
+		(uuid "28b1b2ae-e425-186f-eaa1-2c72b220cb3f")
 	)
 	(global_label "GPS_RX_X"
 		(shape bidirectional)
-		(at 293.37 44.45 180)
+		(at 293.37 41.91 180)
 		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "325889c4-2a0e-cebf-0f5a-31484fd59c16")
+		(uuid "88e65c84-31dc-fee5-2041-65dd7e7b2c85")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 293.37 44.45 0)
+			(at 293.37 41.91 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
-	(wire
-		(pts (xy 302.26 49.53) (xy 302.26 53.34))
-		(stroke (width 0) (type default))
-		(uuid "d58e50c6-aaf7-c597-9791-99ed38155418")
+	(no_connect
+		(at 297.18 44.45)
+		(uuid "f2e8c469-cdcb-283a-620d-c0f75e2bb2f3")
 	)
-	(symbol
-		(lib_id "power:GND")
-		(at 302.26 53.34 0)
-		(unit 1)
-		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
-		(uuid "e437fcff-f5b0-2877-e2a6-554440932764")
-		(property "Reference" "#PWR0063"
-			(at 302.26 49.53 0)
-			(effects (font (size 1.27 1.27)) (hide yes))
-		)
-		(property "Value" "GND"
-			(at 302.26 57.84 0)
-			(effects (font (size 1.27 1.27)))
-		)
-		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(instances
-			(project "LFX_FC_R2"
-				(path "/9564b83f-500d-c692-1cc5-81840b134811/ff557765-04f8-5d0c-aacb-cf31df93a6f3"
-					(reference "#PWR0063") (unit 1)
-				)
-			)
-		)
+	(no_connect
+		(at 297.18 46.99)
+		(uuid "06df354c-dc8f-363b-10c2-3ba599b6212a")
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 312.42 54.61 0)
+		(at 314.96 54.61 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
 		(uuid "767099b8-539c-48df-a730-527f45183751")
 		(property "Reference" "R44"
-			(at 312.42 46.99 0)
+			(at 314.96 46.99 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Value" "33R"
-			(at 312.42 60.96 0)
+			(at 314.96 60.96 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 312.42 54.61 0)
+			(at 314.96 54.61 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 312.42 54.61 0)
+			(at 314.96 54.61 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "6cf278eb-8cac-39e6-9436-0fd892257767"))
@@ -4145,60 +4365,60 @@
 		)
 	)
 	(wire
-		(pts (xy 312.42 50.8) (xy 312.42 46.99))
+		(pts (xy 314.96 50.8) (xy 314.96 46.99))
 		(stroke (width 0) (type default))
 		(uuid "c2fe4854-8b7b-3cd0-50cf-3c516fec278e")
 	)
 	(global_label "GPS_RX_X"
 		(shape bidirectional)
-		(at 312.42 46.99 90)
+		(at 314.96 46.99 90)
 		(effects (font (size 1.27 1.27)) (justify left))
 		(uuid "108fd703-1e88-2945-9535-089d603c7ac8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 312.42 46.99 0)
+			(at 314.96 46.99 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(wire
-		(pts (xy 312.42 58.42) (xy 312.42 62.23))
+		(pts (xy 314.96 58.42) (xy 314.96 62.23))
 		(stroke (width 0) (type default))
 		(uuid "c6f5bfc2-1382-6c55-e16b-6dc214bd4f83")
 	)
 	(global_label "GPS_RX"
 		(shape bidirectional)
-		(at 312.42 62.23 270)
+		(at 314.96 62.23 270)
 		(effects (font (size 1.27 1.27)) (justify right))
 		(uuid "4c387116-79dc-bd45-eb4b-bffaf68947d9")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 312.42 62.23 0)
+			(at 314.96 62.23 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(symbol
 		(lib_id "Power_Protection:TPD1E05U06DPY")
-		(at 327.66 38.1 0)
+		(at 330.2 38.1 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom yes) (on_board yes)
 		(dnp no)
 		(uuid "cf7f93eb-e2f1-de4b-1db7-c12e3761a018")
 		(property "Reference" "U13"
-			(at 327.66 32.385 0)
+			(at 330.2 32.385 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Value" "TPD1E05U06DPY"
-			(at 327.66 45.72 0)
+			(at 330.2 45.72 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "Package_SON:Texas_DPY0002A_0.6x1mm_P0.65mm"
-			(at 327.66 38.1 0)
+			(at 330.2 38.1 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Datasheet" ""
-			(at 327.66 38.1 0)
+			(at 330.2 38.1 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Description" "ESD at the GPS connector"
-			(at 327.66 38.1 0)
+			(at 330.2 38.1 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(pin "1" (uuid "7277a261-4d61-e2b0-49f3-de9d97c48761"))
@@ -4212,37 +4432,37 @@
 		)
 	)
 	(wire
-		(pts (xy 327.66 43.18) (xy 327.66 46.99))
+		(pts (xy 330.2 43.18) (xy 330.2 46.99))
 		(stroke (width 0) (type default))
 		(uuid "e918170b-a53f-61da-fd3a-38fc43866961")
 	)
 	(global_label "GPS_RX_X"
 		(shape bidirectional)
-		(at 327.66 46.99 270)
+		(at 330.2 46.99 270)
 		(effects (font (size 1.27 1.27)) (justify right))
 		(uuid "277f121e-7930-3323-8c3c-3b0943694544")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 327.66 46.99 0)
+			(at 330.2 46.99 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 	)
 	(wire
-		(pts (xy 332.74 38.1) (xy 336.55 38.1))
+		(pts (xy 335.28 38.1) (xy 339.09 38.1))
 		(stroke (width 0) (type default))
 		(uuid "157e75a8-0ccf-efb2-9c25-0915acffbcb6")
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 336.55 38.1 0)
+		(at 339.09 38.1 0)
 		(unit 1)
 		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no)
 		(uuid "b4d96e10-71db-9927-5690-436b9adc1850")
-		(property "Reference" "#PWR0064"
-			(at 336.55 34.29 0)
+		(property "Reference" "#PWR0063"
+			(at 339.09 34.29 0)
 			(effects (font (size 1.27 1.27)) (hide yes))
 		)
 		(property "Value" "GND"
-			(at 336.55 42.6 0)
+			(at 339.09 42.6 0)
 			(effects (font (size 1.27 1.27)))
 		)
 		(property "Footprint" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
@@ -4250,7 +4470,7 @@
 		(instances
 			(project "LFX_FC_R2"
 				(path "/9564b83f-500d-c692-1cc5-81840b134811/ff557765-04f8-5d0c-aacb-cf31df93a6f3"
-					(reference "#PWR0064") (unit 1)
+					(reference "#PWR0063") (unit 1)
 				)
 			)
 		)

@@ -117,7 +117,7 @@ Module Lierda và đế cắm Luckfox chưa có mô hình 3D trong KiCad nên tr
 | J2 / J3 · pad pin | BAT+ / BAT− | dây XT30 từ pin, cùng dây cấp cho 4 ESC |
 | J4 · bộ thu RC ELRS | 1 5 V, 2 GND, 3 TX board → RX bộ thu, 4 RX board ← TX bộ thu | UART2, CRSF; R24 1 kΩ kéo lên để bộ thu không kẹt bootloader |
 | J6 · còi | 1 +5 V, 2 còi − (MOSFET đóng ngắt) | gate do AGPIO5 của Lierda điều khiển |
-| **J18 · module GPS ngoài** (2026-10-04) | 1 +5 V, 2 GND, 3 không nối, 4 RX board ← TXD module | JST-SH 4 chân ở mép trái, cho module kiểu ATGM336H / NEO-M8N. UART5 chỉ nhận (chân 14), NMEA 9600 mặc định; chống ESD TPD1E05U06 + 33 Ω. +5 V lấy từ buck TPS54360 (cùng nguồn với bộ thu RC J4, đường mặt dưới sát mép trái), nên GPS chỉ có điện khi cắm pin, không chạy khi chỉ cắm USB |
+| **J18 · module GPS ATGM336H** | 1 VCC +5 V, 2 GND, 3 TXD module → RX board, 4 RXD (không nối), 5 PPS (không nối) | header 2,54 mm 5 chân nằm ngang ở mép trái, **cùng thứ tự chân với module ATGM336H 5 chân**: thân nhựa trên board, chân cong chìa ra ngoài mép để cắm dây Dupont 5 sợi thẳng sang module (lọt dưới vỏ canopy). UART5 chỉ nhận (chân 14), NMEA 9600 mặc định; RXD và PPS bỏ trống vì Luckfox hết chân. Chống ESD TPD1E05U06 + 33 Ω. +5 V lấy từ buck TPS54360 (cùng nguồn với bộ thu RC J4, đường mặt dưới sát mép trái), nên GPS chỉ có điện khi cắm pin, không chạy khi chỉ cắm USB |
 | J7–J14 · pad ESC | S / G ở 4 góc | M1 sau-phải, M2 trước-phải, M3 sau-trái, M4 trước-trái (Betaflight) |
 | J15 · nano-SIM | | GCT SIM8060, nắp bản lề |
 | J16 · U.FL LTE / J17 · U.FL GNSS | | mặt dưới, 2 góc trước |
